@@ -5,6 +5,7 @@ target/
 
 *.jar
 *.class
+.project
 
 ### IntelliJ IDEA ###
 .idea/
