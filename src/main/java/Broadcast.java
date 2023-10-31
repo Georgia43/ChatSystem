@@ -45,7 +45,7 @@ public class Broadcast {
     }
 
     /*RECEPTION*/
-    public static class Receive() extends Thread {
+    public static class Receive extends Thread {
         @Override
         public void run() {
             try {
