@@ -14,8 +14,7 @@ public class Library {
 
         //envoyer premier message
         public void sendMessage() {
-            String message = "Hello from"+nickname ;
-            sendFirstPacket(message.getBytes());
+            sendFirstPacket(this.id,this.nickname);
         }
 
     }
