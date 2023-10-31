@@ -8,6 +8,8 @@ import java.net.InterfaceAddress;
 import static jdk.internal.net.http.common.Log.logError;
 
 public class Broadcast {
+    /*attributs*/
+    private Map<String, String> contactList;
 
     public final InetAddress getBroadcastAddress() {
         try {
@@ -32,11 +34,11 @@ public class Broadcast {
         return null;
     }
     /*ENVOI*/
-    public final void sendFirstPacket(String id, String nickname) {
+    public final void sendFirstPacket(String nickname) {
         try {
             DatagramSocket socket = new DatagramSocket();
             socket.setBroadcast(true);
-            String mess = id + ";" + nickname;
+            String mess = nickname;
             byte [] FirstMessage = mess.getBytes();
             DatagramPacket message= new DatagramPacket(FirstMessage, FirstMessage.length, getBroadcastAddress(), 4445);
             socket.send(message);
@@ -62,8 +64,9 @@ public class Broadcast {
                     socket.receive(inPacket);
                     String received = new String(inPacket.getData(), 0, inPacket.getLength());
 
-
                     String sender = inPacket.getAddress().getHostAddress();
+
+                    
 
                     if (received.equals("end")) {
                         running = false;
