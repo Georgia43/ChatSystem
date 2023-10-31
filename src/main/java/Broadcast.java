@@ -32,10 +32,12 @@ public class Broadcast {
         return null;
     }
     /*ENVOI*/
-    public final void sendFirstPacket(byte [] FirstMessage) {
+    public final void sendFirstPacket(String id, String nickname) {
         try {
             DatagramSocket socket = new DatagramSocket();
             socket.setBroadcast(true);
+            String mess = id + ";" + nickname;
+            byte [] FirstMessage = mess.getBytes();
             DatagramPacket message= new DatagramPacket(FirstMessage, FirstMessage.length, getBroadcastAddress(), 4445);
             socket.send(message);
         }
