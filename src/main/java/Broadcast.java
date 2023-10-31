@@ -46,32 +46,34 @@ public class Broadcast {
 
     /*RECEPTION*/
     public static class Receive() extends Thread {
-        try {
-        DatagramSocket socket = new DatagramSocket(4445); //4445 est le numéro de port qui va recevoir le message
-        boolean running = true;
+        @Override
+        public void run() {
+            try {
+                DatagramSocket socket = new DatagramSocket(4445); //4445 est le numéro de port qui va recevoir le message
+                boolean running = true;
 
-        socket.setBroadcast(true);
-        byte[] buf = new byte[256];
+                socket.setBroadcast(true);
+                byte[] buf = new byte[256];
 
-            while (running) {
-            DatagramPacket inPacket  = new DatagramPacket(buf, buf.length);
-            socket.receive(inPacket);
-            String received = new String(inPacket.getData(), 0, inPacket.getLength());
+                while (running) {
+                    DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
+                    socket.receive(inPacket);
+                    String received = new String(inPacket.getData(), 0, inPacket.getLength());
 
 
-            String sender = packet.getAddress().getHostAddress();
+                    String sender = inPacket.getAddress().getHostAddress();
 
-            if (received.equals("end")) {
-                running = false;
-                continue;
+                    if (received.equals("end")) {
+                        running = false;
+                        continue;
+                    }
+
+                }
+                socket.close();
+            } catch (IOException e) {
+                logError("IOException: "+e.getMessage());
             }
-
         }
-            socket.close();
-    }
-        catch (IOException e) {
-        logError( “IOException: “ + e.getMessage());
-    }
 }
 
 
