@@ -6,10 +6,10 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.net.InterfaceAddress;
 import static jdk.internal.net.http.common.Log.logError;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Broadcast {
-    /*attributs*/
-    private Map<String, String> contactList;
 
     public final InetAddress getBroadcastAddress() {
         try {
@@ -50,6 +50,8 @@ public class Broadcast {
 
     /*RECEPTION*/
     public static class Receive extends Thread {
+        private final Map<String, String> contactList = new HashMap<>();
+
         @Override
         public void run() {
             try {
@@ -63,8 +65,10 @@ public class Broadcast {
                     DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
                     socket.receive(inPacket);
                     String received = new String(inPacket.getData(), 0, inPacket.getLength());
-
                     String sender = inPacket.getAddress().getHostAddress();
+                    if (!contactList.containsValue(received)) {
+                        contactList.put(sender, received);
+                    }
 
                     
 
