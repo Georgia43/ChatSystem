@@ -19,13 +19,38 @@ public class Library {
         }
 
     }
+    /*attributs*/
+
+    // pour accéder à la liste des contacts connectés
+    private Broadcast.Receive receiveInstance;
+
+    /*constructeur*/
+     public Library(Broadcast.Receive receiveInstance) {
+        this.receiveInstance = receiveInstance;
+    }
 
 
     /*méthodes*/
 
     //récupérer liste avec les utilisateurs connectés
-    public ArrayList <User> GetConnectedUserList() {
-        ArrayList <User> list = new ArrayList<User> ();
+    public ArrayList<User> GetConnectedUserList() {
+        ArrayList<User> connectedUsers = new ArrayList<>();
+
+        // pour accéder à la liste des contacts connectés
+        if (receiveInstance != null) {
+            for (Map.Entry<String, String> pers : receiveInstance.contactList.entrySet()) {
+            String id = pers.getKey();
+            String nickname = pers.getValue();
+
+            User user = new User();
+            user.setNickname(nickname);
+            user.setId(id);
+
+            connectedUsers.add(user);
+            }
+        }
+
+        return connectedUsers;
     }
 
 }
