@@ -14,8 +14,8 @@ public class Library {
 
         //envoyer premier message
         public void sendMessage() {
-            String name = this.nickname
-            sendFirstPacket(name);
+            String name = this.nickname;
+            Broadcast.sendFirstPacket(name);
         }
 
     }
