@@ -66,8 +66,15 @@ public class Broadcast {
                     socket.receive(inPacket);
                     String received = new String(inPacket.getData(), 0, inPacket.getLength());
                     String sender = inPacket.getAddress().getHostAddress();
+		    String receiver = InetAddress.getLocalHost().getHostAddress();
+
                     if (!contactList.containsValue(received)) {
                         contactList.put(sender, received);
+			sendResponse(sender,receiver);
+                    } else if (!contactList.containsKey(sender)) {
+		changeNickname(sender);
+        	}
+
                     }
 
                     
