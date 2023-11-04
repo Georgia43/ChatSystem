@@ -83,6 +83,25 @@ public class Broadcast {
                 logError("IOException: "+e.getMessage());
             }
         }
+        /*pour envoyer le nickname après avoir ajouté la personne dans notre liste de contacts*/
+        private void sendResponse (String nickname, String address) {
+	        try {
+        		DatagramSocket respSocket = new DatagramSocket();
+        		respSocket.setBroadcast(true);
+                    	String mess = nickname;
+                   		 byte [] respMessage= mess.getBytes();
+        		respAddress = InetAddress.getByName(address);
+        		respPacket = new DatagramPacket(respMessage, respMessage.length, respAddress, 4445); 
+        		respSocket.send(respPacket);
+        		respSocket.close(); 
+            }
+        	catch {
+    		     logError("IOException: " + e.getMessage());
+            }
+
+
+}
+
 }
 
 
