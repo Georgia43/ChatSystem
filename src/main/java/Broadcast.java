@@ -89,13 +89,13 @@ public class Broadcast {
         		DatagramSocket respSocket = new DatagramSocket();
         		respSocket.setBroadcast(true);
                     	String mess = nickname;
-                   		 byte [] respMessage= mess.getBytes();
-        		respAddress = InetAddress.getByName(address);
-        		respPacket = new DatagramPacket(respMessage, respMessage.length, respAddress, 4445); 
+                   	byte [] respMessage= mess.getBytes();
+        		InetAddress respAddress = InetAddress.getByName(address);
+        		DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, respAddress, 4445); 
         		respSocket.send(respPacket);
         		respSocket.close(); 
             }
-        	catch {
+        	catch (IOException e) {
     		     logError("IOException: " + e.getMessage());
             }
 
