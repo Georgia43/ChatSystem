@@ -90,6 +90,24 @@ public class Broadcast {
                 logError("IOException: "+e.getMessage());
             }
         }
+
+	/*pour envoyer une demande du changement du pseudo*/
+	public void changeNickname (String senderIp) {
+		try {
+			DatagramSocket requestSocket = new DatagramSocket();
+			requestSocket.setBroadcast(true);
+
+			String nicknameRequest = “CHANGE_NICKNAME”;
+			byte[] requestBytes = nicknameRequest.getBytes();
+			DatagramPacket nicknameRequestPacket = new DatagramPacket(requestBytes, requestBytes.length, InetAddress.getByName(senderIp), 4445);
+
+			requestSocket.send(nicknameRequestPacket);
+			requestSocket.close();	
+		} catch (IOException e) {
+			logError( “IOException: “+e.getMessage());
+			}
+	}
+
         /*pour envoyer le nickname après avoir ajouté la personne dans notre liste de contacts*/
         private void sendResponse (String nickname, String address) {
 	        try {
