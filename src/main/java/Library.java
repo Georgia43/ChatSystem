@@ -18,6 +18,11 @@ public class Library {
             Broadcast.sendFirstPacket(name);
         }
 
+        //changer son pseudo
+        public void newName(String newNickname) {
+           this.nickname= newNickname;
+        }
+
     }
     /*attributs*/
 
@@ -53,4 +58,5 @@ public class Library {
         return connectedUsers;
     }
 
+  
 }
