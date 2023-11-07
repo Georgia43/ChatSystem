@@ -51,6 +51,12 @@ public class Broadcast {
     /*RECEPTION*/
     public static class Receive extends Thread {
         private final Map<String, String> contactList = new HashMap<>();
+	private User currentUser;
+
+	//constructeur    
+	public Receive(User currentUser) {
+        	this.currentUser = currentUser;
+    	}
 
         @Override
         public void run() {
@@ -67,7 +73,12 @@ public class Broadcast {
                     String received = new String(inPacket.getData(), 0, inPacket.getLength());
                     String sender = inPacket.getAddress().getHostAddress();
 		    String receiver = InetAddress.getLocalHost().getHostAddress();
-
+		    if (received.equals("CHANGE_NICKNAME")) {
+                    String newNickname = promptUserForNewNickname();
+                    // changer pseudo
+                    currentUser.setName(newNickname);
+                    sendFirstPacket(newNickname); 
+                } else {
                     if (!contactList.containsValue(received)) {
                         contactList.put(sender, received);
 			sendResponse(sender,receiver);
@@ -85,6 +96,7 @@ public class Broadcast {
                     }
 
                 }
+	    }
                 socket.close();
             } catch (IOException e) {
                 logError("IOException: "+e.getMessage());
@@ -125,7 +137,13 @@ public class Broadcast {
             }
 
 
-}
+	}
+private String promptUserForNewNickname() {
+        //pour que l'utilisateur puisse changer son nickname
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your new nickname: ");
+        return scanner.nextLine();
+    }
 
 }
 
