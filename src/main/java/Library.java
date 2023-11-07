@@ -18,9 +18,13 @@ public class Library {
             Broadcast.sendFirstPacket(name);
         }
 
-        //changer son pseudo
-        public void newName(String newNickname) {
-           this.nickname= newNickname;
+        //set pseudo
+        public void setNickname(String name) {
+           this.nickname= name;
+        }
+        //set id
+        public void setId(String id) {
+           this.id= id; 
         }
 
     }
