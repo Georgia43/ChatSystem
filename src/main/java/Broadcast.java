@@ -84,7 +84,7 @@ public class Broadcast {
 			sendResponse(sender,receiver);
                     } else if (!contactList.containsKey(sender)) {
 		changeNickname(sender);
-        	}
+        		}
 
                     }
 
@@ -96,7 +96,7 @@ public class Broadcast {
                     }
 
                 }
-	    }
+	
                 socket.close();
             } catch (IOException e) {
                 logError("IOException: "+e.getMessage());
