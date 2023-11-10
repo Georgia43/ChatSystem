@@ -87,9 +87,10 @@ public class Broadcast {
                 } else {
                     if (!contactList.containsValue(received)) {
                         contactList.put(sender, received);
-			sendResponse(sender,receiver);
+			            sendResponse("me",receiver);
+                        System.out.println(contactList);
                     } else if (!contactList.containsKey(sender)) {
-		changeNickname(sender);
+                        changeNickname(sender);
         		}
 
                     }
