@@ -31,7 +31,7 @@ public class Library {
     /*attributs*/
 
     // pour accéder à la liste des contacts connectés
-    private Broadcast.Receive receiveInstance;
+    private final Broadcast.Receive receiveInstance;
 
     /*constructeur*/
      public Library(Broadcast.Receive receiveInstance) {

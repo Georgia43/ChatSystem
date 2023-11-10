@@ -5,13 +5,17 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.net.InterfaceAddress;
-import static jdk.internal.net.http.common.Log.logError;
+import java.util.logging.Logger;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Scanner;
+import java.util.logging.Level;
 
 public class Broadcast {
 
-    public final InetAddress getBroadcastAddress() {
+    private static final Logger logger = Logger.getLogger("chatsystem");
+
+    public static InetAddress getBroadcastAddress() {
         try {
             Enumeration<NetworkInterface> interfaces =
                     NetworkInterface.getNetworkInterfaces();
@@ -34,7 +38,7 @@ public class Broadcast {
         return null;
     }
     /*ENVOI*/
-    public final void sendFirstPacket(String nickname) {
+    public static void sendFirstPacket(String nickname) {
         try {
             DatagramSocket socket = new DatagramSocket();
             socket.setBroadcast(true);
@@ -44,17 +48,17 @@ public class Broadcast {
             socket.send(message);
         }
         catch (IOException e) {
-            logError("IOException: " + e.getMessage());
+            logger.log(Level.SEVERE,"IOException: " + e.getMessage());
         }
     }
 
     /*RECEPTION*/
     public static class Receive extends Thread {
-        private final Map<String, String> contactList = new HashMap<>();
-	private User currentUser;
+        final Map<String, String> contactList = new HashMap<>();
+	    private Library.User currentUser;
 
 	//constructeur    
-	public Receive(User currentUser) {
+	public Receive(Library.User currentUser) {
         	this.currentUser = currentUser;
     	}
 
@@ -76,7 +80,7 @@ public class Broadcast {
 		    if (received.equals("CHANGE_NICKNAME")) {
                     String newNickname = promptUserForNewNickname();
                     // changer pseudo
-                    currentUser.setName(newNickname);
+                    currentUser.setNickname(newNickname);
                     sendFirstPacket(newNickname); 
                 } else {
                     if (!contactList.containsValue(received)) {
@@ -99,7 +103,7 @@ public class Broadcast {
 	
                 socket.close();
             } catch (IOException e) {
-                logError("IOException: "+e.getMessage());
+                logger.log(Level.SEVERE,"IOException: " + e.getMessage());
             }
         }
 
@@ -109,14 +113,14 @@ public class Broadcast {
 			DatagramSocket requestSocket = new DatagramSocket();
 			requestSocket.setBroadcast(true);
 
-			String nicknameRequest = “CHANGE_NICKNAME”;
+			String nicknameRequest = "CHANGE_NICKNAME";
 			byte[] requestBytes = nicknameRequest.getBytes();
 			DatagramPacket nicknameRequestPacket = new DatagramPacket(requestBytes, requestBytes.length, InetAddress.getByName(senderIp), 4445);
 
 			requestSocket.send(nicknameRequestPacket);
 			requestSocket.close();	
 		} catch (IOException e) {
-			logError( “IOException: “+e.getMessage());
+            logger.log(Level.SEVERE,"IOException: " + e.getMessage());
 			}
 	}
 
@@ -133,7 +137,7 @@ public class Broadcast {
         		respSocket.close(); 
             }
         	catch (IOException e) {
-    		     logError("IOException: " + e.getMessage());
+                logger.log(Level.SEVERE,"IOException: " + e.getMessage());
             }
 
 
