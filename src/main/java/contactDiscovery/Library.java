@@ -12,11 +12,6 @@ public class Library {
         public String getNickname() {return this.nickname;}
         public String getId() {return this.id;}
 
-        //envoyer premier message
-        public void sendMessage() {
-            String name = this.nickname;
-            Broadcast.sendFirstPacket(name);
-        }
 
         //set pseudo
         public void setNickname(String name) {
@@ -40,6 +35,11 @@ public class Library {
 
 
     /*méthodes*/
+    //envoyer premier message
+    public void sendMessage(String name){
+        // String name = this.nickname;
+        Broadcast.sendFirstPacket(name);
+    }
 
     //récupérer liste avec les utilisateurs connectés
     public ArrayList<User> GetConnectedUserList() {
