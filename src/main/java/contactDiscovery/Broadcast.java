@@ -1,3 +1,5 @@
+package contactDiscovery;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.io.IOException;
@@ -54,12 +56,12 @@ public class Broadcast {
 
     /*RECEPTION*/
     public static class Receive extends Thread {
-        final Map<String, String> contactList = new HashMap<>();
-	    private Library.User currentUser;
+        Map<String, String> contactList = new HashMap<>();
+	    private Library.User currentUser; //pour le changement de pseudo si nécessaire
 
 	//constructeur    
-	public Receive(Library.User currentUser) {
-        	this.currentUser = currentUser;
+	public Receive( Map<String, String> contactList) {
+        	this.contactList = contactList;
     	}
 
         @Override

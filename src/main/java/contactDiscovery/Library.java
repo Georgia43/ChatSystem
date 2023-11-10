@@ -1,3 +1,7 @@
+package contactDiscovery;
+
+import contactDiscovery.Broadcast;
+
 import java.util.*;
 
 public class Library {
@@ -26,36 +30,37 @@ public class Library {
     /*attributs*/
 
     // pour accéder à la liste des contacts connectés
-    private final Broadcast.Receive receiveInstance;
+    private static Broadcast.Receive receiveInstance;
 
     /*constructeur*/
      public Library(Broadcast.Receive receiveInstance) {
-        this.receiveInstance = receiveInstance;
+        Library.receiveInstance = receiveInstance;
     }
 
 
     /*méthodes*/
     //envoyer premier message
-    public void sendMessage(String name){
+    public static void sendMessage(String name){
         // String name = this.nickname;
         Broadcast.sendFirstPacket(name);
     }
 
     //récupérer liste avec les utilisateurs connectés
-    public ArrayList<User> GetConnectedUserList() {
-        ArrayList<User> connectedUsers = new ArrayList<>();
+    public static Map<String, String> GetConnectedUserList() {
+        Map<String, String> connectedUsers =  new HashMap<>();
 
         // pour accéder à la liste des contacts connectés
-        if (receiveInstance != null) {
+        if (receiveInstance.contactList != null) {
             for (Map.Entry<String, String> pers : receiveInstance.contactList.entrySet()) {
-            String id = pers.getKey();
-            String nickname = pers.getValue();
+            //String id = pers.getKey();
+           // String nickname = pers.getValue();
 
-            User user = new User();
-            user.setNickname(nickname);
-            user.setId(id);
+           // User user = new User();
+           // user.setNickname(nickname);
+           // user.setId(id);
 
-            connectedUsers.add(user);
+           // connectedUsers.add(user);
+                connectedUsers.put(pers.getKey(),pers.getValue());
             }
         }
 
