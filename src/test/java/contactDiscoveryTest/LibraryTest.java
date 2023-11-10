@@ -36,8 +36,10 @@ public class LibraryTest extends TestCase
 
         Library.sendMessage("user1");
         Library.sendMessage("user2");
+        Library.sendMessage("user3");
 
         Thread.sleep(100);
+        //receiverThread.join();
         System.out.println(list);
     }
 

@@ -50,18 +50,14 @@ public class Library {
         Map<String, String> connectedUsers =  new HashMap<>();
 
         // pour accéder à la liste des contacts connectés
-        if (receiveInstance.contactList != null) {
-            for (Map.Entry<String, String> pers : receiveInstance.contactList.entrySet()) {
+        if (receiveInstance!=null && receiveInstance.contactList != null) {
             //String id = pers.getKey();
-           // String nickname = pers.getValue();
-
-           // User user = new User();
-           // user.setNickname(nickname);
-           // user.setId(id);
-
-           // connectedUsers.add(user);
-                connectedUsers.put(pers.getKey(),pers.getValue());
-            }
+            // String nickname = pers.getValue();
+            // User user = new User();
+            // user.setNickname(nickname);
+            // user.setId(id);
+            // connectedUsers.add(user);
+            connectedUsers.putAll(receiveInstance.contactList);
         }
 
         return connectedUsers;
