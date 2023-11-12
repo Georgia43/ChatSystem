@@ -56,17 +56,18 @@ public class Broadcast {
 
     /*RECEPTION*/
     public static class Receive extends Thread {
-        Map<String, String> contactList = new HashMap<>();
+       // Map<String, String> contactList = new HashMap<>(); ON A MAINTENANT CREE UNE CLASS CONTACTLIST
 	 //   private User currentUser; //pour le changement de pseudo si nécessaire
 
-	//constructeur    
-	public Receive( Map<String, String> contactList) {
-        	this.contactList = contactList;
+
+	public Receive( ) {
+        //constructeur
     	}
 
         @Override
         public void run() {
             try {
+                Map<String, String> contactList = Model.contactList.getContactList();
                 DatagramSocket socket = new DatagramSocket(4445); //4445 est le numéro de port qui va recevoir le message
                 boolean running = true;
 

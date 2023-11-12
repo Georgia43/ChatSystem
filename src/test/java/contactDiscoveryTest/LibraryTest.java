@@ -30,7 +30,7 @@ public class LibraryTest extends TestCase
 
     public void testLibrary() throws InterruptedException {
         Map<String, String> list = Library.GetConnectedUserList();
-        Broadcast.Receive receiverThread = new Broadcast.Receive(list);
+        Broadcast.Receive receiverThread = new Broadcast.Receive();
         receiverThread.start();
         /*PROBLEME, ON REINITIALISE LA LISTE A CHAQUE FOIS QU ON ENVOIE UN MESSAGE*/
         Library.sendMessage("user1");
