@@ -57,7 +57,7 @@ public class Broadcast {
     /*RECEPTION*/
     public static class Receive extends Thread {
         Map<String, String> contactList = new HashMap<>();
-	    private Library.User currentUser; //pour le changement de pseudo si nécessaire
+	 //   private User currentUser; //pour le changement de pseudo si nécessaire
 
 	//constructeur    
 	public Receive( Map<String, String> contactList) {
@@ -82,8 +82,8 @@ public class Broadcast {
 		    if (received.equals("CHANGE_NICKNAME")) {
                     String newNickname = promptUserForNewNickname();
                     // changer pseudo
-                    currentUser.setNickname(newNickname);
-                    sendFirstPacket(newNickname); 
+                    //currentUser.setNickname(newNickname);
+                   // sendFirstPacket(newNickname);
                 } else {
                     if (!contactList.containsValue(received)) {
                         contactList.put(sender, received);
