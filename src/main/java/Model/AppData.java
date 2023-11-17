@@ -2,6 +2,7 @@ package Model;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class AppData {
     private static Map<InetAddress, String> contactList = new HashMap<>();
@@ -26,16 +27,18 @@ public class AppData {
 
     public static void CheckUnicityNickname(String CurrentNickname) {
         Map<InetAddress, String> contactList = getContactList();
+        Scanner scanner = new Scanner(System.in);
         for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
             String nickname = pers.getValue();
-            while (nickname == CurrentNickname) {
+            while (nickname.equals(CurrentNickname)) {
                 System.out.println("nickname taken. Choose a new one : ");
-               // il retappe SCANNER
+                CurrentNickname = scanner.nextLine();
             }
 
             currentUser.setNickname(CurrentNickname);
 
         }
+        scanner.close();
     }
 
     public static String getNicknameCurrentUser() {return currentUser.getNickname();}

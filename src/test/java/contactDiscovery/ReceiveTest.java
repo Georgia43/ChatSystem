@@ -48,6 +48,4 @@ public class ReceiveTest extends TestCase
         System.out.println(Library.GetConnectedUserList());
     }
 
-
-
 }
