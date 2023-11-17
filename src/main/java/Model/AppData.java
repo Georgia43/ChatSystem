@@ -24,6 +24,20 @@ public class AppData {
         }
     }
 
+    public static void CheckUnicityNickname(String CurrentNickname) {
+        Map<InetAddress, String> contactList = getContactList();
+        for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
+            String nickname = pers.getValue();
+            while (nickname == CurrentNickname) {
+                System.out.println("nickname taken. Choose a new one : ");
+               // il retappe SCANNER
+            }
+
+            currentUser.setNickname(CurrentNickname);
+
+        }
+    }
+
     public static String getNicknameCurrentUser() {return currentUser.getNickname();}
 }
 

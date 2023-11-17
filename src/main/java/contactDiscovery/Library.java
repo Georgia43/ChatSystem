@@ -20,6 +20,10 @@ public class Library {
         Broadcast.sendFirstPacket();
     }
 
+    //send nickname when chosen and unique
+    //for contact list -- send nickname a chaque pers
+
+
     //récupérer liste avec les utilisateurs connectés
     public static ArrayList<Model.User> GetConnectedUserList() {
         ArrayList<Model.User> connectedUsers = new ArrayList<User>();
