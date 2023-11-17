@@ -1,7 +1,7 @@
 package contactDiscovery;
 
+import Model.AppData;
 import Model.User;
-import contactDiscovery.Broadcast;
 
 import java.util.*;
 
@@ -24,9 +24,9 @@ public class Library {
 
     /*méthodes*/
     //envoyer premier message
-    public static void sendMessage(String name){
+    public static void sendFirstMessage(){
         // String name = this.nickname;
-        Broadcast.sendFirstPacket(name);
+        Broadcast.sendFirstPacket();
     }
 
     //récupérer liste avec les utilisateurs connectés
@@ -35,8 +35,8 @@ public class Library {
 
         // pour accéder à la liste des contacts connectés
         //if (receiveInstance!=null && receiveInstance.contactList != null) {
-        if (Model.contactList.getContactList() != null) {
-            for (Map.Entry<String, String> pers : Model.contactList.getContactList().entrySet()) {
+        if (AppData.getContactList() != null) {
+            for (Map.Entry<String, String> pers : AppData.getContactList().entrySet()) {
                 String id = pers.getKey();
                 String nickname = pers.getValue();
                 User user = new User();

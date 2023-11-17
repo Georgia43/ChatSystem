@@ -1,5 +1,7 @@
 package contactDiscovery;
 
+import Model.AppData;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.io.IOException;
@@ -9,7 +11,6 @@ import java.util.Enumeration;
 import java.net.InterfaceAddress;
 import java.util.logging.Logger;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -40,11 +41,11 @@ public class Broadcast {
         return null;
     }
     /*ENVOI*/
-    public static void sendFirstPacket(String nickname) {
+    public static void sendFirstPacket() {
         try {
             DatagramSocket socket = new DatagramSocket();
             socket.setBroadcast(true);
-            String mess = nickname;
+            String mess = "FIRST_MESSAGE";
             byte [] FirstMessage = mess.getBytes();
             DatagramPacket message= new DatagramPacket(FirstMessage, FirstMessage.length, getBroadcastAddress(), 4445);
             socket.send(message);
@@ -67,7 +68,7 @@ public class Broadcast {
         @Override
         public void run() {
             try {
-                Map<String, String> contactList = Model.contactList.getContactList();
+                Map<String, String> contactList = AppData.getContactList();
                 DatagramSocket socket = new DatagramSocket(4445); //4445 est le numéro de port qui va recevoir le message
                 boolean running = true;
 
@@ -79,24 +80,8 @@ public class Broadcast {
                     socket.receive(inPacket);
                     String received = new String(inPacket.getData(), 0, inPacket.getLength());
                     String sender = inPacket.getAddress().getHostAddress();
-		    String receiver = InetAddress.getLocalHost().getHostAddress();
-		    if (received.equals("CHANGE_NICKNAME")) {
-                    String newNickname = promptUserForNewNickname();
-                    // changer pseudo
-                    //currentUser.setNickname(newNickname);
-                   // sendFirstPacket(newNickname);
-                } else {
-                    if (!contactList.containsValue(received)) {
-                        contactList.put(sender, received);
-			            sendResponse("me",receiver);
-                       // System.out.println(contactList);
-                    } else if (!contactList.containsKey(sender)) {
-                        changeNickname(sender);
-        		}
-
-                    }
-
-                    
+		            String receiver = InetAddress.getLocalHost().getHostAddress();
+		            handleReceived(sender,received);
 
                     if (received.equals("end")) {
                         running = false;
@@ -110,6 +95,24 @@ public class Broadcast {
                 logger.log(Level.SEVERE,"IOException: " + e.getMessage());
             }
         }
+
+    public void handleReceived(String sender, String received) {
+        Map<String, String> contactList = AppData.getContactList();
+       /*if (received.equals("CHANGE_NICKNAME")) {
+            String newNickname = promptUserForNewNickname();
+            // changer pseudo
+            //currentUser.setNickname(newNickname);
+            // sendFirstPacket(newNickname);
+        } else {*/
+        if (received.equals("FIRST_MESSAGE")) {
+            sendNickname(AppData.getNicknameCurrentUser(), sender); //j'envoie mon nickname à la personne qui souhaite se connecter
+        }
+        else if (received.startsWith("MY_NICKNAME_")){
+            String prefix ="MY_NICKNAME_";
+            String nickname = received.substring(prefix.length());
+                AppData.addContactList(sender,nickname);}
+        }
+    }
 
 	/*pour envoyer une demande du changement du pseudo*/
 	public void changeNickname (String senderIp) {
@@ -128,12 +131,12 @@ public class Broadcast {
 			}
 	}
 
-        /*pour envoyer le nickname après avoir ajouté la personne dans notre liste de contacts*/
-        private void sendResponse (String nickname, String address) {
+        /*pour envoyer le nickname*/
+        public static void sendNickname (String nickname, String address) {
 	        try {
         		DatagramSocket respSocket = new DatagramSocket();
         		respSocket.setBroadcast(true);
-                    	String mess = nickname;
+                    	String mess = "MY_NICKNAME_"+nickname;
                    	byte [] respMessage= mess.getBytes();
         		InetAddress respAddress = InetAddress.getByName(address);
         		DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, respAddress, 4445); 
@@ -146,7 +149,7 @@ public class Broadcast {
 
 
 	}
-private String promptUserForNewNickname() {
+private static String promptUserForNewNickname() {
         //pour que l'utilisateur puisse changer son nickname
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your new nickname: ");
@@ -157,4 +160,3 @@ private String promptUserForNewNickname() {
 
 
 
-}
