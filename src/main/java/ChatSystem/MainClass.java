@@ -17,9 +17,8 @@ public class MainClass {
         try { //we try the whole app
             Broadcast.Receive receiverThread = new Broadcast.Receive();
             receiverThread.start();
-            /*PROBLEME, ON REINITIALISE LA LISTE A CHAQUE FOIS QU ON ENVOIE UN MESSAGE*/
-            Library.sendMessage("user1");
-            Library.sendMessage("user2");
+            //Library.sendMessage("user1");
+           // Library.sendMessage("user2");
 
             //  Thread.sleep(200);
             receiverThread.join(300);

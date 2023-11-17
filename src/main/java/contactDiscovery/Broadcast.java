@@ -96,7 +96,7 @@ public class Broadcast {
             }
         }
 
-    public void handleReceived(String sender, String received) {
+    void handleReceived(String sender, String received) {
         Map<String, String> contactList = AppData.getContactList();
        /*if (received.equals("CHANGE_NICKNAME")) {
             String newNickname = promptUserForNewNickname();
@@ -115,7 +115,7 @@ public class Broadcast {
     }
 
 	/*pour envoyer une demande du changement du pseudo*/
-	public void changeNickname (String senderIp) {
+	/*public void changeNickname (String senderIp) {
 		try {
 			DatagramSocket requestSocket = new DatagramSocket();
 			requestSocket.setBroadcast(true);
@@ -129,7 +129,7 @@ public class Broadcast {
 		} catch (IOException e) {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
 			}
-	}
+	}*/
 
         /*pour envoyer le nickname*/
         public static void sendNickname (String nickname, String address) {
@@ -149,12 +149,12 @@ public class Broadcast {
 
 
 	}
-private static String promptUserForNewNickname() {
-        //pour que l'utilisateur puisse changer son nickname
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your new nickname: ");
-        return scanner.nextLine();
-    }
+       /* private static String promptUserForNewNickname() {
+            //pour que l'utilisateur puisse changer son nickname
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter your new nickname: ");
+            return scanner.nextLine();
+        }*/
 
 }
 
