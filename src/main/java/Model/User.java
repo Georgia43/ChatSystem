@@ -1,14 +1,16 @@
 package Model;
 
+import java.net.InetAddress;
+
 public class User {
 
         /*attributs*/
         private String nickname;
-        private String id;
+        private InetAddress id;
 
         /*méthodes*/
         public String getNickname() {return this.nickname;}
-        public String getId() {return this.id;}
+        public InetAddress getId() {return this.id;}
 
 
         //set pseudo
@@ -16,7 +18,7 @@ public class User {
             this.nickname= name;
         }
         //set id
-        public void setId(String id) {
+        public void setId(InetAddress id) {
             this.id= id;
         }
         @Override

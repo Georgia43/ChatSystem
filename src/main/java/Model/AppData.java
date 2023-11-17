@@ -1,9 +1,10 @@
 package Model;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AppData {
-    private static Map<String, String> contactList = new HashMap<>();
+    private static Map<InetAddress, String> contactList = new HashMap<>();
     private static User currentUser = new User();
 
     private AppData(){
@@ -13,11 +14,11 @@ public class AppData {
 
     /*MÉTHODES*/
 
-    public static Map<String,String> getContactList(){
+    public static Map<InetAddress,String> getContactList(){
         return contactList;
     }
 
-    public static void addContactList(String sender, String received) {
+    public static void addContactList(InetAddress sender, String received) {
         if (!contactList.containsValue(received)) {
             contactList.put(sender, received);
         }

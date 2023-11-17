@@ -17,8 +17,8 @@ public class MainClass {
         try { //we try the whole app
             Broadcast.Receive receiverThread = new Broadcast.Receive();
             receiverThread.start();
-            //Library.sendMessage("user1");
-           // Library.sendMessage("user2");
+
+            /*on demande à l'utilisateur de tapper un nickname*/
 
             //  Thread.sleep(200);
             receiverThread.join(300);

@@ -68,7 +68,7 @@ public class Broadcast {
         @Override
         public void run() {
             try {
-                Map<String, String> contactList = AppData.getContactList();
+                Map<InetAddress, String> contactList = AppData.getContactList();
                 DatagramSocket socket = new DatagramSocket(4445); //4445 est le numéro de port qui va recevoir le message
                 boolean running = true;
 
@@ -79,7 +79,7 @@ public class Broadcast {
                     DatagramPacket inPacket = new DatagramPacket(buf, buf.length);
                     socket.receive(inPacket);
                     String received = new String(inPacket.getData(), 0, inPacket.getLength());
-                    String sender = inPacket.getAddress().getHostAddress();
+                    InetAddress sender = InetAddress.getByName(inPacket.getAddress().getHostAddress());
 		            String receiver = InetAddress.getLocalHost().getHostAddress();
 		            handleReceived(sender,received);
 
@@ -95,9 +95,8 @@ public class Broadcast {
                 logger.log(Level.SEVERE,"IOException: " + e.getMessage());
             }
         }
-
-    void handleReceived(String sender, String received) {
-        Map<String, String> contactList = AppData.getContactList();
+        static void handleReceived(InetAddress sender, String received) {
+        Map<InetAddress, String> contactList = AppData.getContactList();
        /*if (received.equals("CHANGE_NICKNAME")) {
             String newNickname = promptUserForNewNickname();
             // changer pseudo
@@ -132,14 +131,13 @@ public class Broadcast {
 	}*/
 
         /*pour envoyer le nickname*/
-        public static void sendNickname (String nickname, String address) {
+        public static void sendNickname (String nickname, InetAddress address) {
 	        try {
         		DatagramSocket respSocket = new DatagramSocket();
         		respSocket.setBroadcast(true);
                     	String mess = "MY_NICKNAME_"+nickname;
                    	byte [] respMessage= mess.getBytes();
-        		InetAddress respAddress = InetAddress.getByName(address);
-        		DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, respAddress, 4445); 
+                DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, 4445);
         		respSocket.send(respPacket);
         		respSocket.close(); 
             }
