@@ -19,6 +19,13 @@ public class User {
         public void setId(String id) {
             this.id= id;
         }
+        @Override
+        public String toString() {
+                return "User{"
+                        + "username='" + nickname + '\''
+                        + ", id='" + id + '\''
+                        + '}';
+        }
 
 
 }

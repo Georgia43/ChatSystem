@@ -1,5 +1,6 @@
 package contactDiscovery;
 
+import Model.User;
 import contactDiscovery.Broadcast;
 
 import java.util.*;
@@ -29,19 +30,21 @@ public class Library {
     }
 
     //récupérer liste avec les utilisateurs connectés
-    public static Map<String, String> GetConnectedUserList() {
-        Map<String, String> connectedUsers =  new HashMap<>();
+    public static ArrayList<Model.User> GetConnectedUserList() {
+        ArrayList<Model.User> connectedUsers = new ArrayList<User>();
 
         // pour accéder à la liste des contacts connectés
         //if (receiveInstance!=null && receiveInstance.contactList != null) {
         if (Model.contactList.getContactList() != null) {
-            //String id = pers.getKey();
-            // String nickname = pers.getValue();
-            // User user = new User();
-            // user.setNickname(nickname);
-            // user.setId(id);
-            // connectedUsers.add(user);
-            connectedUsers.putAll(Model.contactList.getContactList());
+            for (Map.Entry<String, String> pers : Model.contactList.getContactList().entrySet()) {
+                String id = pers.getKey();
+                String nickname = pers.getValue();
+                User user = new User();
+                user.setNickname(nickname);
+                user.setId(id);
+                connectedUsers.add(user);
+                // connectedUsers.putAll(Model.contactList.getContactList());
+            }
         }
 
         return connectedUsers;

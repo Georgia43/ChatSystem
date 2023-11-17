@@ -29,7 +29,7 @@ public class LibraryTest extends TestCase
     }
 
     public void testLibrary() throws InterruptedException {
-        Map<String, String> list = Library.GetConnectedUserList();
+        //ArrayList<Model.User> list = Library.GetConnectedUserList();
         Broadcast.Receive receiverThread = new Broadcast.Receive();
         receiverThread.start();
         /*PROBLEME, ON REINITIALISE LA LISTE A CHAQUE FOIS QU ON ENVOIE UN MESSAGE*/
@@ -43,7 +43,7 @@ public class LibraryTest extends TestCase
       //  Thread.sleep(200);
         receiverThread.join(300);
         //receiverThread.join();
-        System.out.println(list);
+        System.out.println(Library.GetConnectedUserList());
     }
 
 
