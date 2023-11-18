@@ -23,20 +23,21 @@ public class Library {
     /*méthodes*/
     //envoyer premier message
     public static void sendFirstMessage(){
-        // String name = this.nickname;
         Broadcast.sendFirstPacket();
     }
 
-    //send nickname when chosen and unique
-    public static void SendCurrentNickname(String CurrentNickname){
-        Map<InetAddress, String> contactList = AppData.getContactList();
+    public static void sendMessageDisconnect() {
+        Broadcast.sendExitMessage();
+    }
 
+    //envoyer son nickname quand choisi et unique
+    public static void SendCurrentNickname(String CurrentNickname){
         try {
             DatagramSocket NameSocket = new DatagramSocket();
             NameSocket.setBroadcast(true);
 
             for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
-                InetAddress id = pers.getKey(); //get the ip address of the members of the contact list
+                InetAddress id = pers.getKey(); //récupérer l'adresse IP des membres de la liste de contact
 
                 String Nickname = "MY_NICKNAME_" + CurrentNickname;
                 byte[] NicknameMessage = Nickname.getBytes();

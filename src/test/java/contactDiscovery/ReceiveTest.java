@@ -4,7 +4,7 @@ import Model.AppData;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.example.AppTest;
+
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -20,10 +20,7 @@ public class ReceiveTest extends TestCase
     {
         super( testName );
     }
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
+    public static Test suite() { return new TestSuite( ReceiveTest.class );}
 
     //test de AddontactList lorsque la personne n'est pas dans notre contact list
     public void testAddContactList() throws UnknownHostException {
@@ -45,6 +42,17 @@ public class ReceiveTest extends TestCase
         InetAddress senderAddress_2 = InetAddress.getByName("102.26.81.12");
         AppData.addContactList(senderAddress, "Mary");
         AppData.addContactList(senderAddress_2, "Mary");
+        System.out.println(Library.GetConnectedUserList());
+    }
+
+    //test pour enlever quelqu'un de notre contact list lorsqu'il n'est plus connecté
+    public void testDeletefromContactList() throws UnknownHostException {
+        //on ajoute d'abord quelqu'un a la contactlist
+        InetAddress senderAddress = InetAddress.getByName("102.26.81.12");
+        AppData.addContactList(senderAddress, "Mary");
+        System.out.println(Library.GetConnectedUserList());
+        //on supprime la personne
+        AppData.DeletefromContactList(senderAddress);
         System.out.println(Library.GetConnectedUserList());
     }
 

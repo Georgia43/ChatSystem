@@ -25,7 +25,7 @@ public class Broadcast {
             while (interfaces.hasMoreElements()) {
                 NetworkInterface networkInterface = interfaces.nextElement();
                 if (networkInterface.isLoopback())
-                    continue;    // Don't want to broadcast to the loopback interface
+                    continue;
                 for (InterfaceAddress interfaceAddress :
                         networkInterface.getInterfaceAddresses()) {
                     InetAddress broadcast = interfaceAddress.getBroadcast();
@@ -57,17 +57,17 @@ public class Broadcast {
 
     /*RECEPTION*/
     public static class Receive extends Thread {
-       // Map<String, String> contactList = new HashMap<>(); ON A MAINTENANT CREE UNE CLASS CONTACTLIST
-
-	public Receive( ) {
+       // Map<String, String> contactList = new HashMap<>(); ON A MAINTENANT CREE UNE CLASSE CONTACTLIST
+        private final int port;
+	public Receive(int port ) {
         //constructeur
+        this.port=port;
     	}
 
         @Override
         public void run() {
             try {
-                Map<InetAddress, String> contactList = AppData.getContactList();
-                DatagramSocket socket = new DatagramSocket(4445); //4445 est le numéro de port qui va recevoir le message
+                DatagramSocket socket = new DatagramSocket(port); //4445 est le numéro de port qui va recevoir le message
                 boolean running = true;
 
                 socket.setBroadcast(true);
@@ -78,56 +78,34 @@ public class Broadcast {
                     socket.receive(inPacket);
                     String received = new String(inPacket.getData(), 0, inPacket.getLength());
                     InetAddress sender = InetAddress.getByName(inPacket.getAddress().getHostAddress());
-		            String receiver = InetAddress.getLocalHost().getHostAddress();
+		            //String receiver = InetAddress.getLocalHost().getHostAddress();
 		            handleReceived(sender,received);
 
                     if (received.equals("end")) {
                         running = false;
                         continue;
                     }
-
                 }
-	
                 socket.close();
+                //Thread.sleep(2000);
             } catch (IOException e) {
                 logger.log(Level.SEVERE,"IOException: " + e.getMessage());
-            }
+            } //catch (InterruptedException e) {
+               // throw new RuntimeException(e);
+           // }
         }
         static void handleReceived(InetAddress sender, String received) {
-        Map<InetAddress, String> contactList = AppData.getContactList();
-       /*if (received.equals("CHANGE_NICKNAME")) {
-            String newNickname = promptUserForNewNickname();
-            // changer pseudo
-            //currentUser.setNickname(newNickname);
-            // sendFirstPacket(newNickname);
-        } else {*/
-        if (received.equals("FIRST_MESSAGE")) {
-            sendNickname(AppData.getNicknameCurrentUser(), sender); //j'envoie mon nickname à la personne qui souhaite se connecter
-        }
-        else if (received.startsWith("MY_NICKNAME_")){
-            String prefix ="MY_NICKNAME_";
-            String nickname = received.substring(prefix.length());
-                AppData.addContactList(sender,nickname);}
+            if (received.equals("FIRST_MESSAGE")) {
+                sendNickname(AppData.getNicknameCurrentUser(), sender); //j'envoie mon nickname à la personne qui souhaite se connecter
+            } else if (received.startsWith("MY_NICKNAME_")) {
+                String prefix = "MY_NICKNAME_";
+                String nickname = received.substring(prefix.length());
+                AppData.addContactList(sender, nickname);
+            } else if (received.equals("DISCONNECTING")) {
+                AppData.DeletefromContactList(sender);
+            }
         }
     }
-
-	/*pour envoyer une demande du changement du pseudo*/
-	/*public void changeNickname (String senderIp) {
-		try {
-			DatagramSocket requestSocket = new DatagramSocket();
-			requestSocket.setBroadcast(true);
-
-			String nicknameRequest = "CHANGE_NICKNAME";
-			byte[] requestBytes = nicknameRequest.getBytes();
-			DatagramPacket nicknameRequestPacket = new DatagramPacket(requestBytes, requestBytes.length, InetAddress.getByName(senderIp), 4445);
-
-			requestSocket.send(nicknameRequestPacket);
-			requestSocket.close();	
-		} catch (IOException e) {
-            logger.log(Level.SEVERE,"IOException: " + e.getMessage());
-			}
-	}*/
-
         /*pour envoyer le nickname*/
         public static void sendNickname (String nickname, InetAddress address) {
 	        try {
@@ -169,15 +147,6 @@ public class Broadcast {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
         }
     }
-       /* private static String promptUserForNewNickname() {
-            //pour que l'utilisateur puisse changer son nickname
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Enter your new nickname: ");
-            return scanner.nextLine();
-        }*/
-
-
-
 
 }
 

@@ -25,6 +25,11 @@ public class AppData {
         }
     }
 
+    public static void DeletefromContactList(InetAddress sender){
+        contactList.remove(sender);
+
+    }
+
     public static void CheckUnicityNickname(String CurrentNickname) {
         Map<InetAddress, String> contactList = getContactList();
         Scanner scanner = new Scanner(System.in);
@@ -43,10 +48,6 @@ public class AppData {
 
     public static String getNicknameCurrentUser() {return currentUser.getNickname();}
 
-    public static void DeletefromContactList(InetAddress sender){
-        if ()
-
-    }
 }
 
 

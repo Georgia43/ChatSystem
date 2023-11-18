@@ -12,12 +12,10 @@ public class User {
         public String getNickname() {return this.nickname;}
         public InetAddress getId() {return this.id;}
 
-
-        //set pseudo
         public void setNickname(String name) {
             this.nickname= name;
         }
-        //set id
+
         public void setId(InetAddress id) {
             this.id= id;
         }

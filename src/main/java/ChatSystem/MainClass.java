@@ -17,8 +17,15 @@ public class MainClass {
         final Logger logger = Logger.getLogger("chatsystem");
         Scanner scanner = new Scanner(System.in);
 
+        if (args.length < 1) {
+            System.out.println("Usage: java MainClass <port>");
+            System.exit(1);
+        }
+
+        int port = Integer.parseInt(args[0]);
+
         try {
-            Broadcast.Receive receiverThread = new Broadcast.Receive();
+            Broadcast.Receive receiverThread = new Broadcast.Receive(port);
             receiverThread.start();
             //envoyer le premier message
             Library.sendFirstMessage();
@@ -29,9 +36,10 @@ public class MainClass {
             AppData.CheckUnicityNickname(nickname);
             //envoyer le nickname choisi aux contacts
             Library.SendCurrentNickname(nickname);
-
-            receiverThread.join(300);
+            receiverThread.join(10000);
             System.out.println(Library.GetConnectedUserList());
+            //envoyer le message pour se déconnecter
+            Library.sendMessageDisconnect();
         }
         catch (InterruptedException e) {
            logger.log(Level.SEVERE,"InterruptedException" + e.getMessage());
