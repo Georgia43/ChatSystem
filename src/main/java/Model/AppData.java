@@ -42,7 +42,14 @@ public class AppData {
     }
 
     public static String getNicknameCurrentUser() {return currentUser.getNickname();}
+
+    public static void DeletefromContactList(InetAddress sender){
+        if ()
+
+    }
 }
+
+
 
 
 

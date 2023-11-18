@@ -58,8 +58,6 @@ public class Broadcast {
     /*RECEPTION*/
     public static class Receive extends Thread {
        // Map<String, String> contactList = new HashMap<>(); ON A MAINTENANT CREE UNE CLASS CONTACTLIST
-	 //   private User currentUser; //pour le changement de pseudo si nécessaire
-
 
 	public Receive( ) {
         //constructeur
@@ -147,6 +145,30 @@ public class Broadcast {
 
 
 	}
+
+    //envoyer un message à sa liste de contacts lorsqu'on se déconnecte
+    public static void sendExitMessage(){
+        Map<InetAddress, String> contactList = AppData.getContactList();
+
+        try {
+            DatagramSocket exitSocket = new DatagramSocket();
+            exitSocket.setBroadcast(true);
+
+            for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
+                InetAddress id = pers.getKey(); //récupérer l'adresse IP des personnes dans la liste de contacts
+
+                String exit = "DISCONNECTING";
+                byte[] exitMessage = exit.getBytes();
+                DatagramPacket exitPacket = new DatagramPacket(exitMessage, exitMessage.length, id, 4445);
+                exitSocket.send(exitPacket);
+            }
+            exitSocket.close();
+        }
+
+        catch (IOException e) {
+            logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+        }
+    }
        /* private static String promptUserForNewNickname() {
             //pour que l'utilisateur puisse changer son nickname
             Scanner scanner = new Scanner(System.in);
