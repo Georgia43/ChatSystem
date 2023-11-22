@@ -1,26 +1,38 @@
-# ~~Burn~~ Replace with your own after reading
+# ChatSystem
 
-This private repository is created for you so that your teachers have access to it.
+## COMPILATION 
 
-## Identify yourself
+sur un terminal : 
+- mvn compile
+- mvn package
+  On utilise la commande mvn compile afin de compiler toutes les classes du projet.
+  On utilise la commande mvn package afin de compiler toutes les classes et produire un unique fichier JAR (Java Archive) dans le répertoire cible (target).
 
-Before anything, **complete the `metadata.yml` with your own information.** 
+## EXECUTION SUR TERMINAL
 
-This is the file that we will use to identify the teacher responsible for the repository and assign the grades to the participating students.
+On ouvre deux terminaux à partir du répertoire où se situe notre projet :
 
-## Take ownership
+sur terminal n°1 : 
+- mvn package
+- java -cp target/Projet_Java-1.0_SNAPSHOT.jar ChatSystem.MainClass
 
-As long as you make sure to keep the `metadata.yml` file at the root of this repository, you are free to do anything. Our suggestion would be to have it organized into something like the following:
+sur terminal n°2 :
+- ssh insa-20659 (on se connecte sur une autre machine du réseau)
+- cd /home/... (répertoire dans lequel se situe le projet)
+- java -cp target/Projet_Java-1.0_SNAPSHOT.jar ChatSystem.MainClass
 
-    .gitignore
-    metadata.yml
-    pom.xml
-    README.md
-    src/
-      main/
-      test/
-    doc/
-      uml/
-      report.pdf
+Sur le terminal n°1, on produit un fichier JAR puis on exécute le programme grâce à la commande java, en spécifiant le chemin (classpath)
+défini sur le répertoire target.
+Ensuite, sur le terminal n°2, on utilise la commande ssh pour accéder à un système distant (ici, on a pris l'exemple de la machine insa-20659).
+Ensuite, avec la commande cd on retourne au répertoire où se situe notre projet. 
+Sur le terminal n°1, on écrit un nickname. 
+Après, on exécute le programme (à l'aide de la même commande qu'on a utilisé sur le terminal n°1) sur le terminal n°2.
+Sur le terminal n°2, on écrit un nickname. S'il est déjà pris, on écrit un nouveau nickname (un message s'affiche pour nous indiquer qu'il faut en choisir un autre).
+À la fin, les deux listes de contacts sont affichées lorsqu'on appuie sur le bouton entrée et on attend 5 secondes.
 
-In particular, you will soon have to replace this README with something that describes your own project.
+## TESTS
+
+Tests unitaires des fonctions non liées au réseau sur IDE,
+
+
+
