@@ -1,10 +1,9 @@
 package ChatSystem;
 
 import Model.AppData;
+import Model.InputScanner;
 import contactDiscovery.Broadcast;
 import contactDiscovery.Library;
-
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,17 +14,10 @@ public class MainClass {
     public static void main(String[] args) {
 
         final Logger logger = Logger.getLogger("chatsystem");
-        Scanner scanner = new Scanner(System.in);
-
-        if (args.length < 1) {
-            System.out.println("Usage: java MainClass <port>");
-            System.exit(1);
-        }
-
-        int port = Integer.parseInt(args[0]);
+        Scanner scanner = InputScanner.getScanner();
 
         try {
-            Broadcast.Receive receiverThread = new Broadcast.Receive(port);
+            Broadcast.Receive receiverThread = new Broadcast.Receive();
             receiverThread.start();
             //envoyer le premier message
             Library.sendFirstMessage();
@@ -36,10 +28,14 @@ public class MainClass {
             AppData.CheckUnicityNickname(nickname);
             //envoyer le nickname choisi aux contacts
             Library.SendCurrentNickname(nickname);
+
+           System.out.println("Press enter to finish");
+            System.err.println(scanner.hasNextLine());
+            String none = scanner.nextLine();
             receiverThread.join(10000);
             System.out.println(Library.GetConnectedUserList());
             //envoyer le message pour se déconnecter
-            Library.sendMessageDisconnect();
+            //Library.sendMessageDisconnect();
         }
         catch (InterruptedException e) {
            logger.log(Level.SEVERE,"InterruptedException" + e.getMessage());

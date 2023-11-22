@@ -20,8 +20,10 @@ public class AppData {
     }
 
     public static void addContactList(InetAddress sender, String received) {
+
         if (!contactList.containsValue(received)) {
             contactList.put(sender, received);
+            System.out.println("i just added "+received);
         }
     }
 
@@ -30,20 +32,29 @@ public class AppData {
 
     }
 
-    public static void CheckUnicityNickname(String CurrentNickname) {
+    public static void CheckUnicityNickname(String CurrentNickname) throws InterruptedException {
+        Scanner scan = InputScanner.getScanner();
         Map<InetAddress, String> contactList = getContactList();
-        Scanner scanner = new Scanner(System.in);
-        for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
-            String nickname = pers.getValue();
-            while (nickname.equals(CurrentNickname)) {
-                System.out.println("nickname taken. Choose a new one : ");
-                CurrentNickname = scanner.nextLine();
+        boolean valid_name = true;
+        do {
+            valid_name = true;
+            for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
+                String nickname = pers.getValue();
+                if (nickname.equals(CurrentNickname)) {
+                    valid_name = false;
+                    break;
+                }
             }
 
-            currentUser.setNickname(CurrentNickname);
+            if(!valid_name) {
+                System.out.println("nickname taken. Choose a new one : ");
+                CurrentNickname = scan.nextLine();
+            }
 
-        }
-        scanner.close();
+        } while (!valid_name);
+
+        currentUser.setNickname(CurrentNickname);
+        //scan.close();
     }
 
     public static String getNicknameCurrentUser() {return currentUser.getNickname();}

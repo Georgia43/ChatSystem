@@ -2,19 +2,16 @@ package contactDiscovery;
 
 import Model.AppData;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.net.*;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.util.Enumeration;
-import java.net.InterfaceAddress;
 import java.util.logging.Logger;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.logging.Level;
 
 public class Broadcast {
+
+    public static final int PORT = 37842;
 
     private static final Logger logger = Logger.getLogger("chatsystem");
 
@@ -40,6 +37,34 @@ public class Broadcast {
         }
         return null;
     }
+
+    //vérifier que je ne reçois pas mon propre broadcast
+    public static boolean receivedFromMyself(InetAddress sender) {
+        boolean SameAddress = false;
+        try {
+            // Get all network interfaces
+            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+
+            while (networkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = networkInterfaces.nextElement();
+
+                // Get all InetAddress associated with the network interface
+                Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+
+                while (inetAddresses.hasMoreElements()) {
+                    InetAddress inetAddress = inetAddresses.nextElement();
+
+                    // Print the IP address
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.equals(sender)) {
+                        SameAddress = true;
+                    }
+                }
+            }
+            return SameAddress;
+        } catch (SocketException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
     /*ENVOI*/
     public static void sendFirstPacket() {
         try {
@@ -47,7 +72,7 @@ public class Broadcast {
             socket.setBroadcast(true);
             String mess = "FIRST_MESSAGE";
             byte [] FirstMessage = mess.getBytes();
-            DatagramPacket message= new DatagramPacket(FirstMessage, FirstMessage.length, getBroadcastAddress(), 4445);
+            DatagramPacket message= new DatagramPacket(FirstMessage, FirstMessage.length, getBroadcastAddress(), PORT);
             socket.send(message);
         }
         catch (IOException e) {
@@ -58,16 +83,14 @@ public class Broadcast {
     /*RECEPTION*/
     public static class Receive extends Thread {
        // Map<String, String> contactList = new HashMap<>(); ON A MAINTENANT CREE UNE CLASSE CONTACTLIST
-        private final int port;
-	public Receive(int port ) {
+	public Receive() {
         //constructeur
-        this.port=port;
     	}
 
         @Override
         public void run() {
             try {
-                DatagramSocket socket = new DatagramSocket(port); //4445 est le numéro de port qui va recevoir le message
+                DatagramSocket socket = new DatagramSocket(PORT); //4445 est le numéro de port qui va recevoir le message
                 boolean running = true;
 
                 socket.setBroadcast(true);
@@ -78,6 +101,7 @@ public class Broadcast {
                     socket.receive(inPacket);
                     String received = new String(inPacket.getData(), 0, inPacket.getLength());
                     InetAddress sender = InetAddress.getByName(inPacket.getAddress().getHostAddress());
+                  //  logger.log(Level.SEVERE, "Received on port " + PORT + " '" + received + "' from " + sender);
 		            //String receiver = InetAddress.getLocalHost().getHostAddress();
 		            handleReceived(sender,received);
 
@@ -95,12 +119,17 @@ public class Broadcast {
            // }
         }
         static void handleReceived(InetAddress sender, String received) {
-            if (received.equals("FIRST_MESSAGE")) {
+            if (received.equals("FIRST_MESSAGE") && (!receivedFromMyself(sender))) {
+                System.out.println("receive first message");
                 sendNickname(AppData.getNicknameCurrentUser(), sender); //j'envoie mon nickname à la personne qui souhaite se connecter
+              //  logger.log(Level.SEVERE, " just sent :" + AppData.getNicknameCurrentUser());
             } else if (received.startsWith("MY_NICKNAME_")) {
+                System.out.println("receive msg "+received);
                 String prefix = "MY_NICKNAME_";
                 String nickname = received.substring(prefix.length());
+                System.out.println("i just received "+nickname);
                 AppData.addContactList(sender, nickname);
+                System.out.println("new user "+nickname);
             } else if (received.equals("DISCONNECTING")) {
                 AppData.DeletefromContactList(sender);
             }
@@ -110,10 +139,10 @@ public class Broadcast {
         public static void sendNickname (String nickname, InetAddress address) {
 	        try {
         		DatagramSocket respSocket = new DatagramSocket();
-        		respSocket.setBroadcast(true);
-                    	String mess = "MY_NICKNAME_"+nickname;
-                   	byte [] respMessage= mess.getBytes();
-                DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, 4445);
+        		//respSocket.setBroadcast(true);
+                String mess = "MY_NICKNAME_"+nickname;
+                byte [] respMessage= mess.getBytes();
+                DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, PORT);
         		respSocket.send(respPacket);
         		respSocket.close(); 
             }
@@ -137,7 +166,7 @@ public class Broadcast {
 
                 String exit = "DISCONNECTING";
                 byte[] exitMessage = exit.getBytes();
-                DatagramPacket exitPacket = new DatagramPacket(exitMessage, exitMessage.length, id, 4445);
+                DatagramPacket exitPacket = new DatagramPacket(exitMessage, exitMessage.length, id, PORT);
                 exitSocket.send(exitPacket);
             }
             exitSocket.close();
@@ -147,7 +176,6 @@ public class Broadcast {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
         }
     }
-
 }
 
 

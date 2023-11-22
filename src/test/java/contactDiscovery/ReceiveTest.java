@@ -8,6 +8,7 @@ import junit.framework.TestSuite;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 public class ReceiveTest extends TestCase
 {
@@ -25,8 +26,10 @@ public class ReceiveTest extends TestCase
     //test de AddontactList lorsque la personne n'est pas dans notre contact list
     public void testAddContactList() throws UnknownHostException {
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
+        assert Library.GetConnectedUserList().isEmpty();
         AppData.addContactList(senderAddress, "Mary");
         System.out.println(Library.GetConnectedUserList());
+        assert Library.GetConnectedUserList().size() == 1;
     }
 
     //test du handleReceived lorsqu'on reçoit un nickname

@@ -31,17 +31,15 @@ public class Library {
     }
 
     //envoyer son nickname quand choisi et unique
-    public static void SendCurrentNickname(String CurrentNickname){
+    public static void SendCurrentNickname(String CurrentNickname) throws InterruptedException {
         try {
             DatagramSocket NameSocket = new DatagramSocket();
-            NameSocket.setBroadcast(true);
-
+            String Nickname = "MY_NICKNAME_" + CurrentNickname;
+            byte[] NicknameMessage = Nickname.getBytes();
             for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
                 InetAddress id = pers.getKey(); //récupérer l'adresse IP des membres de la liste de contact
 
-                String Nickname = "MY_NICKNAME_" + CurrentNickname;
-                byte[] NicknameMessage = Nickname.getBytes();
-                DatagramPacket NamePacket = new DatagramPacket(NicknameMessage, NicknameMessage.length, id, 4445);
+                DatagramPacket NamePacket = new DatagramPacket(NicknameMessage, NicknameMessage.length, id, Broadcast.PORT);
                 NameSocket.send(NamePacket);
             }
             NameSocket.close();
@@ -63,6 +61,7 @@ public class Library {
             for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
                 InetAddress id = pers.getKey();
                 String nickname = pers.getValue();
+                System.out.println("nickname "+nickname);
                 User user = new User();
                 user.setNickname(nickname);
                 user.setId(id);
