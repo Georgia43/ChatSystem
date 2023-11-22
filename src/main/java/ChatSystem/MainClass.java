@@ -27,7 +27,7 @@ public class MainClass {
             //on vérifie si le nickname est unique
             AppData.CheckUnicityNickname(nickname);
             //envoyer le nickname choisi aux contacts
-            Library.SendCurrentNickname(nickname);
+            Library.SendCurrentNickname(AppData.getNicknameCurrentUser());
 
            System.out.println("Press enter to finish");
             System.err.println(scanner.hasNextLine());
