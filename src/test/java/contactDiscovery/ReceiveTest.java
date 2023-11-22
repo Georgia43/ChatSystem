@@ -67,7 +67,7 @@ public class ReceiveTest extends TestCase
         assert Library.GetConnectedUserList().isEmpty();
     }
 
-    //test sur la réception d'un message DISCONNECTING reçu d'une personne qui va se déconnecté et qu'on veut donc enlever de notre contact list
+    //test du handleReceived lorsqu'on reçoit DISCONNECTING (lorsqu'un user veut se déconnecter, on l'enlève de notre contactlist)
     public void testReceiveDisconnecting() throws UnknownHostException {
         InetAddress senderAddress = InetAddress.getByName("100.26.81.12");
         AppData.addContactList(senderAddress, "Mary");
