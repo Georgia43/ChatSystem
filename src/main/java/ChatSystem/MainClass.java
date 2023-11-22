@@ -29,13 +29,12 @@ public class MainClass {
             //envoyer le nickname choisi aux contacts
             Library.SendCurrentNickname(AppData.getNicknameCurrentUser());
 
-           System.out.println("Press enter to finish");
-            System.err.println(scanner.hasNextLine());
+            System.out.println("Press enter to finish");
             String none = scanner.nextLine();
-            receiverThread.join(10000);
+            receiverThread.join(5000);
             System.out.println(Library.GetConnectedUserList());
             //envoyer le message pour se déconnecter
-            //Library.sendMessageDisconnect();
+            //Library.sendMessageDisconnect(); on commente cette ligne pour bien visualiser la contactlist car elle enlève la personne envoyant disconnect de la contactlist
         }
         catch (InterruptedException e) {
            logger.log(Level.SEVERE,"InterruptedException" + e.getMessage());

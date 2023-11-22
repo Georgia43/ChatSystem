@@ -5,7 +5,7 @@ public class InputScanner {
     private static final Scanner scanner = new Scanner(System.in);
 
     private InputScanner() {
-        // Private constructor to prevent instantiation
+        // constructeur
     }
 
     public static Scanner getScanner() {

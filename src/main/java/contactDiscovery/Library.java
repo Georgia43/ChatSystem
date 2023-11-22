@@ -61,7 +61,6 @@ public class Library {
             for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
                 InetAddress id = pers.getKey();
                 String nickname = pers.getValue();
-                System.out.println("nickname "+nickname);
                 User user = new User();
                 user.setNickname(nickname);
                 user.setId(id);

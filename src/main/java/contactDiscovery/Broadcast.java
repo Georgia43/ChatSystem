@@ -42,19 +42,19 @@ public class Broadcast {
     public static boolean receivedFromMyself(InetAddress sender) {
         boolean SameAddress = false;
         try {
-            // Get all network interfaces
+            // recupérer les interfaces du réseau
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 
             while (networkInterfaces.hasMoreElements()) {
                 NetworkInterface networkInterface = networkInterfaces.nextElement();
 
-                // Get all InetAddress associated with the network interface
+                // récupérer les inetAdresses
                 Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
 
                 while (inetAddresses.hasMoreElements()) {
                     InetAddress inetAddress = inetAddresses.nextElement();
 
-                    // Print the IP address
+                    // vérifier qu'aucune des adresses ip est égale à sender
                     if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress() && inetAddress.equals(sender)) {
                         SameAddress = true;
                     }
@@ -90,7 +90,7 @@ public class Broadcast {
         @Override
         public void run() {
             try {
-                DatagramSocket socket = new DatagramSocket(PORT); //4445 est le numéro de port qui va recevoir le message
+                DatagramSocket socket = new DatagramSocket(PORT); //port qui va recevoir le message
                 boolean running = true;
 
                 socket.setBroadcast(true);
@@ -101,7 +101,6 @@ public class Broadcast {
                     socket.receive(inPacket);
                     String received = new String(inPacket.getData(), 0, inPacket.getLength());
                     InetAddress sender = InetAddress.getByName(inPacket.getAddress().getHostAddress());
-                  //  logger.log(Level.SEVERE, "Received on port " + PORT + " '" + received + "' from " + sender);
 		            //String receiver = InetAddress.getLocalHost().getHostAddress();
 		            handleReceived(sender,received);
 
@@ -111,25 +110,18 @@ public class Broadcast {
                     }
                 }
                 socket.close();
-                //Thread.sleep(2000);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 logger.log(Level.SEVERE,"IOException: " + e.getMessage());
-            } //catch (InterruptedException e) {
-               // throw new RuntimeException(e);
-           // }
+            }
         }
         static void handleReceived(InetAddress sender, String received) {
             if (received.equals("FIRST_MESSAGE") && (!receivedFromMyself(sender))) {
-                System.out.println("receive first message");
                 sendNickname(AppData.getNicknameCurrentUser(), sender); //j'envoie mon nickname à la personne qui souhaite se connecter
-              //  logger.log(Level.SEVERE, " just sent :" + AppData.getNicknameCurrentUser());
             } else if (received.startsWith("MY_NICKNAME_")) {
-                System.out.println("receive msg "+received);
                 String prefix = "MY_NICKNAME_";
                 String nickname = received.substring(prefix.length());
-                System.out.println("i just received "+nickname);
                 AppData.addContactList(sender, nickname);
-                System.out.println("new user "+nickname);
             } else if (received.equals("DISCONNECTING")) {
                 AppData.DeletefromContactList(sender);
             }
@@ -139,7 +131,6 @@ public class Broadcast {
         public static void sendNickname (String nickname, InetAddress address) {
 	        try {
         		DatagramSocket respSocket = new DatagramSocket();
-        		//respSocket.setBroadcast(true);
                 String mess = "MY_NICKNAME_"+nickname;
                 byte [] respMessage= mess.getBytes();
                 DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, PORT);

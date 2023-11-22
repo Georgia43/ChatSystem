@@ -23,7 +23,6 @@ public class AppData {
 
         if (!contactList.containsValue(received)) {
             contactList.put(sender, received);
-            System.out.println("i just added "+received);
         }
     }
 
@@ -34,7 +33,6 @@ public class AppData {
 
     public static void CheckUnicityNickname(String CurrentNickname) throws InterruptedException {
         Scanner scan = InputScanner.getScanner();
-        Map<InetAddress, String> contactList = getContactList();
         boolean valid_name = true;
         do {
             valid_name = true;
@@ -45,12 +43,10 @@ public class AppData {
                     break;
                 }
             }
-
             if(!valid_name) {
                 System.out.println("nickname taken. Choose a new one : ");
                 CurrentNickname = scan.nextLine();
             }
-
         } while (!valid_name);
 
         currentUser.setNickname(CurrentNickname);
