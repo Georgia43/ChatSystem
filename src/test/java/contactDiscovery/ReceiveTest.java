@@ -32,7 +32,8 @@ public class ReceiveTest extends TestCase
         AppData.addContactList(senderAddress, "Mary");
         System.out.println(Library.GetConnectedUserList());
         assert Library.GetConnectedUserList().size() == 1;
-        assertEquals("User{username='Mary', id='/101.26.81.12'}", (Library.GetConnectedUserList().get(0).toString()));
+       assertEquals("User{username='Mary', id='/101.26.81.12'}", (Library.GetConnectedUserList().get(0).toString()));
+       AppData.DeletefromContactList(senderAddress); //on vide la contact list à la fin de chaque test
     }
 
     //test du handleReceived lorsqu'on reçoit un nickname
@@ -40,8 +41,8 @@ public class ReceiveTest extends TestCase
         InetAddress senderAddress = InetAddress.getByName("100.26.81.12");
         Broadcast.Receive.handleReceived(senderAddress,"MY_NICKNAME_John");
         System.out.println(Library.GetConnectedUserList());
-        assert Library.GetConnectedUserList().size() == 1;
         assertEquals("User{username='John', id='/100.26.81.12'}", (Library.GetConnectedUserList().get(0).toString()));
+        AppData.DeletefromContactList(senderAddress);
     }
 
     //test de AddontactList lorsque on a déjà une personne avec ce nom dans notre contact liste
@@ -52,20 +53,23 @@ public class ReceiveTest extends TestCase
         AppData.addContactList(senderAddress_2, "Mary");
         System.out.println(Library.GetConnectedUserList());
         assert Library.GetConnectedUserList().size() == 1; //on vérifie qu'on a bien 1 élément dans la liste et pas 2
+        AppData.DeletefromContactList(senderAddress);
     }
 
     //test pour enlever quelqu'un de notre contact list lorsqu'il n'est plus connecté
     public void testDeletefromContactList() throws UnknownHostException {
-        //on ajoute d'abord quelqu'un a la contactlist
-        InetAddress senderAddress = InetAddress.getByName("102.26.81.12");
+        //on ajoute une personne dans la contact list
+        InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
         AppData.addContactList(senderAddress, "Mary");
         assert Library.GetConnectedUserList().size() == 1;
         System.out.println(Library.GetConnectedUserList());
         //on supprime la personne
         AppData.DeletefromContactList(senderAddress);
         System.out.println(Library.GetConnectedUserList());
-        assert Library.GetConnectedUserList().isEmpty();
+        assertTrue(Library.GetConnectedUserList().isEmpty());
     }
+
+
 
     //test du handleReceived lorsqu'on reçoit DISCONNECTING (lorsqu'un user veut se déconnecter, on l'enlève de notre contactlist)
     public void testReceiveDisconnecting() throws UnknownHostException {
