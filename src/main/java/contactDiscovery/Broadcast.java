@@ -65,6 +65,7 @@ public class Broadcast {
             throw new RuntimeException(ex);
         }
     }
+
     /*ENVOI*/
     public static void sendFirstPacket() {
         try {
