@@ -1,4 +1,4 @@
-package contactDiscovery;
+package Controllers;
 
 import Model.AppData;
 import Model.User;
@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/*FOR CONTACT DISCOVERY*/
 public class Library {
 
     private static final Logger logger = Logger.getLogger("chatsystem");

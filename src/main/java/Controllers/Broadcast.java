@@ -1,4 +1,4 @@
-package contactDiscovery;
+package Controllers;
 
 import Model.AppData;
 
@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import java.util.Map;
 import java.util.logging.Level;
 
+/*FOR CONTACT DISCOVERY*/
 public class Broadcast {
 
     public static final int PORT = 37842;

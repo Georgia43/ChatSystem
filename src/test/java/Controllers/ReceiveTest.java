@@ -1,7 +1,6 @@
-package contactDiscovery;
+package Controllers;
 
 import Model.AppData;
-import Model.User;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -9,8 +8,6 @@ import junit.framework.TestSuite;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ReceiveTest extends TestCase
 {

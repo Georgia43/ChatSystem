@@ -13,7 +13,7 @@ public class AppData {
 
     }
 
-    /*MÉTHODES*/
+    /*POUR LISTE DE CONTACTES*/
 
     public static Map<InetAddress,String> getContactList(){
         return contactList;
@@ -54,6 +54,17 @@ public class AppData {
     }
 
     public static String getNicknameCurrentUser() {return currentUser.getNickname();}
+
+    /*POUR ÉCHANGE DE MESSAGES*/
+    public static InetAddress getIpByNickname (String name) {
+        InetAddress res = null;
+        for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
+            if (pers.getValue().equals(name)) {
+                res = pers.getKey();
+            }
+        }
+        return res;
+    }
 
 }
 

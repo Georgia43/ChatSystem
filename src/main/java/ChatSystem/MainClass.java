@@ -2,8 +2,8 @@ package ChatSystem;
 
 import Model.AppData;
 import Model.InputScanner;
-import contactDiscovery.Broadcast;
-import contactDiscovery.Library;
+import Controllers.Broadcast;
+import Controllers.Library;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
