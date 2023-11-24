@@ -1,4 +1,4 @@
 package Controllers;
 
-public class Exchange {
+public class Client {
 }

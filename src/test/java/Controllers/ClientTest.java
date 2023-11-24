@@ -8,18 +8,18 @@ import junit.framework.TestSuite;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-public class ExchangeTest extends TestCase {
+public class ClientTest extends TestCase {
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public ExchangeTest(String testName) {
+    public ClientTest(String testName) {
         super(testName);
     }
 
     public static Test suite() {
-        return new TestSuite(ExchangeTest.class);
+        return new TestSuite(ClientTest.class);
     }
 
     public void testGetIpByNickname () throws UnknownHostException {
