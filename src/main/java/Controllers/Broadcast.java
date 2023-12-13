@@ -14,7 +14,7 @@ public class Broadcast {
 
     public static final int PORT = 37842;
 
-    private static final Logger logger = Logger.getLogger("chatsystem");
+    public static final Logger logger = Logger.getLogger("chatsystem");
 
     public static InetAddress getBroadcastAddress() {
         try {
