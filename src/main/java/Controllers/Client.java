@@ -2,6 +2,10 @@ package Controllers;
 
 import java.io.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static Controllers.Broadcast.logger;
 
 public class Client {
 
@@ -18,9 +22,21 @@ public class Client {
     }
 
     /*envoyer un message*/
-    public String sendMessage(String msg) throws IOException {
-        out.println(msg);
-        return in.readLine();
+    public static void sendMessage(String message, InetAddress address) throws IOException {
+        try {
+            DatagramSocket respSocket = new DatagramSocket();
+            String mess = "MESSAGE_"+message;
+            byte [] respMessage= mess.getBytes();
+            DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, Broadcast.PORT);
+            respSocket.send(respPacket);
+            respSocket.close();
+            //BDD STOCKER MESSAGE
+        }
+        catch (IOException e) {
+            logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+        }
+
+
     }
 
 }

@@ -1,9 +1,8 @@
 package Controllers;
 
-import java.awt.*;
 import java.io.*;
 import java.net.*;
-import javax.swing.*;
+
 public class Server {
 
     private ServerSocket serverSocket;
@@ -18,8 +17,17 @@ public class Server {
         clientSocket = serverSocket.accept();
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        /*lire une ligne de texte à partir du flux d'entrée (BufferedReader)*/
+        InetAddress clientIP = clientSocket.getInetAddress();
+        /*lire message*/
         String message = in.readLine();
-        /***************************PAS FINI***********************************************/
+        /*handle*/
+        HandleMessage.handle(clientIP,message);
+
+    }
+    public void stop() throws IOException {
+        in.close();
+        out.close();
+        clientSocket.close();
+        serverSocket.close();
     }
 }
