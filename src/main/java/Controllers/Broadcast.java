@@ -1,9 +1,11 @@
 package Controllers;
 
+import Controllers.Database.CreateDatabase;
 import Model.AppData;
 
 import java.net.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.logging.Logger;
 import java.util.Map;
@@ -113,17 +115,19 @@ public class Broadcast {
                 }
                 socket.close();
             }
-            catch (IOException e) {
+            catch (IOException | SQLException e) {
                 logger.log(Level.SEVERE,"IOException: " + e.getMessage());
             }
         }
-        static void handleReceived(InetAddress sender, String received) {
+        static void handleReceived(InetAddress sender, String received) throws SQLException {
             if (received.equals("FIRST_MESSAGE") && (!receivedFromMyself(sender))) {
                 sendNickname(AppData.getNicknameCurrentUser(), sender); //j'envoie mon nickname à la personne qui souhaite se connecter
             } else if (received.startsWith("MY_NICKNAME_")) {
                 String prefix = "MY_NICKNAME_";
                 String nickname = received.substring(prefix.length());
                 AppData.addContactList(sender, nickname);
+                CreateDatabase.tableMessages(sender);
+                // on créé la base de données pour les messages pour chaque personne
             } else if (received.equals("DISCONNECTING")) {
                 AppData.DeletefromContactList(sender);
             }
@@ -169,6 +173,7 @@ public class Broadcast {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
         }
     }
+
 }
 
 
