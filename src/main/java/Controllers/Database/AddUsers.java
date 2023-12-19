@@ -16,11 +16,7 @@ public class AddUsers {
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                 // Set values for the parameters using the Users class methods
                 // the preparedStatement.setString() method is used to set the values for the placeholders (?) in the SQL query
-                preparedStatement.setString(1, user.getId());
-                preparedStatement.setString(2, user.getFirstName());
-                preparedStatement.setString(3, user.getLastName());
-                preparedStatement.setString(4, user.getEmail());
-                preparedStatement.setString(5, user.getPassword());
+               /* preparedStatement.setString(1, Address.getId());
 
                 preparedStatement.executeUpdate();
                 System.out.println("User added successfully");
@@ -29,7 +25,7 @@ public class AddUsers {
                 String FirstName= user.getFirstName();
                 String LastName = user.getLastName();
                 String Email = user.getEmail();
-                String Password = user.getPassword();
+                String Password = user.getPassword();*/
             }
         } catch (SQLException e) {
             e.printStackTrace();

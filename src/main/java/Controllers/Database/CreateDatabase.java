@@ -11,7 +11,9 @@ import java.util.logging.Level;
 
 public class CreateDatabase {
 
-    public static String url = "jdbc:sqlite:BDDchatsystem";
+    public static String url = "jdbc:sqlite:BDDchatsystem.db";
+
+    public static boolean Connect(String url)
     public static void tableUsers() throws SQLException {
 
         try (Connection connection = DriverManager.getConnection(url);
