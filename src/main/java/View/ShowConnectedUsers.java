@@ -26,7 +26,7 @@ public class ShowConnectedUsers {
              while(result_users.next()){
                    // int status=result_users.getInt("status");
                     String name = result_users.getString("name");
-                   // String ipAddress = result_users.getString("ipAdress");
+                    String ipAddress = result_users.getString("ipAdress");
 
                  JPanel p = new JPanel(new BorderLayout());
 
@@ -42,6 +42,7 @@ public class ShowConnectedUsers {
                      @Override
                      public void actionPerformed(ActionEvent actionEvent) {
                         //je choisis la personne avec laquelle je veux échanger des messages
+                         //appeler change user change_user(ipAdress)
                      }
                  });
 

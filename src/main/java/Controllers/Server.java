@@ -1,5 +1,7 @@
 package Controllers;
 
+import Model.HandleMessage;
+
 import java.io.*;
 import java.net.*;
 
@@ -12,16 +14,34 @@ public class Server {
 
     public void start() throws IOException {
         /*Création du serveur*/
-        serverSocket = new ServerSocket(Broadcast.PORT);
-        /*Attente d'une connexion client*/
-        clientSocket = serverSocket.accept();
-        out = new PrintWriter(clientSocket.getOutputStream(), true);
+        try {
+            serverSocket = new ServerSocket(Broadcast.PORT);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        while (true) {
+            try {
+                /*Attente d'une connexion client*/
+                clientSocket = serverSocket.accept();
+            }
+            catch (IOException e){
+                System.out.println("erreur : "+e);
+            }
+        }
+
+        user = getUser(client.source)
+                user.addConnection(clientSocket)
+        /*out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        InetAddress clientIP = clientSocket.getInetAddress();
+        InetAddress clientIP = clientSocket.getInetAddress();*/
         /*lire message*/
-        String message = in.readLine();
-        /*handle*/
-        HandleMessage.handle(clientIP,message);
+       /* while(true) {
+            String message = in.readLine();
+
+            HandleMessage.handle(clientIP,message);
+        }*/
+
 
     }
     public void stop() throws IOException {
