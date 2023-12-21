@@ -30,8 +30,8 @@ public class Server {
             }
         }
 
-        user = getUser(client.source)
-                user.addConnection(clientSocket)
+        /*user = getUser(client.source)
+                user.addConnection(clientSocket)*/
         /*out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         InetAddress clientIP = clientSocket.getInetAddress();*/

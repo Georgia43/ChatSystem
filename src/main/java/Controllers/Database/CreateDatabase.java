@@ -6,28 +6,33 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
 
 
 public class CreateDatabase {
 
     public static String url = "jdbc:sqlite:BDDchatsystem.db";
-
-    public static boolean Connect(String url)
-    public static void tableUsers() throws SQLException {
-
-        try (Connection connection = DriverManager.getConnection(url);
-             Statement statement = connection.createStatement()){
-
-            String Users = "CREATE TABLE IF NOT EXISTS Users ("
-                    + "ipAddress VARCHAR(30) PRIMARY KEY, "
-                    + "name VARCHAR(20) NOT NULL"
-                    + "status INT NOT NULL)";
-            statement.executeUpdate(Users);
-
+    public static Connection connection = null;
+    public static void Connect(String url) {
+        try{
+            connection = DriverManager.getConnection(url);
+            System.out.println("Connecté à la base de données.");
+        } catch (SQLException e) {
+            System.out.println("Connection a échoué.");
         }
-        catch (SQLException e) {
-            Broadcast.logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+    }
+
+    public static void tableUsers() throws SQLException {
+        try {
+            Statement statement = connection.createStatement();
+
+            String usersTable = "CREATE TABLE IF NOT EXISTS Users ("
+                    + "ipAddress VARCHAR(30) PRIMARY KEY, "
+                    + "name VARCHAR(20) NOT NULL, "
+                    + "status INT NOT NULL)";
+            statement.executeUpdate(usersTable);
+            System.out.println("Table Users créée.");
+        } catch (SQLException e) {
+            System.out.println("Creation de la table a échoué.");
         }
     }
 
@@ -42,11 +47,12 @@ public class CreateDatabase {
             System.out.println("Table 'Messages_' " + address + " créée.");
         }
         catch (SQLException e) {
-                Broadcast.logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+                System.out.println("Erreur création table 'Messages_' " + address + ".");
             }
     }
 
     public static void main(String[] args) throws SQLException {
+        Connect(url);
         tableUsers();
     }
     }

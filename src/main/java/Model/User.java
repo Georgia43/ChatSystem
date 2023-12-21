@@ -17,10 +17,10 @@ public class User {
         public String getNickname() {return this.nickname;}
         public InetAddress getId() {return this.id;}
 
-        addConnection(Socket so) {
+      /*  addConnection(Socket so) {
                 createClient(so):
                 launchListener(so);
-        }
+        }*/
 
         public void setNickname(String name) {
             this.nickname= name;
