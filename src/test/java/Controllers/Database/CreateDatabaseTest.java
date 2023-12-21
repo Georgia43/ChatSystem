@@ -30,4 +30,10 @@ import java.sql.SQLException;
             CreateDatabase.Connect(CreateDatabase.url);
             CreateDatabase.tableUsers();
         }
+
+        public void testTableMessage () throws UnknownHostException, SQLException{
+            InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
+            CreateDatabase.Connect(CreateDatabase.url);
+            CreateDatabase.tableMessages(senderAddress);
+        }
     }
