@@ -12,12 +12,14 @@ public class CreateDatabase {
 
     public static String url = "jdbc:sqlite:BDDchatsystem.db";
     public static Connection connection = null;
-    public static void Connect(String url) {
+    public static boolean Connect(String url) {
         try{
             connection = DriverManager.getConnection(url);
             System.out.println("Connecté à la base de données.");
+            return true;
         } catch (SQLException e) {
             System.out.println("Connection a échoué.");
+            return false;
         }
     }
 
@@ -50,9 +52,4 @@ public class CreateDatabase {
                 System.out.println("Erreur création table 'Messages_' " + address + ".");
             }
     }
-
-    public static void main(String[] args) throws SQLException {
-        Connect(url);
-        tableUsers();
-    }
-    }
+}
