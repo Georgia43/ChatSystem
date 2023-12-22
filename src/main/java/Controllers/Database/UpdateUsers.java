@@ -35,10 +35,11 @@ public class UpdateUsers {
         try {
             CreateDatabase.Connect(url);
             Statement statement = connection.createStatement();
-            String updateQuery = "UPDATE Users SET Status = ? WHERE ipAddress = ' "+Address+ " '";
+            String strAddress = Address.getHostAddress();
+            String updateQuery = "UPDATE Users SET Status = ? WHERE ipAddress = '"+strAddress+ "'";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-                preparedStatement.setString(1, "diconnected");
+                preparedStatement.setString(1, "Diconnected");
 
                 int rowsUpdated = preparedStatement.executeUpdate();
 

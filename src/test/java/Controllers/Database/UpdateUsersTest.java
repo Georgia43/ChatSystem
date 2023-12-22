@@ -29,4 +29,10 @@ public class UpdateUsersTest extends TestCase {
         String Nickname = "Mary";
         UpdateUsers.addUser(senderAddress,Nickname);
     }
+
+    public void testChangeStatus () throws UnknownHostException {
+        CreateDatabase.Connect(url);
+        InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
+        UpdateUsers.changeStatus(senderAddress);
+    }
 }
