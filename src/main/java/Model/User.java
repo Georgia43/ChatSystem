@@ -21,14 +21,21 @@ public class User {
         public String getNickname() {return this.nickname;}
         public InetAddress getId() {return this.id;}
 
+    void recordConnectionSocket(Socket socket) {
+            // record a socket that canbe created
+          //  - when we establish ourselves
+          //  - when the other user connects to our global server socket
+        client.setSocket(socketAccepted);
+        Server.ClientHandler clientHandler = new Server.ClientHandler(socketAccepted);
+        Server.clients.add(clientHandler);
+        clientHandler.start();
+    }
+
       public void addConnection() {
                 try{
                         ServerSocket socket = new ServerSocket(Broadcast.PORT);
                         Socket socketAccepted = socket.accept();
-                        client.setSocket(socketAccepted);
-                        Server.ClientHandler clientHandler = new Server.ClientHandler(socketAccepted);
-                        Server.clients.add(clientHandler);
-                        clientHandler.start();
+
 
 
                 } catch (IOException e) {
