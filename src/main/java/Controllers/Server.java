@@ -10,7 +10,7 @@ import java.util.List;
 public class Server {
 
     private ServerSocket serverSocket;
-    private List<ClientHandler> clients = new ArrayList<>();
+    public static List<ClientHandler> clients = new ArrayList<>();
 
     public void start() {
         /*Création du serveur*/
@@ -55,7 +55,7 @@ public class Server {
 
     }
 
-    private static class ClientHandler extends Thread {
+    public static class ClientHandler extends Thread {
         private Socket clientSocket;
         private PrintWriter out;
         private BufferedReader in;
@@ -71,6 +71,7 @@ public class Server {
             }
         }
 
+        @Override
         public void run() {
             String message;
             try {
