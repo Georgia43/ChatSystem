@@ -15,6 +15,18 @@ public class Client {
     private PrintWriter out;
     private BufferedReader in;
 
+    public void setSocket(Socket socket){
+        this.clientSocket = socket;
+        try {
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
     public void startConnection(InetAddress ip) throws IOException {
         clientSocket = new Socket(ip, Broadcast.PORT);
         out = new PrintWriter(clientSocket.getOutputStream(), true);

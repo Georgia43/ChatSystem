@@ -25,7 +25,7 @@ public class User {
                 try{
                         ServerSocket serverSocket = new ServerSocket(Broadcast.PORT);
                         Socket clientSocket = serverSocket.accept();
-
+                        client.setSocket(clientSocket);
                         Server.ClientHandler clientHandler = new Server.ClientHandler(clientSocket);
                         Server.clients.add(clientHandler);
                         clientHandler.start();
