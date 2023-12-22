@@ -17,6 +17,8 @@ public class User {
 
         private Client client = new Client();
 
+        private Socket clientSocket; // pour maintenir la connexion
+
         /*méthodes*/
         public String getNickname() {return this.nickname;}
         public InetAddress getId() {return this.id;}
@@ -25,18 +27,20 @@ public class User {
             // record a socket that canbe created
           //  - when we establish ourselves
           //  - when the other user connects to our global server socket
-        client.setSocket(socketAccepted);
-        Server.ClientHandler clientHandler = new Server.ClientHandler(socketAccepted);
+        clientSocket = socket;
+        client.setSocket(clientSocket);
+        Server.ClientHandler clientHandler = new Server.ClientHandler(clientSocket);
         Server.clients.add(clientHandler);
         clientHandler.start();
+
+
     }
 
       public void addConnection() {
                 try{
-                        ServerSocket socket = new ServerSocket(Broadcast.PORT);
-                        Socket socketAccepted = socket.accept();
-
-
+                    ServerSocket socket = new ServerSocket(Broadcast.PORT);
+                    Socket socketAccepted = socket.accept();
+                    recordConnectionSocket(socketAccepted);
 
                 } catch (IOException e) {
                         e.printStackTrace();
