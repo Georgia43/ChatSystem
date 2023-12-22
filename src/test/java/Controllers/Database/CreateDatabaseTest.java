@@ -23,11 +23,11 @@ import java.sql.SQLException;
         }
 
         public void testConnect () throws UnknownHostException {
-            assert CreateDatabase.Connect(CreateDatabase.url);
+            CreateDatabase("jdbc:sqlite:BDDTest.db");
         }
         public void testTableUsers () throws UnknownHostException, SQLException{
             //erreur bizarre mais marche quand meme
-            CreateDatabase.Connect(CreateDatabase.url);
+            CreateDatabase.Connect(CreateDatabase.MESSAGE_DATABSE);
             CreateDatabase.tableUsers();
         }
 

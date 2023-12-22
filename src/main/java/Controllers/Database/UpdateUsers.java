@@ -4,13 +4,13 @@ import java.net.InetAddress;
 import java.sql.*;
 
 import static Controllers.Database.CreateDatabase.connection;
-import static Controllers.Database.CreateDatabase.url;
+import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
 
 public class UpdateUsers {
     public static void addUser(InetAddress Address, String Nickname) {
 
         try {
-            CreateDatabase.Connect(url);
+            CreateDatabase.Connect(MESSAGE_DATABSE);
             Statement statement = connection.createStatement();
             String insertQuery = "INSERT INTO Users (ipAddress, name, status) VALUES (?, ?, ?)";
 
@@ -33,7 +33,7 @@ public class UpdateUsers {
 
     public static void changeStatus(InetAddress Address){
         try {
-            CreateDatabase.Connect(url);
+            CreateDatabase.Connect(MESSAGE_DATABSE);
             Statement statement = connection.createStatement();
             String strAddress = Address.getHostAddress();
             String updateQuery = "UPDATE Users SET Status = ? WHERE ipAddress = '"+strAddress+ "'";

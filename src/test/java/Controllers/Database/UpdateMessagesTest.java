@@ -6,7 +6,6 @@ import junit.framework.TestSuite;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.SQLException;
 
 public class UpdateMessagesTest extends TestCase {
     /**
@@ -23,7 +22,7 @@ public class UpdateMessagesTest extends TestCase {
     }
 
     public void testAddMessages() throws UnknownHostException {
-        assert CreateDatabase.Connect(CreateDatabase.url);
+        assert CreateDatabase.Connect(CreateDatabase.MESSAGE_DATABSE);
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
         UpdateMessages.addMessage(senderAddress, "test");
     }

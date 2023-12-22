@@ -9,14 +9,14 @@ import java.time.format.DateTimeFormatter;
 
 
 import static Controllers.Database.CreateDatabase.connection;
-import static Controllers.Database.CreateDatabase.url;
+import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
 
 public class UpdateMessages {
 
     public static void addMessage(InetAddress Address, String Content) {
 
         try {
-            CreateDatabase.Connect(url);
+            CreateDatabase.Connect(MESSAGE_DATABSE);
             Statement statement = connection.createStatement();
             String strAddress = Address.getHostAddress().replace('.', '_');
             String insertQuery = "INSERT INTO Messages_" + strAddress + "(content, dateHeure) VALUES (?, ?)";

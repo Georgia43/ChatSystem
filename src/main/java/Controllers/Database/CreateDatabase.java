@@ -1,5 +1,4 @@
 package Controllers.Database;
-import Controllers.Broadcast;
 
 import java.net.InetAddress;
 import java.sql.Connection;
@@ -13,20 +12,22 @@ import static Controllers.Broadcast.logger;
 
 public class CreateDatabase {
 
-    public static String url = "jdbc:sqlite:BDDchatsystem.db";
-    public static Connection connection = null;
-    public static boolean Connect(String url) {
+    public static String MESSAGE_DATABSE = "jdbc:sqlite:BDDchatsystem.db";
+    public Connection connection = null;
+
+    public String url;
+
+    public CreateDatabase(String url) {
+        this.url = url;
         try{
             connection = DriverManager.getConnection(url);
             System.out.println("Connecté à la base de données.");
-            return true;
         } catch (SQLException e) {
             System.out.println("Connection a échoué.");
-            return false;
         }
     }
 
-    public static void tableUsers() throws SQLException {
+    public void tableUsers() throws SQLException {
         try {
             Statement statement = connection.createStatement();
 
@@ -41,10 +42,10 @@ public class CreateDatabase {
         }
     }
 
-    public static void tableMessages(InetAddress address) throws SQLException {
+    public  void tableMessages(InetAddress address) throws SQLException {
 
         try{
-            Connect(url);
+            //Connect(MESSAGE_DATABSE);
             Statement statement = connection.createStatement();
             String strAddress = address.getHostAddress().replace('.', '_');
             String Messages = "CREATE TABLE IF NOT EXISTS Messages_" + strAddress + "("

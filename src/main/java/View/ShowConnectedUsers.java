@@ -4,9 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.sql.Connection;
 
-import static Controllers.Database.CreateDatabase.url;
+import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
 
 public class ShowConnectedUsers {
     //parcourir table avec utilisateurs et afficher que ceux qui sont connectés
@@ -20,7 +19,7 @@ public class ShowConnectedUsers {
         panel.setLayout(new GridLayout(0, 1)); // Layout pour les étiquettes
 
         try {
-            java.sql.Connection connection = DriverManager.getConnection(url);
+            java.sql.Connection connection = DriverManager.getConnection(MESSAGE_DATABSE);
              Statement statement = connection.createStatement();
              ResultSet result_users = statement.executeQuery("SELECT * FROM USERS where status = 1");
              while(result_users.next()){
