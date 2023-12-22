@@ -23,13 +23,12 @@ public class User {
 
       public void addConnection() {
                 try{
-                        ServerSocket serverSocket = new ServerSocket(Broadcast.PORT);
-                        Socket clientSocket = serverSocket.accept();
-                        client.setSocket(clientSocket);
-                        Server.ClientHandler clientHandler = new Server.ClientHandler(clientSocket);
+                        ServerSocket socket = new ServerSocket(Broadcast.PORT);
+                        Socket socketAccepted = socket.accept();
+                        client.setSocket(socketAccepted);
+                        Server.ClientHandler clientHandler = new Server.ClientHandler(socketAccepted);
                         Server.clients.add(clientHandler);
                         clientHandler.start();
-                        serverSocket.close();;
 
 
                 } catch (IOException e) {
