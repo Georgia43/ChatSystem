@@ -4,30 +4,29 @@ import Model.HandleMessage;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server {
 
     private ServerSocket serverSocket;
-    private Socket clientSocket;
-    private PrintWriter out;
-    private BufferedReader in;
+    private List<ClientHandler> clients = new ArrayList<>();
 
-    public void start() throws IOException {
+    public void start() {
         /*Création du serveur*/
         try {
             serverSocket = new ServerSocket(Broadcast.PORT);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+
         while (true) {
-            try {
                 /*Attente d'une connexion client*/
-                clientSocket = serverSocket.accept();
+                Socket clientSocket = serverSocket.accept();
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                clients.add(clientHandler);
+                clientHandler.start();
             }
-            catch (IOException e){
-                System.out.println("erreur : "+e);
-            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
         }
 
         /*user = getUser(client.source)
@@ -44,10 +43,55 @@ public class Server {
 
 
     }
-    public void stop() throws IOException {
-        in.close();
-        out.close();
-        clientSocket.close();
-        serverSocket.close();
+    public void stop() {
+        try{
+            serverSocket.close();
+            for (ClientHandler client : clients) {
+                client.close();
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private static class ClientHandler extends Thread {
+        private Socket clientSocket;
+        private PrintWriter out;
+        private BufferedReader in;
+
+        public ClientHandler(Socket socket){
+            this.clientSocket = socket;
+            try {
+                out = new PrintWriter(clientSocket.getOutputStream(),true);
+                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            } catch (IOException e){
+                e.printStackTrace();;
+            }
+        }
+
+        public void run() {
+            String message;
+            try {
+                while ((message = in.readLine())!=null) {
+                    HandleMessage.handle(clientSocket.getInetAddress(),message);
+
+                }
+            } catch (IOException e){
+                e.printStackTrace();
+            } finally {
+                close();
+            }
+        }
+        public void close(){
+            try{
+                in.close();
+                out.close();
+                clientSocket.close();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
