@@ -1,5 +1,6 @@
 package Controllers;
 
+import Controllers.Database.UpdateUsers;
 import Controllers.Database.CreateDatabase;
 import Model.AppData;
 
@@ -127,6 +128,7 @@ public class Broadcast {
                 String nickname = received.substring(prefix.length());
                 AppData.addContactList(sender, nickname);
                 CreateDatabase.tableMessages(sender);
+                UpdateUsers.addUser(sender,nickname);
                 // on créé la base de données pour les messages pour chaque personne
             } else if (received.equals("DISCONNECTING")) {
                 AppData.DeletefromContactList(sender);

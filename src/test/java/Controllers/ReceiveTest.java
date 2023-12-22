@@ -43,7 +43,7 @@ public class ReceiveTest extends TestCase
         AppData.DeletefromContactList(senderAddress);
     }
 
-    //test de AddontactList lorsque on a déjà une personne avec ce nom dans notre contact liste
+    //test de AddcontactList lorsque on a déjà une personne avec ce nom dans notre contact liste
     public void testAddContactList_b() throws UnknownHostException {
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
         InetAddress senderAddress_2 = InetAddress.getByName("102.26.81.12");

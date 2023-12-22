@@ -6,7 +6,7 @@ import java.sql.*;
 import static Controllers.Database.CreateDatabase.connection;
 import static Controllers.Database.CreateDatabase.url;
 
-public class AddUsers {
+public class UpdateUsers {
     public static void addUser(InetAddress Address, String Nickname) {
 
         try {
@@ -30,4 +30,6 @@ public class AddUsers {
             // Handle the exception
         }
     }
+
+
 }
