@@ -3,29 +3,27 @@ package Controllers.Database;
 import java.net.InetAddress;
 import java.sql.*;
 
+import static Controllers.Database.CreateDatabase.connection;
 import static Controllers.Database.CreateDatabase.url;
 
 public class AddUsers {
-    public void addUser(InetAddress Address) {
+    public static void addUser(InetAddress Address, String Nickname) {
 
-        try (Connection connection = DriverManager.getConnection(url);
-             Statement statement = connection.createStatement()){
+        try {
+            CreateDatabase.Connect(url);
+            Statement statement = connection.createStatement();
             String insertQuery = "INSERT INTO Users (ipAddress, name, status) VALUES (?, ?, ?)";
 
-            // Using PreparedStatement to prevent SQL injection
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
                 // Set values for the parameters using the Users class methods
                 // the preparedStatement.setString() method is used to set the values for the placeholders (?) in the SQL query
-               /* preparedStatement.setString(1, Address.getId());
+               preparedStatement.setString(1, Address.getHostAddress());
+               preparedStatement.setString(2, Nickname);
+               preparedStatement.setString(3,"Connected");
 
                 preparedStatement.executeUpdate();
                 System.out.println("User added successfully");
 
-                String Id= user.getId();
-                String FirstName= user.getFirstName();
-                String LastName = user.getLastName();
-                String Email = user.getEmail();
-                String Password = user.getPassword();*/
             }
         } catch (SQLException e) {
             e.printStackTrace();
