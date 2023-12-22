@@ -132,6 +132,7 @@ public class Broadcast {
                 // on créé la base de données pour les messages pour chaque personne
             } else if (received.equals("DISCONNECTING")) {
                 AppData.DeletefromContactList(sender);
+                UpdateUsers.changeStatus(sender);
             }
         }
     }

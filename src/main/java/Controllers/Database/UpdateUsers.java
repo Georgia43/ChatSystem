@@ -31,5 +31,26 @@ public class UpdateUsers {
         }
     }
 
+    public static void changeStatus(InetAddress Address){
+        try {
+            CreateDatabase.Connect(url);
+            Statement statement = connection.createStatement();
+            String updateQuery = "UPDATE Users SET Status = ? WHERE ipAddress = ' "+Address+ " '";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                preparedStatement.setString(1, "diconnected");
+
+                int rowsUpdated = preparedStatement.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    System.out.println("User updated successfully");
+                } else {
+                    System.out.println("No User found with Address: " + Address);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
