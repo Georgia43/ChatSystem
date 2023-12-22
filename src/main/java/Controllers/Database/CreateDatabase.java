@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+
+import static Controllers.Broadcast.logger;
 
 
 public class CreateDatabase {
@@ -40,16 +43,20 @@ public class CreateDatabase {
 
     public static void tableMessages(InetAddress address) throws SQLException {
 
-        try (Connection connection = DriverManager.getConnection(url);
-             Statement statement = connection.createStatement()) {
-            String Messages = "CREATE TABLE IF NOT EXISTS Messages_" + address + "("
+        try{
+            Connect(url);
+            Statement statement = connection.createStatement();
+            String StrAddress = address.getHostAddress();
+            String strAddress = address.getHostAddress().replace('.', '_');
+            String Messages = "CREATE TABLE IF NOT EXISTS Messages_" + strAddress + "("
                     + "content VARCHAR(100) PRIMARY KEY,"
                     + "dateHeure DATETIME)";
             statement.executeUpdate(Messages);
-            System.out.println("Table 'Messages_' " + address + " créée.");
+            System.out.println("test");
+            System.out.println("Table Messages_" + strAddress + " créée.");
         }
         catch (SQLException e) {
-                System.out.println("Erreur création table 'Messages_' " + address + ".");
+            logger.log(Level.SEVERE,"IOException: " + e.getMessage());
             }
     }
 }
