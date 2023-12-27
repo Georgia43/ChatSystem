@@ -1,4 +1,6 @@
 package View;
+import Model.UserInteraction;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,7 +29,7 @@ public class ShowConnectedUsers {
                     String name = result_users.getString("name");
                     String ipAddress = result_users.getString("ipAdress");
 
-                 JPanel p = new JPanel(new BorderLayout());
+                 JPanel p = new JPanel(new BorderLayout()); //panel pour utilisateurs
 
                  JPanel infoPanel = new JPanel(new GridLayout(1,1));
                  infoPanel.add(new JLabel("name:"));
@@ -35,18 +37,24 @@ public class ShowConnectedUsers {
 
                  p.add(infoPanel, BorderLayout.CENTER);
 
-                 JButton button_message = new JButton("Accept");
+                 JButton button_message = new JButton("Accept"); //choisir utilisateur parmi ceux qui sont connectes
 
                  button_message.addActionListener(new ActionListener() {
                      @Override
                      public void actionPerformed(ActionEvent actionEvent) {
-                        //je choisis la personne avec laquelle je veux échanger des messages
-                         //appeler change user change_user(ipAdress)
+                        //je choisis la personne avec laquelle je veux échanger des messages ou voir mon historique de messages
+                         UserInteraction inter = new UserInteraction();
+                         inter.changeUser(ipAddress);
                      }
                  });
 
-
+                 p.add(button_message,BorderLayout.SOUTH); //ajouter panel pour utilisateurs au panel principal
+                 panel.add(p);
              }
+             frame.add(new JScrollPane(panel));
+             frame.setSize(500,600);
+             frame.setLocationRelativeTo(null);
+             frame.setVisible(true);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

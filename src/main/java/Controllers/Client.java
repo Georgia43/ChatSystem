@@ -34,7 +34,7 @@ public class Client {
     }
 
     /*envoyer un message*/
-    public static void sendMessage(String message, InetAddress address) throws IOException {
+    public void sendMessage(String message, InetAddress address) throws IOException {
         try {
             DatagramSocket respSocket = new DatagramSocket();
             String mess = "MESSAGE_"+message;
