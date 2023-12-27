@@ -1,5 +1,5 @@
 package View;
-import Model.UserInteraction;
+import Controllers.UserInteraction;
 
 import javax.swing.*;
 import java.awt.*;
