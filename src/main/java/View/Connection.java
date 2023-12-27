@@ -73,6 +73,7 @@ public class Connection {
         //ajouter la zone de texte pour le nickname
         pText.add(new JLabel("Choose a nickname : "));
         pText.setBorder(new EmptyBorder(50,50,50,50));
+        pText.add(jtField);
         //creation du panel pour le bouton
         JPanel pButton = new JPanel(new GridLayout(1,1));
         pButton.add(button_connect);
@@ -99,5 +100,9 @@ public class Connection {
     public String getNickname() {
         return this.jtField.getText();
     }
+
+    public static void main(String[] args) {
+        // Create an instance of the Connection class
+        Connection connection = new Connection();}
 
 }

@@ -60,4 +60,7 @@ public class ShowConnectedUsers {
             throw new RuntimeException(e);
         }
     }
+    public static void main(String[] args) {
+        // Create an instance of the Connection class
+        ShowConnectedUsers ConnectedUsers = new ShowConnectedUsers();}
 }
