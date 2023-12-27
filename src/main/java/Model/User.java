@@ -19,6 +19,7 @@ public class User {
 
         private Socket clientSocket; // pour maintenir la connexion
 
+
         /*méthodes*/
         public String getNickname() {return this.nickname;}
         public InetAddress getId() {return this.id;}
@@ -54,6 +55,8 @@ public class User {
         public void setId(InetAddress id) {
             this.id= id;
         }
+
+
         @Override
         public String toString() {
                 return "User{"

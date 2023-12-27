@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
+import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
+
 
 public class Connection {
 
@@ -42,21 +44,23 @@ public class Connection {
                 String nickname = getNickname();
                 try {
                     //on vérifie si le nickname est unique
-                    AppData.CheckUnicityNickname(nickname);
-                    //envoyer le nickname choisi aux contacts
-                    Library.SendCurrentNickname(AppData.getNicknameCurrentUser());
-                    //mettre à jour liste de contacts dans la base de données
-                    ArrayList<User> connectedUsers = Library.GetConnectedUserList();
-                    for (User user : connectedUsers) {
-                        /*accéder à la base de données pour la vérification*/
-                        //si on trouve la personne dans la base de données, on met son statut à 1
-                        //si la personne n'est pas dans la base de données, on l'ajoute et on met son statut à 1
+                    try {
+                        AppData.CheckUnicityNickname(nickname);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
                     }
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
+                    //envoyer le nickname choisi aux contacts
+                    try {
+                        Library.SendCurrentNickname(AppData.getNicknameCurrentUser());
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } catch (Exception e) {
+                e.printStackTrace();}
             }
+
+
+
         });
 
         //creation du label "connection"
