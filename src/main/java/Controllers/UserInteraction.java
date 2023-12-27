@@ -1,10 +1,13 @@
 package Controllers;
 
 import Controllers.Client;
+import Controllers.Database.CreateDatabase;
+import Controllers.Database.UpdateMessages;
 
 import java.net.InetAddress;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.sql.SQLException;
 
 public class UserInteraction {
 
@@ -26,7 +29,9 @@ public class UserInteraction {
         try{
             InetAddress ip = InetAddress.getByName(ipAddress);
             client.sendMessage(message,ip);
-        } catch (IOException e) {
+            CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
+            UpdateMessages.addMessage(ip,message,CreateDatabase.MESSAGE_DATABSE);
+        } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
     }
