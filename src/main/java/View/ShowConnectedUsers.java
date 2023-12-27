@@ -45,6 +45,7 @@ public class ShowConnectedUsers {
                         //je choisis la personne avec laquelle je veux échanger des messages ou voir mon historique de messages
                          UserInteraction inter = new UserInteraction();
                          inter.changeUser(ipAddress);
+                         Conversation conv = new Conversation(name,ipAddress);
                      }
                  });
 
