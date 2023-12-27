@@ -42,14 +42,14 @@ public class CreateDatabase {
         }
     }
 
-    public  void tableMessages(InetAddress address) throws SQLException {
+    public void tableMessages(InetAddress address) throws SQLException {
 
         try{
-            //Connect(MESSAGE_DATABSE);
             Statement statement = connection.createStatement();
             String strAddress = address.getHostAddress().replace('.', '_');
             String Messages = "CREATE TABLE IF NOT EXISTS Messages_" + strAddress + "("
-                    + "content VARCHAR(100) PRIMARY KEY,"
+                    + "idMessage INTEGER PRIMARY KEY,"
+                    + "content VARCHAR(200),"
                     + "dateHeure DATETIME)";
             statement.executeUpdate(Messages);
             System.out.println("test");

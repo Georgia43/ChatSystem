@@ -24,15 +24,14 @@ public class UpdateUsersTest extends TestCase {
     }
 
     public void testAddUsers () throws UnknownHostException {
-        CreateDatabase.Connect(MESSAGE_DATABSE);
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
         String Nickname = "Mary";
-        UpdateUsers.addUser(senderAddress,Nickname);
+        //UpdateUsers.addUser(senderAddress,Nickname, CreateDatabaseTest.TestUrl);
+        assertTrue("Adding user failed", UpdateUsers.addUser(senderAddress, Nickname, CreateDatabaseTest.TestUrl));
     }
 
     public void testChangeStatus () throws UnknownHostException {
-        CreateDatabase.Connect(MESSAGE_DATABSE);
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
-        UpdateUsers.changeStatus(senderAddress);
+        assertTrue("Changing status failed", UpdateUsers.changeStatus(senderAddress, CreateDatabaseTest.TestUrl));
     }
 }
