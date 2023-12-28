@@ -1,5 +1,5 @@
 package View;
-import Controllers.Broadcast;
+import Controllers.*;
 import Controllers.Library;
 import Model.AppData;
 import Model.User;
@@ -44,8 +44,7 @@ public class Connection {
                 String nickname = getNickname();
                 try {
                     //on vérifie si le nickname est unique
-                    try {
-                        AppData.CheckUnicityNickname(nickname);
+                    try {AppData.CheckUnicityNickname(nickname);
                     } catch (InterruptedException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -55,6 +54,10 @@ public class Connection {
                     } catch (InterruptedException ex) {
                         throw new RuntimeException(ex);
                     }
+                    // Start the server
+                    Controllers.Server server = new Server();
+                    server.start();
+
                 } catch (Exception e) {
                 e.printStackTrace();}
             }

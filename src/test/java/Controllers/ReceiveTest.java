@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
@@ -35,7 +36,7 @@ public class ReceiveTest extends TestCase
     }
 
     //test du handleReceived lorsqu'on reçoit un nickname
-    public void testReceiveNickname() throws UnknownHostException, SQLException {
+    public void testReceiveNickname() throws IOException, SQLException {
         InetAddress senderAddress = InetAddress.getByName("100.26.81.12");
         Broadcast.Receive.handleReceived(senderAddress,"MY_NICKNAME_John");
         System.out.println(Library.GetConnectedUserList());
@@ -70,7 +71,7 @@ public class ReceiveTest extends TestCase
 
 
     //test du handleReceived lorsqu'on reçoit DISCONNECTING (lorsqu'un user veut se déconnecter, on l'enlève de notre contactlist)
-    public void testReceiveDisconnecting() throws UnknownHostException, SQLException {
+    public void testReceiveDisconnecting() throws IOException, SQLException {
         InetAddress senderAddress = InetAddress.getByName("100.26.81.12");
         AppData.addContactList(senderAddress, "Mary");
         assert Library.GetConnectedUserList().size() == 1;
