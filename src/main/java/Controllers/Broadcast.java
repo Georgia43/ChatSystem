@@ -187,8 +187,8 @@ public class Broadcast {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
         }
     }
-
-    public static void CheckUnicityNickname(String CurrentNickname) throws InterruptedException {
+//CETTE FONCTION FONCTIONNE MAIS ON L'A UTILISE POUR L ETAPE DE DECOUVERTE DES CONTACTS
+    /*public static void CheckUnicityNickname(String CurrentNickname) throws InterruptedException {
         Scanner scan = InputScanner.getScanner();
         boolean valid_name = true;
         do {
@@ -208,7 +208,25 @@ public class Broadcast {
 
         currentUser.setNickname(CurrentNickname);
         //scan.close();
+    }*/
+    public static boolean CheckUnicityNickname(String CurrentNickname) throws InterruptedException {
+        boolean valid_name = true;
+
+            for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
+                String nickname = pers.getValue();
+                if (nickname.equals(CurrentNickname)) {
+                    valid_name = false;
+                    break;
+                }
+            }
+        return valid_name;
+
     }
+
+    public static void setCurrentNickname (String nickname){
+        currentUser.setNickname(nickname);
+    }
+
 }
 
 

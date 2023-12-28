@@ -41,10 +41,46 @@ public class Connection {
                 receiverThread.start();
                 //envoyer le premier message
                 Library.sendFirstMessage();
-                String nickname = getNickname();
-                try {
-                    //on vérifie si le nickname est unique
-                    try {Broadcast.CheckUnicityNickname(nickname);
+                //choix du nickname
+                while (true) {
+
+                    String nickname = getNickname();
+                    try {
+                        //on vérifie si le nickname est unique
+                        if (Broadcast.CheckUnicityNickname(nickname)) {
+                            Broadcast.setCurrentNickname(nickname);
+                            break;
+                        } else {
+                            //on demande de choisir de nouveau un nickname
+                            JFrame popupFrame = new JFrame("Enter a new nickname");
+                            JTextField newNicknameField = new JTextField();
+                            JButton confirmButton = new JButton("Confirm");
+
+                            confirmButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent actionEvent) {
+                                    String newNickname = newNicknameField.getText();
+                                    Broadcast.setCurrentNickname(newNickname);
+                                    popupFrame.dispose();
+
+                                }
+                            });
+                            popupFrame.setLayout(new GridLayout(2, 1));
+                            popupFrame.add(newNicknameField);
+                            popupFrame.add(confirmButton);
+                            popupFrame.setSize(300, 150);
+                            popupFrame.setLocationRelativeTo(null);
+                            popupFrame.setVisible(true);
+
+
+                            while (popupFrame.isVisible()) {
+                                try {
+                                    Thread.sleep(100); //Attente courte
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
+                        }
                     } catch (InterruptedException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -58,12 +94,8 @@ public class Connection {
                     Controllers.Server server = new Server();
                     server.start();
 
-                } catch (Exception e) {
-                e.printStackTrace();}
+                }
             }
-
-
-
         });
 
         //creation du label "connection"
