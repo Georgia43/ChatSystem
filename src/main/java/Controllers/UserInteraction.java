@@ -17,14 +17,14 @@ public class UserInteraction {
         this.client=new Client();
     }
 
-    public void changeUser(String ipAddress){
+   /* public void changeUser(String ipAddress){
         try{
             InetAddress ip = InetAddress.getByName(ipAddress);
             client.startConnection(ip);
         } catch (IOException e){
             e.printStackTrace();
         }
-    }
+    }*/
     public void sendMess(String message,String ipAddress) throws IOException {
         try{
             InetAddress ip = InetAddress.getByName(ipAddress);
