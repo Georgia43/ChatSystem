@@ -23,6 +23,7 @@ public class AppData {
 
         if (!contactList.containsValue(received)) {
             contactList.put(sender, received);
+            System.out.println(received + " has been added to the contact list.");
         }
     }
 

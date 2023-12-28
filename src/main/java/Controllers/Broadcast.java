@@ -132,11 +132,14 @@ public class Broadcast {
         static void handleReceived(InetAddress sender, String received) throws SQLException, IOException {
             if (received.equals("FIRST_MESSAGE") && (!receivedFromMyself(sender))) {
                 sendNickname(AppData.getNicknameCurrentUser(), sender); //j'envoie mon nickname à la personne qui souhaite se connecter
+                System.out.println("first packet is received");
             } else if (received.startsWith("MY_NICKNAME_")) {
+                System.out.println("nickname is received");
                 String prefix = "MY_NICKNAME_";
                 String nickname = received.substring(prefix.length());
                 AppData.addContactList(sender, nickname);
-                Client.startConnection(sender);
+                System.out.println("nickname added to contact list");
+               // Client.startConnection(sender);
                 CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
                 database.tableMessages(sender);
                 UpdateUsers.addUser(sender,nickname,CreateDatabase.MESSAGE_DATABSE);
@@ -155,7 +158,8 @@ public class Broadcast {
                 byte [] respMessage= mess.getBytes();
                 DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, PORT);
         		respSocket.send(respPacket);
-        		respSocket.close(); 
+        		respSocket.close();
+                System.out.println("nickname sent : "+nickname);
             }
         	catch (IOException e) {
                 logger.log(Level.SEVERE,"IOException: " + e.getMessage());

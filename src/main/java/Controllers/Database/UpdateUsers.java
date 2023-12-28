@@ -10,7 +10,13 @@ public class UpdateUsers {
 
         try {
             CreateDatabase database = new CreateDatabase(url);
-            Statement statement = database.connection.createStatement();
+
+            // Check if the user already exists
+            if (userExists(Address, database)) {
+                System.out.println("User already exists");
+                return false;
+
+            }
             String insertQuery = "INSERT INTO Users (ipAddress, name, status) VALUES (?, ?, ?)";
 
             try (PreparedStatement preparedStatement = database.connection.prepareStatement(insertQuery)) {
@@ -32,11 +38,28 @@ public class UpdateUsers {
         }
     }
 
+    private static boolean userExists(InetAddress address, CreateDatabase database) throws SQLException {
+        String query = "SELECT COUNT(*) FROM Users WHERE ipAddress = ?";
+
+        try (PreparedStatement preparedStatement = database.connection.prepareStatement(query)) {
+            preparedStatement.setString(1, address.getHostAddress());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0; // User exists if count is greater than 0
+            }
+        }
+
+        return false;
+    }
+
     public static boolean changeStatus(InetAddress Address, String url){
         try {
             CreateDatabase database = new CreateDatabase(url);
             Statement statement = database.connection.createStatement();
             String strAddress = Address.getHostAddress();
+
             String updateQuery = "UPDATE Users SET Status = ? WHERE ipAddress = '"+strAddress+ "'";
 
             try (PreparedStatement preparedStatement = database.connection.prepareStatement(updateQuery)) {

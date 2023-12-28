@@ -52,7 +52,6 @@ public class CreateDatabase {
                     + "content VARCHAR(200),"
                     + "dateHeure DATETIME)";
             statement.executeUpdate(Messages);
-            System.out.println("test");
             System.out.println("Table Messages_" + strAddress + " créée.");
         }
         catch (SQLException e) {

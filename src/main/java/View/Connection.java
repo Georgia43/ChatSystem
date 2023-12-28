@@ -29,6 +29,12 @@ public class Connection {
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        //Broadcast
+        Broadcast.Receive receiverThread = new Broadcast.Receive();
+        receiverThread.start();
+        //envoyer le premier message
+        Library.sendFirstMessage();
+
         //creation des boutons
         JButton button_connect = new JButton("Connect");
 
@@ -36,67 +42,32 @@ public class Connection {
         button_connect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                //Broadcast
-                Broadcast.Receive receiverThread = new Broadcast.Receive();
-                receiverThread.start();
-                //envoyer le premier message
-                Library.sendFirstMessage();
-                //choix du nickname
-                while (true) {
 
+                //choix du nickname
                     String nickname = getNickname();
                     try {
-                        //on vérifie si le nickname est unique
+                        //on vérifie si le nickname est unique et s'il l'est on l'envoie aux contacts
                         if (Broadcast.CheckUnicityNickname(nickname)) {
                             Broadcast.setCurrentNickname(nickname);
-                            break;
+                            Library.SendCurrentNickname(nickname);
+                            ShowConnectedUsers connectedUsers = new ShowConnectedUsers();
+                            frame.dispose();
                         } else {
                             //on demande de choisir de nouveau un nickname
-                            JFrame popupFrame = new JFrame("Enter a new nickname");
-                            JTextField newNicknameField = new JTextField();
-                            JButton confirmButton = new JButton("Confirm");
-
-                            confirmButton.addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent actionEvent) {
-                                    String newNickname = newNicknameField.getText();
-                                    Broadcast.setCurrentNickname(newNickname);
-                                    popupFrame.dispose();
-
-                                }
-                            });
-                            popupFrame.setLayout(new GridLayout(2, 1));
-                            popupFrame.add(newNicknameField);
-                            popupFrame.add(confirmButton);
-                            popupFrame.setSize(300, 150);
-                            popupFrame.setLocationRelativeTo(null);
-                            popupFrame.setVisible(true);
-
-
-                            while (popupFrame.isVisible()) {
-                                try {
-                                    Thread.sleep(100); //Attente courte
-                                } catch (InterruptedException ex) {
-                                    ex.printStackTrace();
-                                }
-                            }
+                          JOptionPane.showMessageDialog(
+                                    null,
+                                    "Nickname taken. Please choose a new one.",
+                                    "Dialog Title",
+                                    JOptionPane.INFORMATION_MESSAGE
+                            );
                         }
                     } catch (InterruptedException ex) {
                         throw new RuntimeException(ex);
                     }
-                    //envoyer le nickname choisi aux contacts
-                    try {
-                        Library.SendCurrentNickname(AppData.getNicknameCurrentUser());
-                    } catch (InterruptedException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    // Start the server
-                    Controllers.Server server = new Server();
-                    server.start();
-
                 }
-            }
         });
+
+
 
         //creation du label "connection"
         JLabel connectLabel = new JLabel("Connection", JLabel.CENTER);
@@ -112,6 +83,11 @@ public class Connection {
         //creation du panel pour le bouton
         JPanel pButton = new JPanel(new GridLayout(1,1));
         pButton.add(button_connect);
+
+        // Start the server
+       // Controllers.Server server = new Server();
+        //server.start();
+
         pButton.setBorder(new EmptyBorder(50,50,50,50));
 
         frame.setLayout(new GridLayout(3, 1));

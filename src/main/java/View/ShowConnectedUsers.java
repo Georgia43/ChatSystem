@@ -23,11 +23,11 @@ public class ShowConnectedUsers {
         try {
             java.sql.Connection connection = DriverManager.getConnection(MESSAGE_DATABSE);
              Statement statement = connection.createStatement();
-             ResultSet result_users = statement.executeQuery("SELECT * FROM USERS where status = 1");
+             ResultSet result_users = statement.executeQuery("SELECT * FROM USERS where status = 'Connected'");
              while(result_users.next()){
                    // int status=result_users.getInt("status");
                     String name = result_users.getString("name");
-                    String ipAddress = result_users.getString("ipAdress");
+                    String ipAddress = result_users.getString("ipAddress");
 
                  JPanel p = new JPanel(new BorderLayout()); //panel pour utilisateurs
 
