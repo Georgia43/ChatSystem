@@ -44,7 +44,7 @@ public class Connection {
                 String nickname = getNickname();
                 try {
                     //on vérifie si le nickname est unique
-                    try {AppData.CheckUnicityNickname(nickname);
+                    try {Broadcast.CheckUnicityNickname(nickname);
                     } catch (InterruptedException ex) {
                         throw new RuntimeException(ex);
                     }

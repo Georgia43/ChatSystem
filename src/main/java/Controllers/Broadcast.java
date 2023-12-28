@@ -3,14 +3,18 @@ package Controllers;
 import Controllers.Database.UpdateUsers;
 import Controllers.Database.CreateDatabase;
 import Model.AppData;
+import Model.InputScanner;
 
 import java.net.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import java.util.Scanner;
 import java.util.logging.Logger;
 import java.util.Map;
 import java.util.logging.Level;
+
+import static Model.AppData.currentUser;
 
 /*FOR CONTACT DISCOVERY*/
 public class Broadcast {
@@ -184,6 +188,27 @@ public class Broadcast {
         }
     }
 
+    public static void CheckUnicityNickname(String CurrentNickname) throws InterruptedException {
+        Scanner scan = InputScanner.getScanner();
+        boolean valid_name = true;
+        do {
+            valid_name = true;
+            for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
+                String nickname = pers.getValue();
+                if (nickname.equals(CurrentNickname)) {
+                    valid_name = false;
+                    break;
+                }
+            }
+            if(!valid_name) {
+                System.out.println("nickname taken. Choose a new one : ");
+                CurrentNickname = scan.nextLine();
+            }
+        } while (!valid_name);
+
+        currentUser.setNickname(CurrentNickname);
+        //scan.close();
+    }
 }
 
 
