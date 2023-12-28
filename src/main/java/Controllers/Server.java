@@ -1,9 +1,11 @@
 package Controllers;
 
 import Model.HandleMessage;
+import Model.User;
 
 import java.io.*;
 import java.net.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +21,7 @@ public class Server {
 
         while (true) {
                 /*Attente d'une connexion client*/
-                Socket clientSocket = serverSocket.accept();
-                ClientHandler clientHandler = new ClientHandler(clientSocket);
-                clients.add(clientHandler);
-                clientHandler.start();
+                User.addConnection();
             }
         }
         catch (IOException e){
@@ -81,6 +80,8 @@ public class Server {
                 }
             } catch (IOException e){
                 e.printStackTrace();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             } finally {
                 close();
             }

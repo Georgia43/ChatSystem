@@ -31,6 +31,7 @@ public class Client {
         clientSocket = new Socket(ip, Broadcast.PORT);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        //Model.User.recordConnectionSocket();
     }
 
     /*envoyer un message*/

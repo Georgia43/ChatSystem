@@ -4,6 +4,8 @@ import Model.AppData;
 import Model.InputScanner;
 import Controllers.Broadcast;
 import Controllers.Library;
+import View.Connection;
+
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,8 +18,8 @@ public class MainClass {
         final Logger logger = Logger.getLogger("chatsystem");
         Scanner scanner = InputScanner.getScanner();
 
-        try {
-            Broadcast.Receive receiverThread = new Broadcast.Receive();
+        Connection connection = new Connection();
+          /*  Broadcast.Receive receiverThread = new Broadcast.Receive();
             receiverThread.start();
             //envoyer le premier message
             Library.sendFirstMessage();
@@ -32,12 +34,8 @@ public class MainClass {
             System.out.println("Press enter to finish");
             String none = scanner.nextLine();
             receiverThread.join(5000);
-            System.out.println(Library.GetConnectedUserList());
-            //envoyer le message pour se déconnecter
-            //Library.sendMessageDisconnect(); on commente cette ligne pour bien visualiser la contactlist car elle enlève la personne envoyant disconnect de la contactlist
-        }
-        catch (InterruptedException e) {
-           logger.log(Level.SEVERE,"InterruptedException" + e.getMessage());
-        }
+            System.out.println(Library.GetConnectedUserList());*/
+        //envoyer le message pour se déconnecter
+        //Library.sendMessageDisconnect(); on commente cette ligne pour bien visualiser la contactlist car elle enlève la personne envoyant disconnect de la contactlist
     }
 }

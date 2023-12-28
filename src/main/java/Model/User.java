@@ -15,16 +15,16 @@ public class User {
         private String nickname;
         private InetAddress id;
 
-        private Client client = new Client();
+        private static Client client = new Client();
 
-        private Socket clientSocket; // pour maintenir la connexion
+        private static Socket clientSocket; // pour maintenir la connexion
 
 
         /*méthodes*/
         public String getNickname() {return this.nickname;}
         public InetAddress getId() {return this.id;}
 
-    void recordConnectionSocket(Socket socket) {
+    public static void recordConnectionSocket(Socket socket) {
             // record a socket that canbe created
           //  - when we establish ourselves
           //  - when the other user connects to our global server socket
@@ -33,11 +33,9 @@ public class User {
         Server.ClientHandler clientHandler = new Server.ClientHandler(clientSocket);
         Server.clients.add(clientHandler);
         clientHandler.start();
-
-
     }
 
-      public void addConnection() {
+      public static void addConnection() {
                 try{
                     ServerSocket socket = new ServerSocket(Broadcast.PORT);
                     Socket socketAccepted = socket.accept();

@@ -79,9 +79,14 @@ public class Broadcast {
             byte [] FirstMessage = mess.getBytes();
             DatagramPacket message= new DatagramPacket(FirstMessage, FirstMessage.length, getBroadcastAddress(), PORT);
             socket.send(message);
+            // we add the table with the users
+            CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
+            database.tableUsers();
         }
         catch (IOException e) {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
