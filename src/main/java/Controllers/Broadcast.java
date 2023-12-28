@@ -125,13 +125,14 @@ public class Broadcast {
                 logger.log(Level.SEVERE,"IOException: " + e.getMessage());
             }
         }
-        static void handleReceived(InetAddress sender, String received) throws SQLException {
+        static void handleReceived(InetAddress sender, String received) throws SQLException, IOException {
             if (received.equals("FIRST_MESSAGE") && (!receivedFromMyself(sender))) {
                 sendNickname(AppData.getNicknameCurrentUser(), sender); //j'envoie mon nickname à la personne qui souhaite se connecter
             } else if (received.startsWith("MY_NICKNAME_")) {
                 String prefix = "MY_NICKNAME_";
                 String nickname = received.substring(prefix.length());
                 AppData.addContactList(sender, nickname);
+                Client.startConnection(sender);
                 CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
                 database.tableMessages(sender);
                 UpdateUsers.addUser(sender,nickname,CreateDatabase.MESSAGE_DATABSE);

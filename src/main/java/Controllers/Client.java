@@ -11,9 +11,9 @@ public class Client {
 
     /*lancer la connexion*/
 
-    private Socket clientSocket;
-    private PrintWriter out;
-    private BufferedReader in;
+    private static Socket clientSocket;
+    private static PrintWriter out;
+    private static BufferedReader in;
 
     public void setSocket(Socket socket){
         this.clientSocket = socket;
@@ -27,7 +27,7 @@ public class Client {
     }
 
 
-    public void startConnection(InetAddress ip) throws IOException {
+    public static void startConnection(InetAddress ip) throws IOException {
         clientSocket = new Socket(ip, Broadcast.PORT);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
