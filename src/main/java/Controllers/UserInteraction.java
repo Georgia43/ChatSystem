@@ -3,11 +3,18 @@ package Controllers;
 import Controllers.Client;
 import Controllers.Database.CreateDatabase;
 import Controllers.Database.UpdateMessages;
+import Model.AppData;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.logging.Level;
+
+import static Controllers.Broadcast.logger;
 
 public class UserInteraction {
 
@@ -25,6 +32,22 @@ public class UserInteraction {
             e.printStackTrace();
         }
     }*/
+
+    public static void sendTCPconnection() throws IOException {
+
+        try {
+            for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
+                InetAddress id = pers.getKey(); //récupérer l'adresse IP des membres de la liste de contact
+                Client.startConnection(id);
+                System.out.println("connection lancée avec "+ pers);
+            }
+        }
+
+        catch (IOException e) {
+            logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+        }
+    }
+
     public void sendMess(String message,String ipAddress) throws IOException {
         try{
             InetAddress ip = InetAddress.getByName(ipAddress);

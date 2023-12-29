@@ -6,6 +6,7 @@ import Controllers.Broadcast;
 import Controllers.Library;
 import View.Connection;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
 //class to run the application
 
 public class MainClass {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         final Logger logger = Logger.getLogger("chatsystem");
         Scanner scanner = InputScanner.getScanner();

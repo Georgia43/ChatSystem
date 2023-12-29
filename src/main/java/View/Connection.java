@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Connection {
     //for nickname
     private JTextField jtField = new JTextField();
 
-    public Connection() {
+    public Connection() throws IOException {
 
         JFrame frame = new JFrame("ChatSystem");
         //fermer
@@ -102,13 +103,16 @@ public class Connection {
         // Start the server
         Controllers.Server server = new Server();
         server.start();
+
+        //we start the connection with our contacts
+        UserInteraction.sendTCPconnection();
     }
 
     public String getNickname() {
         return this.jtField.getText();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // Create an instance of the Connection class
         Connection connection = new Connection();}
 
