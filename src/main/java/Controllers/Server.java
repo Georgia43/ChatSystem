@@ -13,7 +13,7 @@ public class Server {
 
     private ServerSocket serverSocket;
 
-    public static final int MESSAGE_PORT = 1755;
+    public static final int MESSAGE_PORT = 37555;
     public static List<ClientHandler> clients = new ArrayList<>();
 
     public void start() {
@@ -23,12 +23,12 @@ public class Server {
 
         while (true) {
                 /*Attente d'une connexion client*/
-                User.addConnection();
+                User.addConnection(serverSocket);
             }
-        }
+       }
         catch (IOException e){
-            e.printStackTrace();
-        }
+        e.printStackTrace();
+       }
 
         /*user = getUser(client.source)
                 user.addConnection(clientSocket)*/

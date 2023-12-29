@@ -35,9 +35,9 @@ public class User {
         clientHandler.start();
     }
 
-      public static void addConnection() {
+      public static void addConnection(ServerSocket socket) {
                 try{
-                    ServerSocket socket = new ServerSocket(Server.MESSAGE_PORT);
+                  // ServerSocket socket = new ServerSocket(Server.MESSAGE_PORT);
                     Socket socketAccepted = socket.accept();
                     recordConnectionSocket(socketAccepted);
 

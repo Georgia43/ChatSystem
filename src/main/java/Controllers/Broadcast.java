@@ -134,16 +134,16 @@ public class Broadcast {
                 sendNickname(AppData.getNicknameCurrentUser(), sender); //j'envoie mon nickname à la personne qui souhaite se connecter
                 System.out.println("first packet is received");
             } else if (received.startsWith("MY_NICKNAME_")) {
-                System.out.println("nickname is received");
-                String prefix = "MY_NICKNAME_";
-                String nickname = received.substring(prefix.length());
-                AppData.addContactList(sender, nickname);
-                System.out.println("nickname added to contact list");
-                Client.startConnection(sender);
-                CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
-                database.tableMessages(sender);
-                UpdateUsers.addUser(sender,nickname,CreateDatabase.MESSAGE_DATABSE);
-                // on créé la base de données pour les messages pour chaque personne
+                    System.out.println("nickname is received");
+                    String prefix = "MY_NICKNAME_";
+                    String nickname = received.substring(prefix.length());
+                    AppData.addContactList(sender, nickname);
+                    System.out.println("nickname added to contact list");
+                   // Client.startConnection(sender);
+                    CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
+                    database.tableMessages(sender);
+                    UpdateUsers.addUser(sender, nickname, CreateDatabase.MESSAGE_DATABSE);
+                    // on créé la base de données pour les messages pour chaque personne
             } else if (received.equals("DISCONNECTING")) {
                 AppData.DeletefromContactList(sender);
                 UpdateUsers.changeStatus(sender,CreateDatabase.MESSAGE_DATABSE);
