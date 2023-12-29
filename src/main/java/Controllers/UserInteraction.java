@@ -54,7 +54,6 @@ public class UserInteraction {
         try{
             InetAddress ip = InetAddress.getByName(ipAddress);
             client.sendMessage(message,ip);
-            CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
             UpdateMessages.addMessage(ip,message,CreateDatabase.MESSAGE_DATABSE);
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
