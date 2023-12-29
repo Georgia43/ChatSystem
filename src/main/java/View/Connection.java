@@ -64,8 +64,10 @@ public class Connection {
                         }
                     } catch (InterruptedException ex) {
                         throw new RuntimeException(ex);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
-                }
+            }
         });
 
 
@@ -100,12 +102,11 @@ public class Connection {
         // Display the window.
         frame.setVisible(true);
 
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!before starting server");
         // Start the server
         Controllers.Server server = new Server();
         server.start();
 
-        //we start the connection with our contacts
-        UserInteraction.sendTCPconnection();
     }
 
     public String getNickname() {

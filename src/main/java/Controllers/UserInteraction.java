@@ -36,10 +36,12 @@ public class UserInteraction {
     public static void sendTCPconnection() throws IOException {
 
         try {
+            System.out.println("rentre dans send tcp");
             for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
+                System.out.println("je rentre dans le for");
                 InetAddress id = pers.getKey(); //récupérer l'adresse IP des membres de la liste de contact
                 Client.startConnection(id);
-                System.out.println("connection lancée avec "+ pers);
+                System.out.println("connection TCP lancée avec "+ pers);
             }
         }
 

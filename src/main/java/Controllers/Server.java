@@ -21,10 +21,11 @@ public class Server {
         try {
             serverSocket = new ServerSocket(MESSAGE_PORT);
 
-        while (true) {
-                /*Attente d'une connexion client*/
-                User.addConnection(serverSocket);
-            }
+            /*Attente d'une connexion client*/
+            while (true){
+            System.out.println("!!!!!!!!!!!!!!!!!! i will enter add connection");
+            User.addConnection(serverSocket);
+            System.out.println("!!!!!!!!!!!!!!!!!! i am waiting");}
        }
         catch (IOException e){
         e.printStackTrace();

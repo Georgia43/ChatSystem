@@ -5,17 +5,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.*;
 
 import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
 
 public class ShowConnectedUsers {
     //parcourir table avec utilisateurs et afficher que ceux qui sont connectés
-    public ShowConnectedUsers() {
+    public ShowConnectedUsers() throws IOException {
 
         JFrame frame = new JFrame("ChatSystem");
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!i just starded the server");
+
+        //we start the connection with our contacts
+        UserInteraction.sendTCPconnection();
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 1)); // Layout pour les étiquettes
@@ -60,7 +66,7 @@ public class ShowConnectedUsers {
             throw new RuntimeException(e);
         }
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // Create an instance of the Connection class
         ShowConnectedUsers ConnectedUsers = new ShowConnectedUsers();}
 }
