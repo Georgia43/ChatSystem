@@ -80,4 +80,31 @@ public class UpdateUsers {
         }
     }
 
+    // changer le pseudo dans la database si la personne change de pseudo
+    public static boolean changeNicknameDB(InetAddress Address, String name, String url){
+        try {
+            CreateDatabase database = new CreateDatabase(url);
+            Statement statement = database.connection.createStatement();
+            String strAddress = Address.getHostAddress();
+
+            String updateQuery = "UPDATE Users SET name = ? WHERE ipAddress = '"+strAddress+ "'";
+
+            try (PreparedStatement preparedStatement = database.connection.prepareStatement(updateQuery)) {
+                preparedStatement.setString(1, name);
+
+                int rowsUpdated = preparedStatement.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    System.out.println("User updated successfully");
+                } else {
+                    System.out.println("No User found with Address: " + Address);
+                }
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

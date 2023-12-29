@@ -34,4 +34,8 @@ public class Conversation {
             });
 
     }
+
+    public static void main(String[] args) {
+        // Create an instance of the Connection class
+        Conversation conversation = new Conversation("Mary","1.1.1.1");}
 }

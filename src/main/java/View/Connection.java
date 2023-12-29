@@ -84,10 +84,6 @@ public class Connection {
         JPanel pButton = new JPanel(new GridLayout(1,1));
         pButton.add(button_connect);
 
-        // Start the server
-       // Controllers.Server server = new Server();
-        //server.start();
-
         pButton.setBorder(new EmptyBorder(50,50,50,50));
 
         frame.setLayout(new GridLayout(3, 1));
@@ -103,9 +99,9 @@ public class Connection {
         // Display the window.
         frame.setVisible(true);
 
-
-
-
+        // Start the server
+        Controllers.Server server = new Server();
+        server.start();
     }
 
     public String getNickname() {

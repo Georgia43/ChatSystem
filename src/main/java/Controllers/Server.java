@@ -17,7 +17,7 @@ public class Server {
     public void start() {
         /*Création du serveur*/
         try {
-            serverSocket = new ServerSocket(Broadcast.PORT);
+            serverSocket = new ServerSocket(1755);
 
         while (true) {
                 /*Attente d'une connexion client*/
