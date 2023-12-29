@@ -28,7 +28,7 @@ public class Client {
 
 
     public static void startConnection(InetAddress ip) throws IOException {
-        clientSocket = new Socket(ip, Broadcast.PORT);
+        clientSocket = new Socket(ip, Server.MESSAGE_PORT);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         //Model.User.recordConnectionSocket();
@@ -40,7 +40,7 @@ public class Client {
             DatagramSocket respSocket = new DatagramSocket();
             String mess = "MESSAGE_"+message;
             byte [] respMessage= mess.getBytes();
-            DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, Broadcast.PORT);
+            DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, Server.MESSAGE_PORT);
             respSocket.send(respPacket);
             respSocket.close();
             //BDD STOCKER MESSAGE

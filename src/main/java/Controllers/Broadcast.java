@@ -139,7 +139,7 @@ public class Broadcast {
                 String nickname = received.substring(prefix.length());
                 AppData.addContactList(sender, nickname);
                 System.out.println("nickname added to contact list");
-               // Client.startConnection(sender);
+                Client.startConnection(sender);
                 CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
                 database.tableMessages(sender);
                 UpdateUsers.addUser(sender,nickname,CreateDatabase.MESSAGE_DATABSE);

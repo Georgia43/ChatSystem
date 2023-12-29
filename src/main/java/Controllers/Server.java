@@ -12,12 +12,14 @@ import java.util.List;
 public class Server {
 
     private ServerSocket serverSocket;
+
+    public static final int MESSAGE_PORT = 1755;
     public static List<ClientHandler> clients = new ArrayList<>();
 
     public void start() {
         /*Création du serveur*/
         try {
-            serverSocket = new ServerSocket(1755);
+            serverSocket = new ServerSocket(MESSAGE_PORT);
 
         while (true) {
                 /*Attente d'une connexion client*/

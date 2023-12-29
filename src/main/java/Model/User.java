@@ -37,7 +37,7 @@ public class User {
 
       public static void addConnection() {
                 try{
-                    ServerSocket socket = new ServerSocket(Broadcast.PORT);
+                    ServerSocket socket = new ServerSocket(Server.MESSAGE_PORT);
                     Socket socketAccepted = socket.accept();
                     recordConnectionSocket(socketAccepted);
 
