@@ -18,10 +18,10 @@ public class ShowConnectedUsers {
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!i just starded the server");
+      //  System.out.println("!!!!!!!!!!!!!!!!!!!!!!!i just starded the server");
 
         //we start the connection with our contacts
-        UserInteraction.sendTCPconnection();
+      //  UserInteraction.sendTCPconnection();
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 1)); // Layout pour les étiquettes

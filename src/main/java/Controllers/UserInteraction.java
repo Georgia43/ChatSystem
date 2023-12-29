@@ -33,7 +33,7 @@ public class UserInteraction {
         }
     }*/
 
-    public static void sendTCPconnection() throws IOException {
+  /*  public static void sendTCPconnection() throws IOException {
 
         try {
             System.out.println("rentre dans send tcp");
@@ -48,12 +48,12 @@ public class UserInteraction {
         catch (IOException e) {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
         }
-    }
+    }*/
 
     public void sendMess(String message,String ipAddress) throws IOException {
         try{
             InetAddress ip = InetAddress.getByName(ipAddress);
-            client.sendMessage(message,ip);
+            client.sendMessage(message);
            // UpdateMessages.addMessage(ip,message,CreateDatabase.MESSAGE_DATABSE);
         } catch (IOException e) {
             throw new RuntimeException(e);

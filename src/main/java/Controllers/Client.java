@@ -35,19 +35,24 @@ public class Client {
     }
 
     /*envoyer un message*/
-    public void sendMessage(String message, InetAddress address) throws IOException {
-        try {
-            DatagramSocket respSocket = new DatagramSocket();
+    public void sendMessage(String message) throws IOException {
+        //try {
+            //DatagramSocket respSocket = new DatagramSocket();
             String mess = "MESSAGE_"+message;
-            byte [] respMessage= mess.getBytes();
-            DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, Server.MESSAGE_PORT);
-            respSocket.send(respPacket);
-            respSocket.close();
+            //byte [] respMessage= mess.getBytes();
+            if (out != null) {
+                out.println(mess);
+            } else {
+                System.err.println("Connection not established. Cannot send message.");
+            }
+            //DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, Server.MESSAGE_PORT);
+           // respSocket.send(respPacket);
+            //respSocket.close();
             //BDD STOCKER MESSAGE
-        }
-        catch (IOException e) {
-            logger.log(Level.SEVERE,"IOException: " + e.getMessage());
-        }
+        //}
+        //catch (IOException e) {
+          //  logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+       // }
 
 
     }
