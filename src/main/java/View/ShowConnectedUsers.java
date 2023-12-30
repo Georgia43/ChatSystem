@@ -1,4 +1,5 @@
 package View;
+import Controllers.Broadcast;
 import Controllers.Server;
 import Controllers.UserInteraction;
 
@@ -6,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.*;
 
@@ -18,6 +21,15 @@ public class ShowConnectedUsers {
         JFrame frame = new JFrame("ChatSystem");
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //envoyer un messagede déconnexion quand on ferme la frame
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Call the sendExitMessage function when the window is closing
+                Broadcast.sendExitMessage();
+            }
+        });
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 1)); // Layout pour les étiquettes

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class HandleMessage {
 
-    public static void handle(InetAddress sender, String mess_received) throws SQLException {
+    public static String handle(InetAddress sender, String mess_received) throws SQLException {
         if ( mess_received.startsWith("MESSAGE_")){
             String prefix = "MESSAGE_";
             String message = mess_received.substring(prefix.length());
@@ -17,7 +17,8 @@ public class HandleMessage {
           //  CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
            // UpdateMessages.addMessage(sender,message,CreateDatabase.MESSAGE_DATABSE);
             System.out.println(message);
-        }
+            return message;
+        } else { return "ceci ne devrait pas arriver";}
 
     }
 }

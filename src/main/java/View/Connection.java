@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.InetAddress;
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ public class Connection {
         JFrame frame = new JFrame("ChatSystem");
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
 
         //Broadcast
         Broadcast.Receive receiverThread = new Broadcast.Receive();
