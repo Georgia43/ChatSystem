@@ -36,6 +36,12 @@ public class Connection {
         //envoyer le premier message
         Library.sendFirstMessage();
 
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!before starting server");
+        // Start the server
+        Controllers.Server server = new Server();
+        server.start();
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!i just starded the server");
+
         //creation des boutons
         JButton button_connect = new JButton("Connect");
 
@@ -102,10 +108,6 @@ public class Connection {
         // Display the window.
         frame.setVisible(true);
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!before starting server");
-        // Start the server
-        Controllers.Server server = new Server();
-        server.start();
 
     }
 

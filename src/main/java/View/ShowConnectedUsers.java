@@ -18,8 +18,6 @@ public class ShowConnectedUsers {
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-      //  System.out.println("!!!!!!!!!!!!!!!!!!!!!!!i just starded the server");
-
         //we start the connection with our contacts
       //  UserInteraction.sendTCPconnection();
 

@@ -28,6 +28,7 @@ public class Client {
 
 
     public static void startConnection(InetAddress ip) throws IOException {
+        System.out.println("!!!!!!!!!!!!!!!!!enter in startconnection");
         clientSocket = new Socket(ip, Server.MESSAGE_PORT);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
