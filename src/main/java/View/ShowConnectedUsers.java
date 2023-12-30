@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.*;
 
 import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
@@ -66,31 +68,37 @@ public class ShowConnectedUsers {
             while (result_users.next()) {
                 String name = result_users.getString("name");
                 String ipAddress = result_users.getString("ipAddress");
+                InetAddress myIpAddress = InetAddress.getLocalHost();
 
-                JPanel userPanel = new JPanel(new BorderLayout()); //panel pour utilisateurs
-                JPanel infoPanel = new JPanel(new GridLayout(1, 1));
-                infoPanel.add(new JLabel("name:"));
-                infoPanel.add(new JLabel(name));
-                userPanel.add(infoPanel, BorderLayout.CENTER);
+               // if (!ipAddress.equals(myIpAddress)) {
 
-                 //je choisis la personne avec laquelle je veux échanger des messages ou voir mon historique de messages
-                JButton button_message = new JButton("Accept");
+                    JPanel userPanel = new JPanel(new BorderLayout()); //panel pour utilisateurs
+                    JPanel infoPanel = new JPanel(new GridLayout(1, 1));
+                    infoPanel.add(new JLabel("name:"));
+                    infoPanel.add(new JLabel(name));
+                    userPanel.add(infoPanel, BorderLayout.CENTER);
 
-                button_message.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
-                        Conversation conv = new Conversation(name, ipAddress);
-                    }
-                });
+                    //je choisis la personne avec laquelle je veux échanger des messages ou voir mon historique de messages
+                    JButton button_message = new JButton("Accept");
 
-                userPanel.add(button_message, BorderLayout.SOUTH);
-                //ajouter panel pour utilisateurs au panel principal
-                panel.add(userPanel);
-            }
+                    button_message.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            Conversation conv = new Conversation(name, ipAddress);
+                        }
+                    });
 
-            frame.revalidate();
-            frame.repaint();
+                    userPanel.add(button_message, BorderLayout.SOUTH);
+                    //ajouter panel pour utilisateurs au panel principal
+                    panel.add(userPanel);
+                }
+
+                frame.revalidate();
+                frame.repaint();
+           // }
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
     }
