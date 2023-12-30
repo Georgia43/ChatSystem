@@ -42,7 +42,7 @@ public class Conversation {
                 String message = messageField.getText();
                 UserInteraction inter = new UserInteraction();
                 try {
-                    inter.sendMess(message, ipaddress);
+                    inter.sendMess(message,ipaddress);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

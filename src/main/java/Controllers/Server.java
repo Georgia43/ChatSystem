@@ -12,24 +12,28 @@ import java.util.List;
 public class Server {
 
     private ServerSocket serverSocket;
+    private volatile boolean isRunning = true;
 
     public static final int MESSAGE_PORT = 37555;
     public static List<ClientHandler> clients = new ArrayList<>();
 
     public void start() {
-        /*Création du serveur*/
-        try {
-            serverSocket = new ServerSocket(MESSAGE_PORT);
+        new Thread (()-> {
+            /*Création du serveur*/
+            try {
+                serverSocket = new ServerSocket(MESSAGE_PORT);
 
-            /*Attente d'une connexion client*/
-            while (true){
-            System.out.println("!!!!!!!!!!!!!!!!!! i will enter add connection");
-            User.addConnection(serverSocket);
-            System.out.println("!!!!!!!!!!!!!!!!!! i am waiting");}
-       }
-        catch (IOException e){
-        e.printStackTrace();
-       }
+                /*Attente d'une connexion client*/
+                while (isRunning) {
+
+                    System.out.println("!!!!!!!!!!!!!!!!!! i will enter add connection");
+                    User.addConnection(serverSocket);
+                    System.out.println("!!!!!!!!!!!!!!!!!! i am waiting");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
         /*user = getUser(client.source)
                 user.addConnection(clientSocket)*/
@@ -46,6 +50,7 @@ public class Server {
 
     }
     public void stop() {
+        isRunning=false;
         try{
             serverSocket.close();
             for (ClientHandler client : clients) {
