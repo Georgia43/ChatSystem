@@ -28,6 +28,7 @@ public class User {
             // record a socket that canbe created
           //  - when we establish ourselves
           //  - when the other user connects to our global server socket
+        System.out.println("i am in recordConnectionSocket");
         clientSocket = socket;
         client.setSocket(clientSocket);
         Server.ClientHandler clientHandler = new Server.ClientHandler(clientSocket);
@@ -38,6 +39,7 @@ public class User {
       public static void addConnection(ServerSocket socket) {
                 try{
                   // ServerSocket socket = new ServerSocket(Server.MESSAGE_PORT);
+                    System.out.println("!!!!!!!!!!!!!!!!!! i am in add connection");
                     Socket socketAccepted = socket.accept();
                     recordConnectionSocket(socketAccepted);
 
@@ -54,7 +56,6 @@ public class User {
             this.id= id;
         }
 
-
         @Override
         public String toString() {
                 return "User{"
@@ -62,6 +63,4 @@ public class User {
                         + ", id='" + id + '\''
                         + '}';
         }
-
-
 }

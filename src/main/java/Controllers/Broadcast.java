@@ -142,6 +142,7 @@ public class Broadcast {
                     CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
                     database.tableMessages(sender);
                     UpdateUsers.addUser(sender, nickname, CreateDatabase.MESSAGE_DATABSE);
+                    UpdateUsers.changeNicknameDB(sender,nickname,CreateDatabase.MESSAGE_DATABSE);
                     Client.startConnection(sender);
                     // on créé la base de données pour les messages pour chaque personne
             } else if (received.equals("DISCONNECTING")) {

@@ -70,6 +70,7 @@ public class Server {
         public ClientHandler(Socket socket){
             this.clientSocket = socket;
             try {
+                System.out.println("i am in client handler");
                 out = new PrintWriter(clientSocket.getOutputStream(),true);
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 

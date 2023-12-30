@@ -1,4 +1,5 @@
 package View;
+import Controllers.Server;
 import Controllers.UserInteraction;
 
 import javax.swing.*;
@@ -17,9 +18,6 @@ public class ShowConnectedUsers {
         JFrame frame = new JFrame("ChatSystem");
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //we start the connection with our contacts
-      //  UserInteraction.sendTCPconnection();
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 1)); // Layout pour les étiquettes

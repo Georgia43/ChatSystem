@@ -42,6 +42,7 @@ public class Conversation {
                 String message = messageField.getText();
                 UserInteraction inter = new UserInteraction();
                 try {
+                    System.out.println("action listener send");
                     inter.sendMess(message,ipaddress);
                 } catch (IOException e) {
                     throw new RuntimeException(e);

@@ -32,7 +32,8 @@ public class Client {
         clientSocket = new Socket(ip, Server.MESSAGE_PORT);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        //Model.User.recordConnectionSocket();
+        System.out.println("!!!!!!!!!!!!!!!!!end of startconnection");
+        Model.User.recordConnectionSocket(clientSocket);
     }
 
     /*envoyer un message*/

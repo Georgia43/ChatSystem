@@ -15,6 +15,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
 
@@ -24,7 +27,7 @@ public class Connection {
     //for nickname
     private JTextField jtField = new JTextField();
 
-    public Connection() throws IOException {
+    public Connection() throws IOException, InterruptedException {
 
         JFrame frame = new JFrame("ChatSystem");
         //fermer
@@ -33,14 +36,14 @@ public class Connection {
         //Broadcast
         Broadcast.Receive receiverThread = new Broadcast.Receive();
         receiverThread.start();
-        //envoyer le premier message
-        Library.sendFirstMessage();
 
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!before starting server");
-        // Start the server
         Controllers.Server server = new Server();
         server.start();
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!i just starded the server");
+
+        //envoyer le premier message
+        Library.sendFirstMessage();
 
         //creation des boutons
         JButton button_connect = new JButton("Connect");
@@ -115,7 +118,7 @@ public class Connection {
         return this.jtField.getText();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         // Create an instance of the Connection class
         Connection connection = new Connection();}
 
