@@ -16,9 +16,12 @@ import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
 
 public class ShowConnectedUsers {
     //parcourir table avec utilisateurs et afficher que ceux qui sont connectés
+    private JFrame frame;
+    private JPanel panel;
+
     public ShowConnectedUsers() throws IOException {
 
-        JFrame frame = new JFrame("ChatSystem");
+        frame = new JFrame("ChatSystem");
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -26,54 +29,72 @@ public class ShowConnectedUsers {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                // Call the sendExitMessage function when the window is closing
                 Broadcast.sendExitMessage();
             }
         });
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(0, 1)); // Layout pour les étiquettes
+        panel = new JPanel();
+        panel.setLayout(new GridLayout(0, 1));
 
+        // Create and add the "Update" button
+        JButton updateButton = new JButton("Update");
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateConnectedUsers();
+            }
+        });
+
+        frame.add(updateButton, BorderLayout.NORTH); // pour ajouter le vouton en haut
+        frame.add(new JScrollPane(panel));
+        frame.setSize(500, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        // Initial update
+        updateConnectedUsers();
+    }
+
+    public void updateConnectedUsers() {
         try {
+            panel.removeAll();
+
             java.sql.Connection connection = DriverManager.getConnection(MESSAGE_DATABSE);
-             Statement statement = connection.createStatement();
-             ResultSet result_users = statement.executeQuery("SELECT * FROM USERS where status = 'Connected'");
-             while(result_users.next()){
-                   // int status=result_users.getInt("status");
-                    String name = result_users.getString("name");
-                    String ipAddress = result_users.getString("ipAddress");
+            Statement statement = connection.createStatement();
+             //choisir utilisateur parmi ceux qui sont connectes
+            ResultSet result_users = statement.executeQuery("SELECT * FROM USERS WHERE status = 'Connected'");
+            while (result_users.next()) {
+                String name = result_users.getString("name");
+                String ipAddress = result_users.getString("ipAddress");
 
-                 JPanel p = new JPanel(new BorderLayout()); //panel pour utilisateurs
+                JPanel userPanel = new JPanel(new BorderLayout()); //panel pour utilisateurs
+                JPanel infoPanel = new JPanel(new GridLayout(1, 1));
+                infoPanel.add(new JLabel("name:"));
+                infoPanel.add(new JLabel(name));
+                userPanel.add(infoPanel, BorderLayout.CENTER);
 
-                 JPanel infoPanel = new JPanel(new GridLayout(1,1));
-                 infoPanel.add(new JLabel("name:"));
-                 infoPanel.add(new JLabel(name));
+                 //je choisis la personne avec laquelle je veux échanger des messages ou voir mon historique de messages
+                JButton button_message = new JButton("Accept");
 
-                 p.add(infoPanel, BorderLayout.CENTER);
+                button_message.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        Conversation conv = new Conversation(name, ipAddress);
+                    }
+                });
 
-                 JButton button_message = new JButton("Accept"); //choisir utilisateur parmi ceux qui sont connectes
+                userPanel.add(button_message, BorderLayout.SOUTH);
+                //ajouter panel pour utilisateurs au panel principal
+                panel.add(userPanel);
+            }
 
-                 button_message.addActionListener(new ActionListener() {
-                     @Override
-                     public void actionPerformed(ActionEvent actionEvent) {
-                        //je choisis la personne avec laquelle je veux échanger des messages ou voir mon historique de messages
-                         /*UserInteraction inter = new UserInteraction();
-                         inter.changeUser(ipAddress);*/
-                         Conversation conv = new Conversation(name,ipAddress);
-                     }
-                 });
-
-                 p.add(button_message,BorderLayout.SOUTH); //ajouter panel pour utilisateurs au panel principal
-                 panel.add(p);
-             }
-             frame.add(new JScrollPane(panel));
-             frame.setSize(500,600);
-             frame.setLocationRelativeTo(null);
-             frame.setVisible(true);
+            frame.revalidate();
+            frame.repaint();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
     public static void main(String[] args) throws IOException {
         // Create an instance of the Connection class
         ShowConnectedUsers ConnectedUsers = new ShowConnectedUsers();}
