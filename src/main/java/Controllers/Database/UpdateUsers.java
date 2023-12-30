@@ -80,7 +80,30 @@ public class UpdateUsers {
         }
     }
 
-    // changer le pseudo dans la database si la personne change de pseudo
+    //verifier si le pseudo entré est le meme que celui de la database quand la personne se connecte de nouveau
+    public static boolean NicknameIsSame(String nickname, String url) {
+
+        try {
+            CreateDatabase database = new CreateDatabase(url);
+            Statement statement = database.connection.createStatement();
+            String query = "SELECT COUNT(*) AS count FROM USERS WHERE name = ?";
+            PreparedStatement preparedStatement = database.connection.prepareStatement(query);
+            preparedStatement.setString(1, nickname);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt("count");
+                    return count > 0; // If count is greater than 0, the nickname exists
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    // changer le pseudo dans la database
     public static boolean changeNicknameDB(InetAddress Address, String name, String url){
         try {
             CreateDatabase database = new CreateDatabase(url);

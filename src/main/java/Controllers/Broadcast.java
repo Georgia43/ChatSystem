@@ -142,7 +142,9 @@ public class Broadcast {
                     CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
                     database.tableMessages(sender);
                     UpdateUsers.addUser(sender, nickname, CreateDatabase.MESSAGE_DATABSE);
-                    UpdateUsers.changeNicknameDB(sender,nickname,CreateDatabase.MESSAGE_DATABSE);
+                    // si l'utilisateur existe deja dans la base de données mais a changé de pseudo lors de la connexion
+                    if (!UpdateUsers.NicknameIsSame(nickname,CreateDatabase.MESSAGE_DATABSE)){
+                    UpdateUsers.changeNicknameDB(sender,nickname,CreateDatabase.MESSAGE_DATABSE);}
                     Client.startConnection(sender);
                     // on créé la base de données pour les messages pour chaque personne
             } else if (received.equals("DISCONNECTING")) {
