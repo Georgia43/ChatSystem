@@ -4,6 +4,7 @@ import Controllers.Client;
 import Controllers.Database.CreateDatabase;
 import Controllers.Database.UpdateMessages;
 import Model.AppData;
+import Model.User;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -74,5 +75,4 @@ public class UserInteraction {
        if(sender != null) {return sender.getHostAddress();}
        else {return "this shouldn't happen";}
     }
-
 }

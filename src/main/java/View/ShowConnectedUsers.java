@@ -65,12 +65,13 @@ public class ShowConnectedUsers {
             Statement statement = connection.createStatement();
              //choisir utilisateur parmi ceux qui sont connectes
             ResultSet result_users = statement.executeQuery("SELECT * FROM USERS WHERE status = 'Connected'");
+            String myIpAddress = InetAddress.getLocalHost().getHostAddress();
+            System.out.println(myIpAddress);
             while (result_users.next()) {
                 String name = result_users.getString("name");
                 String ipAddress = result_users.getString("ipAddress");
-                InetAddress myIpAddress = InetAddress.getLocalHost();
 
-               // if (!ipAddress.equals(myIpAddress)) {
+                if (!ipAddress.equals(myIpAddress)) {
 
                     JPanel userPanel = new JPanel(new BorderLayout()); //panel pour utilisateurs
                     JPanel infoPanel = new JPanel(new GridLayout(1, 1));
@@ -91,6 +92,7 @@ public class ShowConnectedUsers {
                     userPanel.add(button_message, BorderLayout.SOUTH);
                     //ajouter panel pour utilisateurs au panel principal
                     panel.add(userPanel);
+                }
                 }
 
                 frame.revalidate();
