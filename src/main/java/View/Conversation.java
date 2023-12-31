@@ -79,7 +79,7 @@ public class Conversation {
         startReceiving(messageArea,name,ipaddress);
     }
 
-    private Object lock = new Object(); // Créer un objet verrou
+   // private Object lock = new Object(); // Créer un objet verrou
 
     private Set<String> processedMessages = new HashSet<>();
     private volatile boolean receivingMessages = true;
