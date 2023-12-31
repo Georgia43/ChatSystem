@@ -4,10 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
+import Controllers.Broadcast;
 import Controllers.Server;
 import Controllers.UserInteraction;
 
@@ -16,6 +19,12 @@ public class Conversation {
     public Conversation (String name, String ipaddress) {
         JFrame frame = new JFrame("Conversation with " + name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                stopReceiving();
+            }
+        });
 
         // Create the JTextArea for displaying messages
         JTextArea messageArea = new JTextArea();
@@ -68,6 +77,8 @@ public class Conversation {
         startReceiving(messageArea,name,ipaddress);
     }
 
+    private Object lock = new Object(); // Créer un objet verrou
+
     private volatile boolean receivingMessages = true;
     private void startReceiving(JTextArea messageArea,String name,String ip) {
         new Thread(()->{
@@ -78,8 +89,14 @@ public class Conversation {
                 throw new RuntimeException(e);
             }
           while (receivingMessages){
+              synchronized (lock) { // Synchroniser sur le verrou
+                  try {
+                      lock.wait(); // Attendre jusqu'à ce qu'une notification soit reçue
+                  } catch (InterruptedException e) {
+                      e.printStackTrace();
+                  }
                 String receivedMess=inter.getMessageReceived();
-                if (Objects.equals(inter.getSender(), ip)){
+                if (Objects.equals(inter.getSender(), ip) && receivedMess != null) {
                 SwingUtilities.invokeLater(()->{
                             messageArea.append(name+": "+receivedMess+"\n");
                         }
@@ -87,6 +104,11 @@ public class Conversation {
            }}
         }).start();
     }
+        public void notifyNewMessage() {
+            synchronized (lock) { // Synchroniser sur le verrou
+                lock.notify(); // Notifier qu'un nouveau message est arrivé
+            }
+        }
 
     public void stopReceiving() {
         receivingMessages = false;
