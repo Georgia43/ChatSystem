@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Objects;
 
 import Controllers.Server;
 import Controllers.UserInteraction;
@@ -53,9 +54,25 @@ public class Conversation {
             }
         });
 
+
         frame.setSize(400, 300); // Set frame size
         frame.setLocationRelativeTo(null); // Center the frame
         frame.setVisible(true);
+
+        startReceiving(messageArea,name,ipaddress);
+    }
+    private void startReceiving(JTextArea messageArea,String name,String ip) {
+        new Thread(()->{
+            UserInteraction inter = new UserInteraction();
+            while (true){
+                String receivedMess=inter.getMessageReceived();
+                if (Objects.equals(inter.getSender(), ip)){
+                SwingUtilities.invokeLater(()->{
+                            messageArea.append(name+": "+receivedMess+"\n");
+                        }
+                );
+            }}
+        }).start();
     }
 
     public static void main(String[] args) {

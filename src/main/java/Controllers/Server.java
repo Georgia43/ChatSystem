@@ -12,6 +12,7 @@ import java.util.List;
 public class Server {
 
     private ServerSocket serverSocket;
+    private static String mess;
     private volatile boolean isRunning = true;
 
     public static final int MESSAGE_PORT = 37555;
@@ -84,7 +85,9 @@ public class Server {
             String message;
             try {
                 while ((message = in.readLine())!=null) {
-                    HandleMessage.handle(clientSocket.getInetAddress(),message);
+                    mess = HandleMessage.handle(clientSocket.getInetAddress(),message);
+                    UserInteraction.messageReceived=mess;
+                    UserInteraction.sender=clientSocket.getInetAddress();
 
                 }
             } catch (IOException e){

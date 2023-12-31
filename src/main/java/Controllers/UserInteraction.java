@@ -19,6 +19,8 @@ import static Controllers.Broadcast.logger;
 public class UserInteraction {
 
     private Client client ;
+    static String messageReceived;
+    static InetAddress sender;
 
     public UserInteraction() {
         this.client=new Client();
@@ -59,4 +61,13 @@ public class UserInteraction {
             throw new RuntimeException(e);
         }
     }
+
+    public String getMessageReceived(){
+        return messageReceived;
+    }
+
+    public String getSender(){
+        return sender.getHostAddress();
+    }
+
 }
