@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Objects;
 
 import Controllers.Server;
@@ -42,7 +43,12 @@ public class Conversation {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String message = messageField.getText();
-                UserInteraction inter = new UserInteraction();
+                UserInteraction inter = null;
+                try {
+                    inter = new UserInteraction();
+                } catch (UnknownHostException e) {
+                    throw new RuntimeException(e);
+                }
                 try {
                     System.out.println("action listener send");
                     inter.sendMess(message,ipaddress);
@@ -61,20 +67,30 @@ public class Conversation {
 
         startReceiving(messageArea,name,ipaddress);
     }
+
+    private volatile boolean receivingMessages = true;
     private void startReceiving(JTextArea messageArea,String name,String ip) {
         new Thread(()->{
-            UserInteraction inter = new UserInteraction();
-            while (true){
+            UserInteraction inter = null;
+            try {
+                inter = new UserInteraction();
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e);
+            }
+          while (receivingMessages){
                 String receivedMess=inter.getMessageReceived();
                 if (Objects.equals(inter.getSender(), ip)){
                 SwingUtilities.invokeLater(()->{
                             messageArea.append(name+": "+receivedMess+"\n");
                         }
                 );
-            }}
+           }}
         }).start();
     }
 
+    public void stopReceiving() {
+        receivingMessages = false;
+    }
     public static void main(String[] args) {
         // Create an instance of the Conversation class
         Conversation conversation = new Conversation("Mary", "1.1.1.1");

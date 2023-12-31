@@ -22,8 +22,12 @@ public class UserInteraction {
     static String messageReceived;
     static InetAddress sender;
 
-    public UserInteraction() {
+    public UserInteraction() throws UnknownHostException {
+        try{
         this.client=new Client();
+        this.sender = InetAddress.getLocalHost(); // Initialize the sender variable here
+    } catch (UnknownHostException e) {
+        e.printStackTrace();}
     }
 
    /* public void changeUser(String ipAddress){
@@ -66,8 +70,9 @@ public class UserInteraction {
         return messageReceived;
     }
 
-    public String getSender(){
-        return sender.getHostAddress();
+    public String getSender() {
+       if(sender != null) {return sender.getHostAddress();}
+       else {return "this shouldn't happen";}
     }
 
 }
