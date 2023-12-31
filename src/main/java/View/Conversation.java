@@ -20,7 +20,7 @@ public class Conversation {
 
     public Conversation (String name, String ipaddress) {
         JFrame frame = new JFrame("Conversation with " + name);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -131,8 +131,6 @@ public class Conversation {
             }
         }).start();
     }
-
-
 
     private boolean alreadyProcessed(String message) {
         return processedMessages.contains(message);
