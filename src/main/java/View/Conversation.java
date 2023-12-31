@@ -8,7 +8,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import Controllers.Broadcast;
 import Controllers.Server;
@@ -79,8 +81,9 @@ public class Conversation {
 
     private Object lock = new Object(); // Créer un objet verrou
 
+    private Set<String> processedMessages = new HashSet<>();
     private volatile boolean receivingMessages = true;
-    private void startReceiving(JTextArea messageArea,String name,String ip) {
+  /*  private void startReceiving(JTextArea messageArea,String name,String ip) {
         new Thread(()->{
             UserInteraction inter = null;
             try {
@@ -96,7 +99,7 @@ public class Conversation {
                       e.printStackTrace();
                   }
                   String receivedMess = inter.getMessageReceived();
-                  if (Objects.equals(inter.getSender(), ip) && receivedMess != null) {
+                 if (Objects.equals(inter.getSender(), ip) && receivedMess != null) {
                       SwingUtilities.invokeLater(() -> {
                           messageArea.append(name + ": " + receivedMess + "\n");
                       });
@@ -110,7 +113,48 @@ public class Conversation {
             synchronized (lock) { // Synchroniser sur le verrou
                 lock.notify(); // Notifier qu'un nouveau message est arrivé
             }
-        }
+        }*/
+
+    private void startReceiving(String name, String ip, JTextArea messageArea) {
+        new Thread(() -> {
+            new Thread(()->{
+                UserInteraction inter = null;
+                try {
+                    inter = new UserInteraction();
+                } catch (UnknownHostException e) {
+                    throw new RuntimeException(e);
+                }
+            while (receivingMessages) {
+                String receivedMess = inter.receiveMessage(); // Simulated received message
+                if (Objects.equals(getSender(), ip) && !alreadyProcessed(receivedMess)) {
+                    processMessage(receivedMess, name, messageArea);
+                }
+            }
+        }).start();
+    }
+
+
+    private String receiveMessage() {
+        // Simulated receive message logic
+        String receivedMess = inter.getMessageReceived();
+    }
+
+    private String getSender() {
+        // Simulated get sender logic
+        return "IP Address"; // Replace with actual logic
+    }
+
+    private boolean alreadyProcessed(String message) {
+        return processedMessages.contains(message);
+    }
+
+    private void processMessage(String message, String name, JTextArea messageArea) {
+        processedMessages.add(message);
+        SwingUtilities.invokeLater(() -> {
+            messageArea.append(name + ": " + message + "\n");
+        });
+    }
+
 
     public void stopReceiving() {
         receivingMessages = false;
