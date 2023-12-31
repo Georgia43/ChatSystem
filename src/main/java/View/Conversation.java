@@ -88,22 +88,24 @@ public class Conversation {
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
             }
-          while (receivingMessages){
+          while (receivingMessages) {
               synchronized (lock) { // Synchroniser sur le verrou
                   try {
                       lock.wait(); // Attendre jusqu'à ce qu'une notification soit reçue
                   } catch (InterruptedException e) {
                       e.printStackTrace();
                   }
-                String receivedMess=inter.getMessageReceived();
-                if (Objects.equals(inter.getSender(), ip) && receivedMess != null) {
-                SwingUtilities.invokeLater(()->{
-                            messageArea.append(name+": "+receivedMess+"\n");
-                        }
-                );
-           }}
+                  String receivedMess = inter.getMessageReceived();
+                  if (Objects.equals(inter.getSender(), ip) && receivedMess != null) {
+                      SwingUtilities.invokeLater(() -> {
+                          messageArea.append(name + ": " + receivedMess + "\n");
+                      });
+                  }
+              }
+          }
         }).start();
     }
+    
         public void notifyNewMessage() {
             synchronized (lock) { // Synchroniser sur le verrou
                 lock.notify(); // Notifier qu'un nouveau message est arrivé
