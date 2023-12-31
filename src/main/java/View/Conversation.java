@@ -115,8 +115,7 @@ public class Conversation {
             }
         }*/
 
-    private void startReceiving(String name, String ip, JTextArea messageArea) {
-        new Thread(() -> {
+    private void startReceiving(JTextArea messageArea, String name, String ip) {
             new Thread(()->{
                 UserInteraction inter = null;
                 try {
@@ -125,24 +124,15 @@ public class Conversation {
                     throw new RuntimeException(e);
                 }
             while (receivingMessages) {
-                String receivedMess = inter.receiveMessage(); // Simulated received message
-                if (Objects.equals(getSender(), ip) && !alreadyProcessed(receivedMess)) {
+                String receivedMess = inter.getMessageReceived(); // Simulated received message
+                if (Objects.equals(inter.getSender(), ip) && !alreadyProcessed(receivedMess)) {
                     processMessage(receivedMess, name, messageArea);
                 }
             }
         }).start();
     }
+    
 
-
-    private String receiveMessage() {
-        // Simulated receive message logic
-        String receivedMess = inter.getMessageReceived();
-    }
-
-    private String getSender() {
-        // Simulated get sender logic
-        return "IP Address"; // Replace with actual logic
-    }
 
     private boolean alreadyProcessed(String message) {
         return processedMessages.contains(message);
