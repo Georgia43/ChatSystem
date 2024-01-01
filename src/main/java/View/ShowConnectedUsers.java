@@ -65,13 +65,14 @@ public class ShowConnectedUsers {
             Statement statement = connection.createStatement();
              //choisir utilisateur parmi ceux qui sont connectes
             ResultSet result_users = statement.executeQuery("SELECT * FROM USERS WHERE status = 'Connected'");
-            String myIpAddress = InetAddress.getLocalHost().getHostAddress();
-            System.out.println(myIpAddress);
+
             while (result_users.next()) {
                 String name = result_users.getString("name");
                 String ipAddress = result_users.getString("ipAddress");
+                InetAddress strAddress = InetAddress.getByName(ipAddress);
 
-                if (!ipAddress.equals(myIpAddress)) {
+                // pour ne pas être dans sa propre liste d'utilisateurs connectés
+                if (!Broadcast.receivedFromMyself(strAddress)) {
 
                     JPanel userPanel = new JPanel(new BorderLayout()); //panel pour utilisateurs
                     JPanel infoPanel = new JPanel(new GridLayout(1, 1));
