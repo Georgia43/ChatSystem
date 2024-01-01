@@ -11,9 +11,9 @@ import java.util.List;
 
 public class Server {
 
-    private ServerSocket serverSocket;
+    private static ServerSocket serverSocket;
     private static String mess;
-    private volatile boolean isRunning = true;
+    private static volatile boolean isRunning = true;
 
     public static final int MESSAGE_PORT = 37555;
     public static List<ClientHandler> clients = new ArrayList<>();
@@ -50,7 +50,7 @@ public class Server {
 
 
     }
-    public void stop() {
+    public static void stop() {
         isRunning=false;
         try{
             serverSocket.close();

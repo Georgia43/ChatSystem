@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.*;
+import java.sql.Connection;
 
 import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
 
@@ -20,6 +21,7 @@ public class ShowConnectedUsers {
     //parcourir table avec utilisateurs et afficher que ceux qui sont connectés
     private JFrame frame;
     private JPanel panel;
+    JPanel ButtonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
     public ShowConnectedUsers() throws IOException {
 
@@ -27,7 +29,7 @@ public class ShowConnectedUsers {
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //envoyer un messagede déconnexion quand on ferme la frame
+        //envoyer un message de déconnexion quand on ferme la frame
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -47,7 +49,21 @@ public class ShowConnectedUsers {
             }
         });
 
-        frame.add(updateButton, BorderLayout.NORTH); // pour ajouter le vouton en haut
+      /*  JButton DisconnectButton = new JButton("Disconnect");
+        DisconnectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Welcome welcome = new Welcome();
+                Broadcast.sendExitMessage();
+                frame.dispose();
+              //  Server.stop();
+                Broadcast.Receive.closeSocket();
+            }
+        });*/
+
+        ButtonsPanel.add(updateButton); // pour ajouter le bouton en haut
+      //  ButtonsPanel.add(DisconnectButton);
+        frame.add(ButtonsPanel, BorderLayout.NORTH);
         frame.add(new JScrollPane(panel));
         frame.setSize(500, 600);
         frame.setLocationRelativeTo(null);
@@ -71,8 +87,8 @@ public class ShowConnectedUsers {
                 String ipAddress = result_users.getString("ipAddress");
                 InetAddress strAddress = InetAddress.getByName(ipAddress);
 
-                // pour ne pas être dans sa propre liste d'utilisateurs connectés
-                if (!Broadcast.receivedFromMyself(strAddress)) {
+                // pour ne pas être dans sa propre liste d'utilisateurs connectés ni apparaitre quand on a pas choisi le pseudo
+                if (!Broadcast.receivedFromMyself(strAddress) && !name.equals("null")) {
 
                     JPanel userPanel = new JPanel(new BorderLayout()); //panel pour utilisateurs
                     JPanel infoPanel = new JPanel(new GridLayout(1, 1));

@@ -35,8 +35,6 @@ public class Connection {
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
-
         //Broadcast
         Broadcast.Receive receiverThread = new Broadcast.Receive();
         receiverThread.start();

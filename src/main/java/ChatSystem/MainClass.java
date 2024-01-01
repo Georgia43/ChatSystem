@@ -5,6 +5,7 @@ import Model.InputScanner;
 import Controllers.Broadcast;
 import Controllers.Library;
 import View.Connection;
+import View.Welcome;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -19,7 +20,7 @@ public class MainClass {
         final Logger logger = Logger.getLogger("chatsystem");
         Scanner scanner = InputScanner.getScanner();
 
-        Connection connection = new Connection();
+        Welcome welcome = new Welcome();
           /*  Broadcast.Receive receiverThread = new Broadcast.Receive();
             receiverThread.start();
             //envoyer le premier message
