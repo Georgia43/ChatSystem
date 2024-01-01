@@ -9,6 +9,7 @@ import java.net.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Logger;
 import java.util.Map;
@@ -96,15 +97,22 @@ public class Broadcast {
 
     /*RECEPTION*/
     public static class Receive extends Thread {
-       // Map<String, String> contactList = new HashMap<>(); ON A MAINTENANT CREE UNE CLASSE CONTACTLIST
+        private static DatagramSocket socket;
+
+        // Map<String, String> contactList = new HashMap<>(); ON A MAINTENANT CREE UNE CLASSE CONTACTLIST
 	public Receive() {
         //constructeur
+        try {
+            this.socket = new DatagramSocket(PORT); //port qui va recevoir le message
+        } catch (SocketException e) {
+            logger.log(Level.SEVERE, "SocketException: " + e.getMessage());
+        }
     	}
 
         @Override
         public void run() {
             try {
-                DatagramSocket socket = new DatagramSocket(PORT); //port qui va recevoir le message
+               
                 boolean running = true;
 
                 socket.setBroadcast(true);
@@ -123,10 +131,18 @@ public class Broadcast {
                         continue;
                     }
                 }
-                socket.close();
             }
             catch (IOException | SQLException e) {
                 logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+            } finally {
+                closeSocket();
+            }
+        }
+
+        public static void closeSocket() {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+                logger.info("Receive socket closed.");
             }
         }
         static void handleReceived(InetAddress sender, String received) throws SQLException, IOException {
@@ -150,7 +166,6 @@ public class Broadcast {
                     // on créé la base de données pour les messages pour chaque personne
             } else if (received.equals("DISCONNECTING")) {
                 AppData.DeletefromContactList(sender);
-                UpdateUsers.changeStatusToDisconnected(sender,CreateDatabase.MESSAGE_DATABSE);
             }
         }
     }
@@ -189,6 +204,8 @@ public class Broadcast {
                 exitSocket.send(exitPacket);
             }
             exitSocket.close();
+            System.out.println(AppData.getNonLoopbackAddress());
+           UpdateUsers.changeStatusToDisconnected(Objects.requireNonNull(AppData.getNonLoopbackAddress()), CreateDatabase.MESSAGE_DATABSE);
         }
 
         catch (IOException e) {

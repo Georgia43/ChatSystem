@@ -2,6 +2,8 @@ package Model;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.net.*;
+import java.util.Enumeration;
 import java.util.Scanner;
 
 public class AppData {
@@ -45,6 +47,29 @@ public class AppData {
         return res;
     }
 
+    public static InetAddress getNonLoopbackAddress() {
+        try {
+            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+
+            while (networkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = networkInterfaces.nextElement();
+
+                Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+
+                while (inetAddresses.hasMoreElements()) {
+                    InetAddress inetAddress = inetAddresses.nextElement();
+
+                    // Check if it's a non-loopback, non-link-local address
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
+                        return inetAddress;
+                    }
+                }
+            }
+            return null;  // No non-loopback address found
+        } catch (SocketException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }
 
 
