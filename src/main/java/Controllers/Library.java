@@ -51,6 +51,24 @@ public class Library {
         }
     }
 
+    public static void SendNewNickname(String NewNickname) throws InterruptedException {
+        try{
+            DatagramSocket NameSocket = new DatagramSocket();
+            String Nickname = "CHANGE_NICKNAME_" + NewNickname;
+            byte[] NicknameMessage = Nickname.getBytes();
+            for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
+                InetAddress id = pers.getKey(); //récupérer l'adresse IP des membres de la liste de contact
+
+                DatagramPacket NamePacket = new DatagramPacket(NicknameMessage, NicknameMessage.length, id, Broadcast.PORT);
+                NameSocket.send(NamePacket);
+            }
+            NameSocket.close();
+        }
+        catch (IOException e) {
+            logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+        }
+    }
+
 
 
     //récupérer liste avec les utilisateurs connectés

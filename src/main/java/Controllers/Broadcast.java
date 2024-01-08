@@ -164,7 +164,13 @@ public class Broadcast {
                     UpdateUsers.changeNicknameDB(sender,nickname,CreateDatabase.MESSAGE_DATABSE);}
                     Client.startConnection(sender);
                     // on créé la base de données pour les messages pour chaque personne
-            } else if (received.equals("DISCONNECTING")) {
+            } else if (received.startsWith("CHANGE_NICKNAME_")){
+                String prefix = "CHANGE_NICKNAME_";
+                String nickname = received.substring(prefix.length());
+                AppData.changeContactList(sender, nickname);
+            }
+
+            else if (received.equals("DISCONNECTING")) {
                 AppData.DeletefromContactList(sender);
             }
         }

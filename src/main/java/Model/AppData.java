@@ -34,6 +34,14 @@ public class AppData {
 
     }
 
+    public static void changeContactList(InetAddress sender, String received) {
+        for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
+            if (pers.getKey().equals(sender)){
+                pers.setValue(received);
+            }
+        }
+    }
+
     public static String getNicknameCurrentUser() {return currentUser.getNickname();}
 
     /*POUR ÉCHANGE DE MESSAGES*/
