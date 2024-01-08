@@ -48,9 +48,8 @@ public class CreateDatabase {
             Statement statement = connection.createStatement();
             String strAddress = address.getHostAddress().replace('.', '_');
             String Messages = "CREATE TABLE IF NOT EXISTS Messages_" + strAddress + "("
-                    + "idMessage INTEGER PRIMARY KEY,"
-                    + "content VARCHAR(200),"
-                    + "dateHeure DATETIME)";
+                    + "dateHeure DATETIME INTEGER PRIMARY KEY,"
+                    + "content VARCHAR(200))";
             statement.executeUpdate(Messages);
             System.out.println("Table Messages_" + strAddress + " créée.");
         }
