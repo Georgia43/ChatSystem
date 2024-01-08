@@ -1,5 +1,6 @@
 package View;
 import Controllers.Broadcast;
+import Controllers.Library;
 import Controllers.Server;
 import Controllers.UserInteraction;
 
@@ -42,10 +43,18 @@ public class ShowConnectedUsers {
 
         // Create and add the "Update" button
         JButton updateButton = new JButton("Update");
+        // change nickname
+        JButton changeNickButton = new JButton("Change Nickname");
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateConnectedUsers();
+            }
+        });
+        changeNickButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Library.SendNewNickname();
             }
         });
 
