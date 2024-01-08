@@ -56,7 +56,7 @@ public class UpdateUsers {
     public static boolean changeStatusToDisconnected(InetAddress Address, String url){
         try {
             CreateDatabase database = new CreateDatabase(url);
-            Statement statement = database.connection.createStatement();
+          //  Statement statement = database.connection.createStatement();
             String strAddress = Address.getHostAddress();
 
             String updateQuery = "UPDATE Users SET Status = ? WHERE ipAddress = '"+strAddress+ "'";

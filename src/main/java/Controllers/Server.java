@@ -35,7 +35,8 @@ public class Server {
                 /*Attente d'une connexion client*/
                 while (isRunning) {
                     Socket socketAccepted = serverSocket.accept();
-                    ClientHandler clientHandler = new ClientHandler(socketAccepted);
+                    InetAddress clientAddress = socketAccepted.getInetAddress();
+                    ClientHandler clientHandler = new ClientHandler(socketAccepted, clientAddress);
                     ClientsList.clients.add(clientHandler);
                     clientHandler.start();
 
@@ -81,45 +82,72 @@ public class Server {
         private PrintWriter out;
         private BufferedReader in;
 
-        public ClientHandler(Socket socket){
+        InetAddress ipSender;
+
+        public ClientHandler(Socket socket, InetAddress ipaddress) {
             this.clientSocket = socket;
+            this.ipSender = ipaddress;
             try {
                 System.out.println("i am in client handler");
-                out = new PrintWriter(clientSocket.getOutputStream(),true);
+                out = new PrintWriter(clientSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            } catch (IOException e){
-                e.printStackTrace();;
-            }
+            } catch (IOException e) {
+                e.printStackTrace();
+                ;
+            }}
+        public InetAddress getIpSender(){
+            return this.ipSender;
         }
 
-
-        @Override
-        public void run() {
-            String message;
-            try {
-                while ((message = in.readLine())!=null) {
-                    UserInteraction.messageReceived = HandleMessage.handle(clientSocket.getInetAddress(), message);
-                    UserInteraction.sender = clientSocket.getInetAddress();
-
-
+            public void sendMessage (String message) throws IOException {
+                //try {
+                //DatagramSocket respSocket = new DatagramSocket();
+                String mess = "MESSAGE_" + message;
+                //byte [] respMessage= mess.getBytes();
+                if (out != null) {
+                    out.println(mess);
+                } else {
+                    System.err.println("Connection not established. Cannot send message.");
                 }
-            } catch (IOException e){
-                e.printStackTrace();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } finally {
-                close();
+                //DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, Server.MESSAGE_PORT);
+                // respSocket.send(respPacket);
+                //respSocket.close();
+                //BDD STOCKER MESSAGE
+                //}
+                //catch (IOException e) {
+                //  logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+                // }
+
+            }
+
+
+            @Override
+            public void run () {
+            String message;
+                try {
+                    while ((message = in.readLine()) != null) {
+                        UserInteraction.messageReceived = HandleMessage.handle(clientSocket.getInetAddress(), message);
+                        UserInteraction.sender = clientSocket.getInetAddress();
+
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    close();
+                }
+            }
+            public void close () {
+                try {
+                    in.close();
+                    out.close();
+                    clientSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
-        public void close(){
-            try{
-                in.close();
-                out.close();
-                clientSocket.close();
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-    }
 }

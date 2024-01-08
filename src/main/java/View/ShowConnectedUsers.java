@@ -75,6 +75,7 @@ public class ShowConnectedUsers {
 
         ButtonsPanel.add(updateButton); // pour ajouter le bouton en haut
       //  ButtonsPanel.add(DisconnectButton);
+        ButtonsPanel.add(changeNickButton);
         frame.add(ButtonsPanel, BorderLayout.NORTH);
         frame.add(new JScrollPane(panel));
         frame.setSize(500, 600);

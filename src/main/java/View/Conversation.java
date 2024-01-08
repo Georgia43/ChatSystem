@@ -27,13 +27,13 @@ public class Conversation {
     public Conversation (String name, String ipaddress) {
         JFrame frame = new JFrame("Conversation with " + name);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter() {
+      /*  frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 stopReceiving();
             }
         });
-
+*/
         // Create the JTextArea for displaying messages
         JTextArea messageArea = new JTextArea();
         messageArea.setEditable(false);

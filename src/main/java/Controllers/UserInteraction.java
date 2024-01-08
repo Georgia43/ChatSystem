@@ -4,6 +4,7 @@ import Controllers.Client;
 import Controllers.Database.CreateDatabase;
 import Controllers.Database.UpdateMessages;
 import Model.AppData;
+import Model.ClientsList;
 import Model.User;
 
 import java.net.DatagramPacket;
@@ -21,13 +22,13 @@ import static Model.AppData.getNonLoopbackAddress;
 
 public class UserInteraction {
 
-    private Client client ;
+    //private Client client ;
     static String messageReceived;
     static InetAddress sender;
 
     public UserInteraction() throws UnknownHostException {
         try{
-        //this.client=new Client();
+      //  this.client=new Client();
         this.sender = InetAddress.getLocalHost(); // Initialize the sender variable here
     } catch (UnknownHostException e) {
         e.printStackTrace();}
@@ -62,7 +63,11 @@ public class UserInteraction {
     public void sendMess(String message,String ipAddress) throws IOException {
         try{
             InetAddress ip = InetAddress.getByName(ipAddress);
-            client.sendMessage(message);
+
+            Server.ClientHandler clientHandler = ClientsList.getClientHandlerByIP(ip);
+            assert clientHandler != null;
+            clientHandler.sendMessage(message);
+
             UpdateMessages.addSentMessage(ip,message,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -32,7 +32,7 @@ public class Client {
     public Client(InetAddress ip) throws IOException {
         System.out.println("!!!!!!!!!!!!!!!!!enter in startconnection");
         clientSocket = new Socket(ip, Server.MESSAGE_PORT);
-        Server.ClientHandler clientHandler = new Server.ClientHandler(clientSocket);
+        Server.ClientHandler clientHandler = new Server.ClientHandler(clientSocket,ip);
         ClientsList.clients.add(clientHandler);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -45,7 +45,7 @@ public class Client {
     }*/
 
     /*envoyer un message*/
-    public void sendMessage(String message) throws IOException {
+   /* public void sendMessage(String message) throws IOException {
         //try {
             //DatagramSocket respSocket = new DatagramSocket();
             String mess = "MESSAGE_"+message;
@@ -65,6 +65,6 @@ public class Client {
        // }
 
 
-    }
+    }*/
 
 }

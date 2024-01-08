@@ -214,7 +214,6 @@ public class Broadcast {
             System.out.println(AppData.getNonLoopbackAddress());
            UpdateUsers.changeStatusToDisconnected(Objects.requireNonNull(AppData.getNonLoopbackAddress()), CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
         }
-
         catch (IOException e) {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
         }
