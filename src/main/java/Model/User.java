@@ -15,28 +15,28 @@ public class User {
         private String nickname;
         private InetAddress id;
 
-        private static Client client = new Client();
+        //private static Client client = new Client();
 
-        private static Socket clientSocket; // pour maintenir la connexion
+        private Socket clientSocket; // pour maintenir la connexion
 
 
         /*méthodes*/
         public String getNickname() {return this.nickname;}
         public InetAddress getId() {return this.id;}
 
-    public static void recordConnectionSocket(Socket socket) {
+   /* public static void recordConnectionSocket(Socket socket) {
             // record a socket that canbe created
           //  - when we establish ourselves
           //  - when the other user connects to our global server socket
         System.out.println("i am in recordConnectionSocket");
-        clientSocket = socket;
-        client.setSocket(clientSocket);
-        Server.ClientHandler clientHandler = new Server.ClientHandler(clientSocket);
+       // clientSocket = socket;
+       // client.setSocket(clientSocket);
+        Server.ClientHandler clientHandler = new Server.ClientHandler(socket);
         Server.clients.add(clientHandler);
         clientHandler.start();
-    }
+    }*/
 
-      public static void addConnection(ServerSocket socket) {
+     /* public static void addConnection(ServerSocket socket) {
                 try{
                   // ServerSocket socket = new ServerSocket(Server.MESSAGE_PORT);
                     System.out.println("!!!!!!!!!!!!!!!!!! i am in add connection");
@@ -46,7 +46,7 @@ public class User {
                 } catch (IOException e) {
                         e.printStackTrace();
               }
-        }
+        }*/
 
         public void setNickname(String name) {
             this.nickname= name;

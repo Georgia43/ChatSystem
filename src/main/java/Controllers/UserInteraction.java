@@ -27,7 +27,7 @@ public class UserInteraction {
 
     public UserInteraction() throws UnknownHostException {
         try{
-        this.client=new Client();
+        //this.client=new Client();
         this.sender = InetAddress.getLocalHost(); // Initialize the sender variable here
     } catch (UnknownHostException e) {
         e.printStackTrace();}

@@ -82,13 +82,13 @@ public class Conversation {
         frame.setLocationRelativeTo(null); // Center the frame
         frame.setVisible(true);
 
-        startReceiving(messageArea,name,ipaddress);
+       // startReceiving(messageArea,name,ipaddress);
     }
 
    // private Object lock = new Object(); // Créer un objet verrou
 
     private Set<String> processedMessages = new HashSet<>();
-    private volatile boolean receivingMessages = true;
+  //  private volatile boolean receivingMessages = true;
   /*  private void startReceiving(JTextArea messageArea,String name,String ip) {
         new Thread(()->{
             UserInteraction inter = null;
@@ -121,7 +121,7 @@ public class Conversation {
             }
         }*/
 
-    private void startReceiving(JTextArea messageArea, String name, String ip) {
+    /*private void startReceiving(JTextArea messageArea, String name, String ip) {
             new Thread(()->{
                 UserInteraction inter = null;
                 try {
@@ -143,7 +143,7 @@ public class Conversation {
                 }
             }
         }).start();
-    }
+    }*/
 
     private boolean alreadyProcessed(String message) {
         return processedMessages.contains(message);
@@ -157,9 +157,9 @@ public class Conversation {
     }
 
 
-    public void stopReceiving() {
+    /*public void stopReceiving() {
         receivingMessages = false;
-    }
+    }*/
     public static void main(String[] args) {
         // Create an instance of the Conversation class
         Conversation conversation = new Conversation("Mary", "1.1.1.1");

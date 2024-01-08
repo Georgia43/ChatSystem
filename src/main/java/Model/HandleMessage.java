@@ -6,6 +6,9 @@ import Controllers.Server;
 
 import java.net.*;
 import java.sql.SQLException;
+import java.util.Objects;
+
+import static Model.AppData.getNonLoopbackAddress;
 
 public class HandleMessage {
 
@@ -14,11 +17,14 @@ public class HandleMessage {
             String prefix = "MESSAGE_";
             String message = mess_received.substring(prefix.length());
             //Base de Données
-          //  CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
-           // UpdateMessages.addMessage(sender,message,CreateDatabase.MESSAGE_DATABSE);
+            UpdateMessages.addReceivedMessage(sender, mess_received, CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+            //affichage
+
             System.out.println(message);
             return message;
-        } else { return "ceci ne devrait pas arriver";}
+        } else {
+            throw new RuntimeException("invalid message received");
+        }
 
     }
 }

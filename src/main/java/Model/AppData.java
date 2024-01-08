@@ -1,10 +1,9 @@
 package Model;
+import Controllers.Server;
+
 import java.net.InetAddress;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.net.*;
-import java.util.Enumeration;
-import java.util.Scanner;
 
 public class AppData {
     private static Map<InetAddress, String> contactList = new HashMap<>();

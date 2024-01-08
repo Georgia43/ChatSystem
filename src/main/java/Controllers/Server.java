@@ -1,5 +1,6 @@
 package Controllers;
 
+import Model.ClientsList;
 import Model.HandleMessage;
 import Model.User;
 
@@ -8,6 +9,7 @@ import java.net.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import View.Conversation;
 
 public class Server {
 
@@ -16,7 +18,13 @@ public class Server {
     private static volatile boolean isRunning = true;
 
     public static final int MESSAGE_PORT = 37555;
-    public static List<ClientHandler> clients = new ArrayList<>();
+
+    private List<Observer> observers = new ArrayList<>();
+
+    interface  Observer {
+
+    }
+
 
     public void start() {
         new Thread (()-> {
@@ -26,9 +34,14 @@ public class Server {
 
                 /*Attente d'une connexion client*/
                 while (isRunning) {
+                    Socket socketAccepted = serverSocket.accept();
+                    ClientHandler clientHandler = new ClientHandler(socketAccepted);
+                    ClientsList.clients.add(clientHandler);
+                    clientHandler.start();
 
+                    //User.recordConnectionSocket(socketAccepted);
                     System.out.println("!!!!!!!!!!!!!!!!!! i will enter add connection");
-                    User.addConnection(serverSocket);
+                    //User.addConnection(serverSocket);
                     System.out.println("!!!!!!!!!!!!!!!!!! i am waiting");
                 }
             } catch (IOException e) {
@@ -54,7 +67,7 @@ public class Server {
         isRunning=false;
         try{
             serverSocket.close();
-            for (ClientHandler client : clients) {
+            for (ClientHandler client : ClientsList.clients) {
                 client.close();
             }
         } catch (IOException e){
@@ -86,9 +99,9 @@ public class Server {
             String message;
             try {
                 while ((message = in.readLine())!=null) {
-                    mess = HandleMessage.handle(clientSocket.getInetAddress(),message);
-                    UserInteraction.messageReceived=mess;
-                    UserInteraction.sender=clientSocket.getInetAddress();
+                    UserInteraction.messageReceived = HandleMessage.handle(clientSocket.getInetAddress(), message);
+                    UserInteraction.sender = clientSocket.getInetAddress();
+
 
                 }
             } catch (IOException e){
