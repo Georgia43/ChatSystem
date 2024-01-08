@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import static Model.AppData.currentUser;
+import static Model.AppData.getNonLoopbackAddress;
 
 /*FOR CONTACT DISCOVERY*/
 public class Broadcast {
@@ -85,7 +86,7 @@ public class Broadcast {
             DatagramPacket message= new DatagramPacket(FirstMessage, FirstMessage.length, getBroadcastAddress(), PORT);
             socket.send(message);
             // we add the table with the users
-            CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
+            CreateDatabase database = new CreateDatabase(CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
             database.tableUsers();
         }
         catch (IOException e) {
@@ -155,13 +156,13 @@ public class Broadcast {
                     String nickname = received.substring(prefix.length());
                     AppData.addContactList(sender, nickname);
                     System.out.println("nickname added to contact list");
-                    CreateDatabase database = new CreateDatabase(CreateDatabase.MESSAGE_DATABSE);
+                    CreateDatabase database = new CreateDatabase(CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
                     database.tableMessages(sender);
-                    UpdateUsers.addUser(sender, nickname, CreateDatabase.MESSAGE_DATABSE);
-                    UpdateUsers.changeStatusToConnected(sender,CreateDatabase.MESSAGE_DATABSE);
+                    UpdateUsers.addUser(sender, nickname, CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+                    UpdateUsers.changeStatusToConnected(sender,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
                     // si l'utilisateur existe deja dans la base de données mais a changé de pseudo lors de la connexion
-                    if (!UpdateUsers.NicknameIsSame(nickname,CreateDatabase.MESSAGE_DATABSE)){
-                    UpdateUsers.changeNicknameDB(sender,nickname,CreateDatabase.MESSAGE_DATABSE);}
+                    if (!UpdateUsers.NicknameIsSame(nickname,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())))){
+                    UpdateUsers.changeNicknameDB(sender,nickname,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));}
                     Client.startConnection(sender);
                     // on créé la base de données pour les messages pour chaque personne
             } else if (received.startsWith("CHANGE_NICKNAME_")){
@@ -211,7 +212,7 @@ public class Broadcast {
             }
             exitSocket.close();
             System.out.println(AppData.getNonLoopbackAddress());
-           UpdateUsers.changeStatusToDisconnected(Objects.requireNonNull(AppData.getNonLoopbackAddress()), CreateDatabase.MESSAGE_DATABSE);
+           UpdateUsers.changeStatusToDisconnected(Objects.requireNonNull(AppData.getNonLoopbackAddress()), CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
         }
 
         catch (IOException e) {

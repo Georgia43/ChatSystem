@@ -21,7 +21,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
 
 
 public class Connection {

@@ -7,14 +7,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 import Controllers.Broadcast;
+import Controllers.Database.CreateDatabase;
+import Controllers.Database.UpdateMessages;
 import Controllers.Server;
 import Controllers.UserInteraction;
+
+import static Model.AppData.getNonLoopbackAddress;
 
 public class Conversation {
 
@@ -126,6 +132,13 @@ public class Conversation {
             while (receivingMessages) {
                 String receivedMess = inter.getMessageReceived(); // Simulated received message
                 if (Objects.equals(inter.getSender(), ip) && !alreadyProcessed(receivedMess)) {
+                    try {
+                        UpdateMessages.addReceivedMessage(InetAddress.getByName(ip), receivedMess, CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (UnknownHostException e) {
+                        throw new RuntimeException(e);
+                    }
                     processMessage(receivedMess, name, messageArea);
                 }
             }

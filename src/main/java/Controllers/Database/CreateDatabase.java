@@ -11,8 +11,6 @@ import static Controllers.Broadcast.logger;
 
 
 public class CreateDatabase {
-
-    public static String MESSAGE_DATABSE = "jdbc:sqlite:BDDchatsystem.db";
     public Connection connection = null;
 
     public String url;
@@ -25,6 +23,11 @@ public class CreateDatabase {
         } catch (SQLException e) {
             System.out.println("Connection a échoué.");
         }
+    }
+
+    public static String createURL(InetAddress ipaddress) {
+        String strAddress = ipaddress.getHostAddress().replace('.', '_');
+        return "jdbc:sqlite:BDDchatsystem" + strAddress + ".db";
     }
 
     public void tableUsers() throws SQLException {
@@ -49,6 +52,7 @@ public class CreateDatabase {
             String strAddress = address.getHostAddress().replace('.', '_');
             String Messages = "CREATE TABLE IF NOT EXISTS Messages_" + strAddress + "("
                     + "dateHeure DATETIME INTEGER PRIMARY KEY,"
+                    + "sender VARCHAR(20),"
                     + "content VARCHAR(200))";
             statement.executeUpdate(Messages);
             System.out.println("Table Messages_" + strAddress + " créée.");

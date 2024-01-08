@@ -1,5 +1,7 @@
 package Controllers.Database;
 
+import Model.AppData;
+
 import java.net.InetAddress;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,19 +9,27 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
-
-import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
 
 public class UpdateMessages {
 
-    public static boolean addMessage(InetAddress Address, String Content, String url) throws SQLException {
+
+    public static boolean addReceivedMessage(InetAddress Address, String Content, String url) throws SQLException {
+        return addMessage(Address, Content, url, true);
+    }
+    public static boolean addSentMessage(InetAddress Address, String Content, String url) throws SQLException {
+        return addMessage(Address, Content, url, false);
+    }
+
+    private static boolean addMessage(InetAddress Address, String Content, String url, boolean received) throws SQLException {
 
         try {
            CreateDatabase database = new CreateDatabase(url);
            // Statement statement = database.connection.createStatement();
             String strAddress = Address.getHostAddress().replace('.', '_');
-            String insertQuery = "INSERT INTO Messages_" + strAddress + "(dateHeure, content) VALUES (?, ?)";
+            String insertQuery = "INSERT INTO Messages_" + strAddress + "(dateHeure, sender, content) VALUES (?, ?, ?)";
+            String MyAddress = Objects.requireNonNull(AppData.getNonLoopbackAddress()).getHostAddress().replace('.', '_');
 
             try (PreparedStatement preparedStatement = database.connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
                 // Set values for the parameters using the Users class methods
@@ -29,7 +39,11 @@ public class UpdateMessages {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String formattedDateTime = currentDateTime.format(formatter);
                 preparedStatement.setString(1,formattedDateTime);
-                preparedStatement.setString(2, Content);
+                preparedStatement.setString(3, Content);
+                if (received) {
+                preparedStatement.setString(2, strAddress);}
+                else {preparedStatement.setString(2, MyAddress);}
+
 
                 preparedStatement.executeUpdate();
                 return true;

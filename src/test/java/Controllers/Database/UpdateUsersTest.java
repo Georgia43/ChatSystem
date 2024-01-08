@@ -7,7 +7,6 @@ import junit.framework.TestSuite;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
 
 public class UpdateUsersTest extends TestCase {
     /**

@@ -13,9 +13,11 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 
 import static Controllers.Broadcast.logger;
+import static Model.AppData.getNonLoopbackAddress;
 
 public class UserInteraction {
 
@@ -61,7 +63,7 @@ public class UserInteraction {
         try{
             InetAddress ip = InetAddress.getByName(ipAddress);
             client.sendMessage(message);
-          UpdateMessages.addMessage(ip,message,CreateDatabase.MESSAGE_DATABSE);
+            UpdateMessages.addSentMessage(ip,message,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {

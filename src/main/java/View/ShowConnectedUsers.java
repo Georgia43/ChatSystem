@@ -1,5 +1,6 @@
 package View;
 import Controllers.Broadcast;
+import Controllers.Database.CreateDatabase;
 import Controllers.Library;
 import Controllers.Server;
 import Controllers.UserInteraction;
@@ -15,8 +16,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.*;
 import java.sql.Connection;
+import java.util.Objects;
 
-import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
+import static Model.AppData.getNonLoopbackAddress;
+
 
 public class ShowConnectedUsers {
     //parcourir table avec utilisateurs et afficher que ceux qui sont connectés
@@ -86,7 +89,7 @@ public class ShowConnectedUsers {
         try {
             panel.removeAll();
 
-            java.sql.Connection connection = DriverManager.getConnection(MESSAGE_DATABSE);
+            java.sql.Connection connection = DriverManager.getConnection(CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
             Statement statement = connection.createStatement();
              //choisir utilisateur parmi ceux qui sont connectes
             ResultSet result_users = statement.executeQuery("SELECT * FROM USERS WHERE status = 'Connected'");

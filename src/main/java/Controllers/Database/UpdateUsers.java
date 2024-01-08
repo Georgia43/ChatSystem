@@ -3,7 +3,6 @@ package Controllers.Database;
 import java.net.InetAddress;
 import java.sql.*;
 
-import static Controllers.Database.CreateDatabase.MESSAGE_DATABSE;
 
 public class UpdateUsers {
     public static boolean addUser(InetAddress Address, String Nickname, String url) {
