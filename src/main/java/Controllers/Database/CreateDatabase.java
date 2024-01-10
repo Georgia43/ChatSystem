@@ -19,7 +19,7 @@ public class CreateDatabase {
         this.url = url;
         try{
             connection = DriverManager.getConnection(url);
-            System.out.println("Connecté à la base de données.");
+            System.out.println("[CreateDatabase] Connected to database.");
         } catch (SQLException e) {
             System.out.println("Connection a échoué.");
         }
@@ -27,6 +27,7 @@ public class CreateDatabase {
 
     public static String createURL(InetAddress ipaddress) {
         String strAddress = ipaddress.getHostAddress().replace('.', '_');
+        System.out.println("[CreateDatabase] database -- "+ strAddress);
         return "jdbc:sqlite:BDDchatsystem" + strAddress + ".db";
     }
 
@@ -36,8 +37,7 @@ public class CreateDatabase {
 
             String usersTable = "CREATE TABLE IF NOT EXISTS Users ("
                     + "ipAddress VARCHAR(30) PRIMARY KEY, "
-                    + "name VARCHAR(20) NOT NULL, "
-                    + "status VARCHAR(20) NOT NULL)";
+                    + "name VARCHAR(20) NOT NULL) ";
             statement.executeUpdate(usersTable);
             System.out.println("Table Users créée.");
         } catch (SQLException e) {

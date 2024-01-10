@@ -4,6 +4,7 @@ import Controllers.Database.CreateDatabase;
 import Controllers.Library;
 import Controllers.Server;
 import Controllers.UserInteraction;
+import Model.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +17,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.*;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static Model.AppData.getNonLoopbackAddress;
@@ -87,10 +89,9 @@ public class ShowConnectedUsers {
     }
 
     public void updateConnectedUsers() {
-        try {
-            panel.removeAll();
+        panel.removeAll();
 
-            java.sql.Connection connection = DriverManager.getConnection(CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+           /* java.sql.Connection connection = DriverManager.getConnection(CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
             Statement statement = connection.createStatement();
              //choisir utilisateur parmi ceux qui sont connectes
             ResultSet result_users = statement.executeQuery("SELECT * FROM USERS WHERE status = 'Connected'");
@@ -98,41 +99,42 @@ public class ShowConnectedUsers {
             while (result_users.next()) {
                 String name = result_users.getString("name");
                 String ipAddress = result_users.getString("ipAddress");
-                InetAddress strAddress = InetAddress.getByName(ipAddress);
+                InetAddress strAddress = InetAddress.getByName(ipAddress);*/
 
-                // pour ne pas être dans sa propre liste d'utilisateurs connectés ni apparaitre quand on a pas choisi le pseudo
-                if (!Broadcast.receivedFromMyself(strAddress) && !name.equals("null")) {
+        ArrayList<User> connectedUsers = Library.GetConnectedUserList();
 
-                    JPanel userPanel = new JPanel(new BorderLayout()); //panel pour utilisateurs
-                    JPanel infoPanel = new JPanel(new GridLayout(1, 1));
-                    infoPanel.add(new JLabel("name:"));
-                    infoPanel.add(new JLabel(name));
-                    userPanel.add(infoPanel, BorderLayout.CENTER);
+        for (User user : connectedUsers) {
+            String name = Library.getNameUser(user);
+            InetAddress ipAddress = Library.getIpUser(user);
 
-                    //je choisis la personne avec laquelle je veux échanger des messages ou voir mon historique de messages
-                    JButton button_message = new JButton("Accept");
+            // pour ne pas être dans sa propre liste d'utilisateurs connectés ni apparaitre quand on a pas choisi le pseudo
+            if (!Broadcast.receivedFromMyself(ipAddress) && !name.equals("null")) {
 
-                    button_message.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent actionEvent) {
-                            Conversation conv = new Conversation(name, ipAddress);
-                        }
-                    });
+                JPanel userPanel = new JPanel(new BorderLayout()); //panel pour utilisateurs
+                JPanel infoPanel = new JPanel(new GridLayout(1, 1));
+                infoPanel.add(new JLabel("name:"));
+                infoPanel.add(new JLabel(name));
+                userPanel.add(infoPanel, BorderLayout.CENTER);
 
-                    userPanel.add(button_message, BorderLayout.SOUTH);
-                    //ajouter panel pour utilisateurs au panel principal
-                    panel.add(userPanel);
-                }
-                }
+                //je choisis la personne avec laquelle je veux échanger des messages ou voir mon historique de messages
+                JButton button_message = new JButton("Accept");
 
-                frame.revalidate();
-                frame.repaint();
-           // }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
+                button_message.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        Conversation conv = new Conversation(name, ipAddress.getHostAddress());
+                    }
+                });
+
+                userPanel.add(button_message, BorderLayout.SOUTH);
+                //ajouter panel pour utilisateurs au panel principal
+                panel.add(userPanel);
+            }
+            }
+
+        frame.revalidate();
+        frame.repaint();
+        // }
     }
 
     public static void main(String[] args) throws IOException {

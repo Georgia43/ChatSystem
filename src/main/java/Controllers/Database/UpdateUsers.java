@@ -16,14 +16,13 @@ public class UpdateUsers {
                 return false;
 
             }
-            String insertQuery = "INSERT INTO Users (ipAddress, name, status) VALUES (?, ?, ?)";
+            String insertQuery = "INSERT INTO Users (ipAddress, name) VALUES (?, ?)";
 
             try (PreparedStatement preparedStatement = database.connection.prepareStatement(insertQuery)) {
                 // Set values for the parameters using the Users class methods
                 // the preparedStatement.setString() method is used to set the values for the placeholders (?) in the SQL query
                preparedStatement.setString(1, Address.getHostAddress());
                preparedStatement.setString(2, Nickname);
-               preparedStatement.setString(3,"null");
 
                 preparedStatement.executeUpdate();
                 System.out.println("User added successfully");
@@ -53,12 +52,12 @@ public class UpdateUsers {
         return false;
     }
 
-    public static boolean changeStatusToDisconnected(InetAddress Address, String url){
+   /* public static boolean changeStatusToDisconnected(InetAddress Address, String url){
         try {
             CreateDatabase database = new CreateDatabase(url);
           //  Statement statement = database.connection.createStatement();
             String strAddress = Address.getHostAddress();
-
+            System.out.println("[UpdateUsers] Connected to the database to disconnect.");
             String updateQuery = "UPDATE Users SET Status = ? WHERE ipAddress = '"+strAddress+ "'";
 
             try (PreparedStatement preparedStatement = database.connection.prepareStatement(updateQuery)) {
@@ -77,9 +76,9 @@ public class UpdateUsers {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 
-    public static boolean changeStatusToConnected(InetAddress Address, String url){
+   /* public static boolean changeStatusToConnected(InetAddress Address, String url){
         try {
             CreateDatabase database = new CreateDatabase(url);
             Statement statement = database.connection.createStatement();
@@ -103,7 +102,7 @@ public class UpdateUsers {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
     //verifier si le pseudo entré est le meme que celui de la database quand la personne se connecte de nouveau
     public static boolean NicknameIsSame(String nickname, String url) {
 

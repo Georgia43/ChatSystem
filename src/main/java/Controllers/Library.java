@@ -11,6 +11,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static Model.AppData.getNonLoopbackAddress;
+
 /*FOR CONTACT DISCOVERY*/
 public class Library {
 
@@ -91,5 +93,11 @@ public class Library {
         return connectedUsers;
     }
 
-  
+    public static String getNameUser(Model.User user){
+      return user.getNickname();
+    }
+
+    public static InetAddress getIpUser (Model.User user) {
+        return user.getId();
+    }
 }

@@ -160,7 +160,7 @@ public class Broadcast {
                     CreateDatabase database = new CreateDatabase(CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
                     database.tableMessages(sender);
                     UpdateUsers.addUser(sender, nickname, CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
-                    UpdateUsers.changeStatusToConnected(sender,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+                  //  UpdateUsers.changeStatusToConnected(sender,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
                     // si l'utilisateur existe deja dans la base de données mais a changé de pseudo lors de la connexion
                     if (!UpdateUsers.NicknameIsSame(nickname,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())))){
                     UpdateUsers.changeNicknameDB(sender,nickname,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));}
@@ -175,6 +175,7 @@ public class Broadcast {
             }
 
             else if (received.equals("DISCONNECTING")) {
+               // UpdateUsers.changeStatusToDisconnected(sender, CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
                 AppData.DeletefromContactList(sender);
             }
         }
@@ -214,8 +215,8 @@ public class Broadcast {
                 exitSocket.send(exitPacket);
             }
             exitSocket.close();
-            System.out.println(AppData.getNonLoopbackAddress());
-           UpdateUsers.changeStatusToDisconnected(Objects.requireNonNull(AppData.getNonLoopbackAddress()), CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+           // System.out.println(AppData.getNonLoopbackAddress());
+            System.out.println("[Broadcast] Just sent the message to disconnect.");
         }
         catch (IOException e) {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
