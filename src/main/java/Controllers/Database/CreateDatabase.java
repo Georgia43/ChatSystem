@@ -19,12 +19,11 @@ public class CreateDatabase {
         this.url = url;
         try{
             connection = DriverManager.getConnection(url);
-            System.out.println("[CreateDatabase] Connected to database.");
+         //   System.out.println("[CreateDatabase] Connected to database.");
         } catch (SQLException e) {
-            System.out.println("Connection a échoué.");
+          e.printStackTrace();
         }
     }
-
     public static String createURL(InetAddress ipaddress) {
         String strAddress = ipaddress.getHostAddress().replace('.', '_');
         System.out.println("[CreateDatabase] database -- "+ strAddress);

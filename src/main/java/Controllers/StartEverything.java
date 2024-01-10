@@ -15,7 +15,7 @@ import Model.ClientsList;
 
 public class StartEverything {
     //Broadcast
-    public StartEverything() {
+    public StartEverything() throws IOException, InterruptedException {
         Broadcast.Receive receiverThread = new Broadcast.Receive();
         receiverThread.start();
 
@@ -28,7 +28,7 @@ public class StartEverything {
                     @Override
                     public void handleMess(String message) {
                         System.out.println("I receive " + message);
-                        MyView.Conversation.displayMessage(client.getIpSender(),message);
+                     //   MyView.Conversation.displayMessage(client.getIpSender(),message);
                     }
                 });
             }

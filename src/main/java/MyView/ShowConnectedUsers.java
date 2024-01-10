@@ -50,6 +50,7 @@ public class ShowConnectedUsers {
         changeNickButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                frame.dispose();
                 ChangeNickname change = new ChangeNickname();
             }
         });

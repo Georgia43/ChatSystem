@@ -41,10 +41,10 @@ import java.sql.ResultSet;
             assertTrue(tableExists(dbTest,"Users"));
         }
 
-     /*   public void testTableMessage () throws UnknownHostException, SQLException{
+        public void testTableMessage () throws UnknownHostException, SQLException{
             InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
             CreateDatabase dbTest = new CreateDatabase(TestUrl);
             dbTest.tableMessages(senderAddress);
             assertTrue(tableExists(dbTest,"Messages_101_26_81_12"));
-        }*/
+        }
     }

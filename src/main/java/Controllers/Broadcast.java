@@ -172,6 +172,7 @@ public class Broadcast {
                 String prefix = "CHANGE_NICKNAME_";
                 String nickname = received.substring(prefix.length());
                 AppData.changeContactList(sender, nickname);
+                UpdateUsers.changeNicknameDB(sender,nickname,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
             }
 
             else if (received.equals("DISCONNECTING")) {

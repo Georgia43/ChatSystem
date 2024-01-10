@@ -11,14 +11,12 @@ import java.net.UnknownHostException;
 import Controllers.UserInteraction;
 
 public class Conversation {
-
-
     // Create the JTextArea for displaying messages
-    static JTextArea messageArea = new JTextArea();
-
+    JTextArea messageArea = new JTextArea();
 
     public Conversation (String name, String ipaddress) {
         JFrame frame = new JFrame("Conversation with " + name);
+
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
       /*  frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -150,9 +148,9 @@ public class Conversation {
         });
     }*/
 
-    public static void displayMessage(InetAddress sender, String message){
+    /*public static void displayMessage(InetAddress sender, String message){
         messageArea.append("Other : "+message + "\n");
-    }
+    }*/
 
 
     /*public void stopReceiving() {

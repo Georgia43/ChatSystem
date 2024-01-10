@@ -20,6 +20,7 @@ public class Connection {
         JFrame frame = new JFrame("ChatSystem");
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        StartEverything start = new StartEverything();
 
 
         //creation des boutons

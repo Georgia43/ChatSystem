@@ -1,5 +1,6 @@
 package ChatSystem;
 
+import Controllers.Database.CreateDatabase;
 import Controllers.StartEverything;
 import Model.InputScanner;
 import MyView.Welcome;
@@ -16,8 +17,8 @@ public class MainClass {
         final Logger logger = Logger.getLogger("chatsystem");
         Scanner scanner = InputScanner.getScanner();
 
-        Welcome welcome = new Welcome();
-        StartEverything startEverything = new StartEverything();
+         Welcome welcome = new Welcome();
+        //StartEverything startEverything = new StartEverything();
           /*  Broadcast.Receive receiverThread = new Broadcast.Receive();
             receiverThread.start();
             //envoyer le premier message
