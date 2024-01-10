@@ -1,28 +1,21 @@
-package View;
+package MyView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
-import Controllers.Broadcast;
-import Controllers.Database.CreateDatabase;
-import Controllers.Database.UpdateMessages;
-import Controllers.Server;
 import Controllers.UserInteraction;
 
-import static Model.AppData.getNonLoopbackAddress;
-
 public class Conversation {
+
+
+    // Create the JTextArea for displaying messages
+    static JTextArea messageArea = new JTextArea();
+
 
     public Conversation (String name, String ipaddress) {
         JFrame frame = new JFrame("Conversation with " + name);
@@ -33,10 +26,11 @@ public class Conversation {
                 stopReceiving();
             }
         });
+
 */
-        // Create the JTextArea for displaying messages
-        JTextArea messageArea = new JTextArea();
+
         messageArea.setEditable(false);
+
 
         // Create the JTextField for typing messages
         JTextField messageField = new JTextField();
@@ -87,7 +81,7 @@ public class Conversation {
 
    // private Object lock = new Object(); // Créer un objet verrou
 
-    private Set<String> processedMessages = new HashSet<>();
+    //private Set<String> processedMessages = new HashSet<>();
   //  private volatile boolean receivingMessages = true;
   /*  private void startReceiving(JTextArea messageArea,String name,String ip) {
         new Thread(()->{
@@ -145,15 +139,19 @@ public class Conversation {
         }).start();
     }*/
 
-    private boolean alreadyProcessed(String message) {
+    /*private boolean alreadyProcessed(String message) {
         return processedMessages.contains(message);
-    }
+    }*/
 
-    private void processMessage(String message, String name, JTextArea messageArea) {
+    /*private void processMessage(String message, String name, JTextArea messageArea) {
         processedMessages.add(message);
         SwingUtilities.invokeLater(() -> {
             messageArea.append(name + ": " + message + "\n");
         });
+    }*/
+
+    public static void displayMessage(InetAddress sender, String message){
+        messageArea.append("Other : "+message + "\n");
     }
 
 

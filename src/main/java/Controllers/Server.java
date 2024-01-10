@@ -2,14 +2,12 @@ package Controllers;
 
 import Model.ClientsList;
 import Model.HandleMessage;
-import Model.User;
 
 import java.io.*;
 import java.net.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import View.Conversation;
 
 public class Server {
 
@@ -19,11 +17,6 @@ public class Server {
 
     public static final int MESSAGE_PORT = 37555;
 
-    private List<Observer> observers = new ArrayList<>();
-
-    interface  Observer {
-
-    }
 
 
     public void start() {
@@ -38,7 +31,7 @@ public class Server {
                     Socket socketAccepted = serverSocket.accept();
                     InetAddress clientAddress = socketAccepted.getInetAddress();
                     ClientHandler clientHandler = new ClientHandler(socketAccepted, clientAddress);
-                    ClientsList.clients.add(clientHandler);
+                    ClientsList.addNewClient(clientHandler);
                     clientHandler.start();
 
                     //User.recordConnectionSocket(socketAccepted);
@@ -78,12 +71,23 @@ public class Server {
 
     }
 
+
     public static class ClientHandler extends Thread {
         private Socket clientSocket;
         private PrintWriter out;
         private BufferedReader in;
 
         InetAddress ipSender;
+
+        interface  Observer {
+            void handleMess(String message);
+
+        }
+        private List<Observer> observers = new ArrayList<>();
+
+        public void addObserver(Observer obs){
+            this.observers.add(obs);
+        }
 
         public ClientHandler(Socket socket, InetAddress ipaddress) {
             this.clientSocket = socket;
@@ -132,6 +136,9 @@ public class Server {
                         UserInteraction.sender = clientSocket.getInetAddress();
                         System.out.println("[ClientHandler] message received: " + UserInteraction.messageReceived +" -- " + this.clientSocket.getInetAddress());
 
+                        for (Observer obs : this.observers){
+                            obs.handleMess(UserInteraction.messageReceived);
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

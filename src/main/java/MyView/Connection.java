@@ -1,8 +1,6 @@
-package View;
+package MyView;
 import Controllers.*;
 import Controllers.Library;
-import Model.AppData;
-import Model.User;
 
 import java.awt.*;
 import javax.swing.*;
@@ -10,17 +8,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.net.InetAddress;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 
 
 public class Connection {
@@ -34,17 +21,6 @@ public class Connection {
         //fermer
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Broadcast
-        Broadcast.Receive receiverThread = new Broadcast.Receive();
-        receiverThread.start();
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!before starting server");
-        Controllers.Server server = new Server();
-        server.start();
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!i just starded the server");
-
-        //envoyer le premier message
-        Library.sendFirstMessage();
 
         //creation des boutons
         JButton button_connect = new JButton("Connect");

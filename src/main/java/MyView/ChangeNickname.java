@@ -1,4 +1,4 @@
-package View;
+package MyView;
 
 import Controllers.Broadcast;
 import Controllers.Library;

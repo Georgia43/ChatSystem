@@ -1,9 +1,6 @@
-package View;
+package MyView;
 import Controllers.Broadcast;
-import Controllers.Database.CreateDatabase;
 import Controllers.Library;
-import Controllers.Server;
-import Controllers.UserInteraction;
 import Model.User;
 
 import javax.swing.*;
@@ -14,13 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.sql.*;
-import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Objects;
-
-import static Model.AppData.getNonLoopbackAddress;
 
 
 public class ShowConnectedUsers {

@@ -1,4 +1,4 @@
-package View;
+package MyView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

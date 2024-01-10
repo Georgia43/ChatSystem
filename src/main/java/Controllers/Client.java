@@ -33,7 +33,7 @@ public class Client {
         System.out.println("[Client] Creating client");
         clientSocket = new Socket(ip, Server.MESSAGE_PORT);
         Server.ClientHandler clientHandler = new Server.ClientHandler(clientSocket,ip);
-        ClientsList.clients.add(clientHandler);
+        ClientsList.addNewClient(clientHandler);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         clientHandler.start();

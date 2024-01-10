@@ -9,6 +9,23 @@ import java.util.List;
 public class ClientsList {
     public static List<Server.ClientHandler> clients = new ArrayList<>();
 
+    public interface  Observer {
+        void onNewClient(Server.ClientHandler client);
+
+    }
+    private static List<ClientsList.Observer> observers = new ArrayList<>();
+
+    public static void addObserver(ClientsList.Observer obs){
+        observers.add(obs);
+    }
+
+    public static void addNewClient(Server.ClientHandler client) {
+        clients.add(client);
+        for(var observer : observers) {
+            observer.onNewClient(client);
+        }
+    }
+
     public static Server.ClientHandler getClientHandlerByIP(InetAddress ipAddress) {
         for (Server.ClientHandler handler : clients) {
             if (handler.getIpSender().equals(ipAddress)) {

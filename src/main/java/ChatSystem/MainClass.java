@@ -1,15 +1,11 @@
 package ChatSystem;
 
-import Model.AppData;
+import Controllers.StartEverything;
 import Model.InputScanner;
-import Controllers.Broadcast;
-import Controllers.Library;
-import View.Connection;
-import View.Welcome;
+import MyView.Welcome;
 
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //class to run the application
@@ -21,6 +17,7 @@ public class MainClass {
         Scanner scanner = InputScanner.getScanner();
 
         Welcome welcome = new Welcome();
+        StartEverything startEverything = new StartEverything();
           /*  Broadcast.Receive receiverThread = new Broadcast.Receive();
             receiverThread.start();
             //envoyer le premier message
