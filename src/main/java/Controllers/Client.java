@@ -30,13 +30,13 @@ public class Client {
 
 
     public Client(InetAddress ip) throws IOException {
-        System.out.println("!!!!!!!!!!!!!!!!!enter in startconnection");
+        System.out.println("[Client] Creating client");
         clientSocket = new Socket(ip, Server.MESSAGE_PORT);
         Server.ClientHandler clientHandler = new Server.ClientHandler(clientSocket,ip);
         ClientsList.clients.add(clientHandler);
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        System.out.println("!!!!!!!!!!!!!!!!!end of startconnection");
+        clientHandler.start();
     }
 
     /*public void startConnection(InetAddress ip) throws IOException {

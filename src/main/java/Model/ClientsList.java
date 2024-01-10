@@ -18,4 +18,13 @@ public class ClientsList {
         return null;
     }
 
+    public static boolean checkPresenceIP(InetAddress ip){
+        for (Server.ClientHandler handler : clients) {
+            if (handler.getIpSender().equals(ip)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

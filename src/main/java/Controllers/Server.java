@@ -34,6 +34,7 @@ public class Server {
 
                 /*Attente d'une connexion client*/
                 while (isRunning) {
+                    System.out.println("[TCP-Server] Waiting for incoming TCP connections");
                     Socket socketAccepted = serverSocket.accept();
                     InetAddress clientAddress = socketAccepted.getInetAddress();
                     ClientHandler clientHandler = new ClientHandler(socketAccepted, clientAddress);
@@ -41,9 +42,9 @@ public class Server {
                     clientHandler.start();
 
                     //User.recordConnectionSocket(socketAccepted);
-                    System.out.println("!!!!!!!!!!!!!!!!!! i will enter add connection");
+                   // System.out.println("!!!!!!!!!!!!!!!!!! i will enter add connection");
                     //User.addConnection(serverSocket);
-                    System.out.println("!!!!!!!!!!!!!!!!!! i am waiting");
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -88,7 +89,6 @@ public class Server {
             this.clientSocket = socket;
             this.ipSender = ipaddress;
             try {
-                System.out.println("i am in client handler");
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
@@ -124,12 +124,13 @@ public class Server {
 
             @Override
             public void run () {
+            System.out.println("[ClientHandler] Waiting for messages -- " + this.clientSocket.getInetAddress());
             String message;
                 try {
                     while ((message = in.readLine()) != null) {
                         UserInteraction.messageReceived = HandleMessage.handle(clientSocket.getInetAddress(), message);
                         UserInteraction.sender = clientSocket.getInetAddress();
-
+                        System.out.println("[ClientHandler] message received: " + UserInteraction.messageReceived +" -- " + this.clientSocket.getInetAddress());
 
                     }
                 } catch (IOException e) {
@@ -137,6 +138,7 @@ public class Server {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 } finally {
+                    System.out.println("[ClientHandler] Exiting -- " + this.clientSocket.getInetAddress());
                     close();
                 }
             }

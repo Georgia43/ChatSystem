@@ -3,6 +3,7 @@ package Controllers;
 import Controllers.Database.UpdateUsers;
 import Controllers.Database.CreateDatabase;
 import Model.AppData;
+import Model.ClientsList;
 import Model.InputScanner;
 
 import java.net.*;
@@ -163,7 +164,9 @@ public class Broadcast {
                     // si l'utilisateur existe deja dans la base de données mais a changé de pseudo lors de la connexion
                     if (!UpdateUsers.NicknameIsSame(nickname,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())))){
                     UpdateUsers.changeNicknameDB(sender,nickname,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));}
-                    Client client = new Client(sender);
+                    if (!ClientsList.checkPresenceIP(sender)){
+                        Client client = new Client(sender);
+                    }
                     // on créé la base de données pour les messages pour chaque personne
             } else if (received.startsWith("CHANGE_NICKNAME_")){
                 String prefix = "CHANGE_NICKNAME_";
