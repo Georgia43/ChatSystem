@@ -60,4 +60,14 @@ public class CreateDatabase {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
             }
     }
+
+    public void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException("Error closing the database connection", e);
+            }
+        }
+    }
 }

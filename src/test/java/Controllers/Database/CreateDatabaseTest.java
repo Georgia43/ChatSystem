@@ -39,6 +39,7 @@ import java.sql.ResultSet;
             CreateDatabase dbTest = new CreateDatabase(TestUrl);
             dbTest.tableUsers();
             assertTrue(tableExists(dbTest,"Users"));
+            dbTest.closeConnection();
         }
 
         public void testTableMessage () throws UnknownHostException, SQLException{
@@ -46,5 +47,6 @@ import java.sql.ResultSet;
             CreateDatabase dbTest = new CreateDatabase(TestUrl);
             dbTest.tableMessages(senderAddress);
             assertTrue(tableExists(dbTest,"Messages_101_26_81_12"));
+            dbTest.closeConnection();
         }
     }
