@@ -25,14 +25,17 @@ public class UpdateMessagesTest extends TestCase {
   public void testSentMessages() throws UnknownHostException, SQLException {
        CreateDatabase dbTest = new CreateDatabase(CreateDatabaseTest.TestUrl);
        InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
-       assertTrue("Adding the message failed.",UpdateMessages.addSentMessage(senderAddress, "test",CreateDatabaseTest.TestUrl));
+       dbTest.tableMessages(senderAddress); //au cas ou la table n'a pas été créée au préalable
+       assertTrue("Adding the message failed.",UpdateMessages.addSentMessage(senderAddress, "test addSentMessage",CreateDatabaseTest.TestUrl));
+       dbTest.closeConnection();
     }
-
-   /* public void testReceivedMessages() throws UnknownHostException, SQLException {
+  public void testReceivedMessages() throws UnknownHostException, SQLException, InterruptedException {
         CreateDatabase dbTest = new CreateDatabase(CreateDatabaseTest.TestUrl);
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
-        assertTrue("Adding the message failed.",UpdateMessages.addReceivedMessage(senderAddress, "test",CreateDatabaseTest.TestUrl));
-
-    }*/
+        dbTest.tableMessages(senderAddress); //au cas ou la table n'a pas été créée au préalable
+        Thread.sleep(1000); // la clé primaire est l'heure d'envoi du message donc il faut attendre un peu avant d'ajouter le prochain message
+        assertTrue("Adding the message failed.",UpdateMessages.addReceivedMessage(senderAddress, "test addReceivedMessage",CreateDatabaseTest.TestUrl));
+        dbTest.closeConnection();
+ }
 
 }
