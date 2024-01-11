@@ -11,7 +11,7 @@ public class UpdateUsers {
             CreateDatabase database = new CreateDatabase(url);
 
             // Check if the user already exists
-            if (userExists(Address, database)) {
+            if (userExists(Address, url)) {
                 System.out.println("User already exists");
                 return false;
 
@@ -36,9 +36,9 @@ public class UpdateUsers {
         }
     }
 
-    private static boolean userExists(InetAddress address, CreateDatabase database) throws SQLException {
+    public static boolean userExists(InetAddress address, String url) throws SQLException {
         String query = "SELECT COUNT(*) FROM Users WHERE ipAddress = ?";
-
+        CreateDatabase database = new CreateDatabase(url);
         try (PreparedStatement preparedStatement = database.connection.prepareStatement(query)) {
             preparedStatement.setString(1, address.getHostAddress());
             ResultSet resultSet = preparedStatement.executeQuery();
