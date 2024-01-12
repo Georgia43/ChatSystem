@@ -1,8 +1,7 @@
 package Model;
 
-import Controllers.Database.CreateDatabase;
+import Controllers.Database.CreateTables;
 import Controllers.Database.UpdateMessages;
-import Controllers.Server;
 
 import java.net.*;
 import java.sql.SQLException;
@@ -17,7 +16,7 @@ public class HandleMessage {
             String prefix = "MESSAGE_";
             String message = mess_received.substring(prefix.length());
             //Base de Données
-            UpdateMessages.addReceivedMessage(sender, mess_received, CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+            UpdateMessages.addReceivedMessage(sender, mess_received, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
             //affichage
 
             System.out.println(message);

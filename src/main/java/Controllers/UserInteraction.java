@@ -1,23 +1,15 @@
 package Controllers;
 
-import Controllers.Client;
-import Controllers.Database.CreateDatabase;
+import Controllers.Database.CreateTables;
 import Controllers.Database.UpdateMessages;
-import Model.AppData;
 import Model.ClientsList;
-import Model.User;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
 
-import static Controllers.Broadcast.logger;
 import static Model.AppData.getNonLoopbackAddress;
 
 public class UserInteraction {
@@ -68,7 +60,7 @@ public class UserInteraction {
             assert clientHandler != null;
             clientHandler.sendMessage(message);
 
-            UpdateMessages.addSentMessage(ip,message,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+            UpdateMessages.addSentMessage(ip,message, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {

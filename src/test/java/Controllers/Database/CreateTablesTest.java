@@ -9,34 +9,44 @@ import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.Connection;
 
-    public class CreateDatabaseTest extends TestCase {
+    public class CreateTablesTest extends TestCase {
         /**
          * Create the test case
          *
          * @param testName name of the test case
          */
-        public CreateDatabaseTest(String testName) {
+        public CreateTablesTest(String testName) {
             super(testName);
         }
 
         public static Test suite() {
-            return new TestSuite(Controllers.Database.CreateDatabaseTest.class);
+            return new TestSuite(CreateTablesTest.class);
         }
 
         // Méthode pour vérifier si une table existe dans la base de données
-        private boolean tableExists(CreateDatabase createDatabase, String Table) throws SQLException {
-            DatabaseMetaData metaData = createDatabase.connection.getMetaData();
+        private boolean tableExists(CreateTables createTables, String Table) throws SQLException {
+            DatabaseMetaData metaData = createTables.connection.getMetaData();
             ResultSet tables = metaData.getTables(null, null, Table, null);
             return tables.next();
         }
         public static String TestUrl = "jdbc:sqlite:BDDTest.db";
         public void testConnect () throws UnknownHostException { //find a way to make an assert
-            CreateDatabase dbTest = new CreateDatabase(TestUrl);
+            CreateTables dbTest = new CreateTables(TestUrl);
+            // on vérifie que la connection n'est pas nulle
+            assertNotNull("Connection should not be null", dbTest.connection);
+
+            // Check if the connection is open
+            try {
+                assertFalse("Connection should be open", dbTest.connection.isClosed());
+            } catch (SQLException e) {
+                fail("SQLException: " + e.getMessage());
+            }
+
         }
         public void testTableUsers () throws UnknownHostException, SQLException{
-            //erreur bizarre mais marche quand meme
-            CreateDatabase dbTest = new CreateDatabase(TestUrl);
+            CreateTables dbTest = new CreateTables(TestUrl);
             dbTest.tableUsers();
             assertTrue(tableExists(dbTest,"Users"));
             dbTest.closeConnection();
@@ -44,7 +54,7 @@ import java.sql.ResultSet;
 
         public void testTableMessage () throws UnknownHostException, SQLException{
             InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
-            CreateDatabase dbTest = new CreateDatabase(TestUrl);
+            CreateTables dbTest = new CreateTables(TestUrl);
             dbTest.tableMessages(senderAddress);
             assertTrue(tableExists(dbTest,"Messages_101_26_81_12"));
             dbTest.closeConnection();

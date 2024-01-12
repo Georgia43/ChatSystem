@@ -10,12 +10,12 @@ import java.util.logging.Level;
 import static Controllers.Broadcast.logger;
 
 
-public class CreateDatabase {
+public class CreateTables {
     public Connection connection = null;
 
     public String url;
 
-    public CreateDatabase(String url) {
+    public CreateTables(String url) {
         this.url = url;
         try{
             connection = DriverManager.getConnection(url);

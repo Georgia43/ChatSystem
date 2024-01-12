@@ -1,17 +1,15 @@
 package Controllers;
 
 import Controllers.Database.UpdateUsers;
-import Controllers.Database.CreateDatabase;
+import Controllers.Database.CreateTables;
 import Model.AppData;
 import Model.ClientsList;
-import Model.InputScanner;
 
 import java.net.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.logging.Logger;
 import java.util.Map;
 import java.util.logging.Level;
@@ -87,7 +85,7 @@ public class Broadcast {
             DatagramPacket message= new DatagramPacket(FirstMessage, FirstMessage.length, getBroadcastAddress(), PORT);
             socket.send(message);
             // we add the table with the users
-            CreateDatabase database = new CreateDatabase(CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+            CreateTables database = new CreateTables(CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
             database.tableUsers();
         }
         catch (IOException e) {
@@ -157,13 +155,13 @@ public class Broadcast {
                     String nickname = received.substring(prefix.length());
                     AppData.addContactList(sender, nickname);
                     System.out.println("nickname added to contact list");
-                    CreateDatabase database = new CreateDatabase(CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+                    CreateTables database = new CreateTables(CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
                     database.tableMessages(sender);
-                    UpdateUsers.addUser(sender, nickname, CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+                    UpdateUsers.addUser(sender, nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
                   //  UpdateUsers.changeStatusToConnected(sender,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
                     // si l'utilisateur existe deja dans la base de données mais a changé de pseudo lors de la connexion
-                    if (!UpdateUsers.NicknameIsSame(nickname,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())))){
-                    UpdateUsers.changeNicknameDB(sender,nickname,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));}
+                    if (!UpdateUsers.NicknameIsSame(nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())))){
+                    UpdateUsers.changeNicknameDB(sender,nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));}
                     if (!ClientsList.checkPresenceIP(sender)){
                         Client client = new Client(sender);
                     }
@@ -172,7 +170,7 @@ public class Broadcast {
                 String prefix = "CHANGE_NICKNAME_";
                 String nickname = received.substring(prefix.length());
                 AppData.changeContactList(sender, nickname);
-                UpdateUsers.changeNicknameDB(sender,nickname,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+                UpdateUsers.changeNicknameDB(sender,nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
             }
 
             else if (received.equals("DISCONNECTING")) {

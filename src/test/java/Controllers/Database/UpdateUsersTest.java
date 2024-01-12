@@ -7,6 +7,8 @@ import junit.framework.TestSuite;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
+
 
 
 public class UpdateUsersTest extends TestCase {
@@ -23,42 +25,74 @@ public class UpdateUsersTest extends TestCase {
         return new TestSuite(UpdateUsersTest.class);
     }
 
-   public void testAddUsers () throws UnknownHostException, SQLException {
-        InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
-        String Nickname = "Mary";
-        CreateDatabase dbTest = new CreateDatabase(CreateDatabaseTest.TestUrl);
-        dbTest.tableUsers(); // au cas ou la table, n'a pas été créée avant
-        //UpdateUsers.addUser(senderAddress,Nickname, CreateDatabaseTest.TestUrl);
-        assertTrue("Adding user failed", UpdateUsers.addUser(senderAddress, Nickname, CreateDatabaseTest.TestUrl));
-        dbTest.closeConnection();
-    }
+    // pour ne pas avoir de rpoblème si l'on effectue les tests plusieurs fois
+    private void deleteUser(InetAddress address) throws SQLException {
+        String deleteQuery = "DELETE FROM Users WHERE ipAddress = ?";
+        try {
+            CreateTables dbTest = new CreateTables(CreateTablesTest.TestUrl);
+            PreparedStatement preparedStatement = dbTest.connection.prepareStatement(deleteQuery);
+            preparedStatement.setString(1, address.getHostAddress());
+            preparedStatement.executeUpdate();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }}
 
     public void testUserExists() throws UnknownHostException, SQLException {
+        // peut etre changer ????????????????????????
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
         InetAddress senderAddress2 = InetAddress.getByName("101.26.81.13");
         String Nickname = "John";
-        CreateDatabase dbTest = new CreateDatabase(CreateDatabaseTest.TestUrl);
+        CreateTables dbTest = new CreateTables(CreateTablesTest.TestUrl);
         dbTest.tableUsers();
-        UpdateUsers.addUser(senderAddress, Nickname, CreateDatabaseTest.TestUrl);
+        UpdateUsers.addUser(senderAddress, Nickname, CreateTablesTest.TestUrl);
         // cas ou l'utilisateur existe
-        assertTrue("UserExists failed when the user exists", UpdateUsers.userExists(senderAddress, CreateDatabaseTest.TestUrl));
+        assertTrue("UserExists failed when the user exists", UpdateUsers.userExists(senderAddress, CreateTablesTest.TestUrl));
         // cas ou l'utilisateur n'existe pas
-        assertFalse("UserExists failed when the user doesn't exists",UpdateUsers.userExists(senderAddress2, CreateDatabaseTest.TestUrl));
+        assertFalse("UserExists failed when the user doesn't exists",UpdateUsers.userExists(senderAddress2, CreateTablesTest.TestUrl));
+        deleteUser(senderAddress);
+        dbTest.closeConnection();
+    }
+   public void testAddUsers () throws UnknownHostException, SQLException {
+        InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
+        String Nickname = "Mary";
+        CreateTables dbTest = new CreateTables(CreateTablesTest.TestUrl);
+        dbTest.tableUsers(); // au cas ou la table, n'a pas été créée avant
+        assertTrue("Adding user failed", UpdateUsers.addUser(senderAddress, Nickname, CreateTablesTest.TestUrl));
+        // on utilise userExists pour vérifier que la personne est bien dans la table
+        assertTrue(UpdateUsers.userExists(senderAddress,CreateTablesTest.TestUrl));
+        deleteUser(senderAddress);
         dbTest.closeConnection();
     }
 
+
     public void testNicknameIsSame() throws UnknownHostException, SQLException {
-        /*InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
+        // peut etre changer le test??????????????
+        InetAddress senderAddress = InetAddress.getByName("101.26.81.13");
         String Nickname = "John";
-        CreateDatabase dbTest = new CreateDatabase(CreateDatabaseTest.TestUrl);
+        CreateTables dbTest = new CreateTables(CreateTablesTest.TestUrl);
         dbTest.tableUsers();
-        UpdateUsers.addUser(senderAddress, Nickname, CreateDatabaseTest.TestUrl);
+        UpdateUsers.addUser(senderAddress, Nickname, CreateTablesTest.TestUrl);
         // cas ou le pseudo est le même
-        //assertTrue("Checking if nickname is same failed",UpdateUsers.NicknameIsSame("John", CreateDatabaseTest.TestUrl));
-        assertTrue(UpdateUsers.NicknameIsSame("John", CreateDatabaseTest.TestUrl));
+        assertTrue("Checking if nickname is same failed",UpdateUsers.NicknameIsSame("John", CreateTablesTest.TestUrl));
         // cas ou le pseudo n'est pas le même
-        assertFalse("Checking if nickname is not same failed",UpdateUsers.NicknameIsSame("Jack", CreateDatabaseTest.TestUrl));
-        dbTest.closeConnection();*/
-        assertTrue(true);
+        assertFalse("Checking if nickname is not same failed",UpdateUsers.NicknameIsSame("Jack", CreateTablesTest.TestUrl));
+        deleteUser(senderAddress);
+        dbTest.closeConnection();
     }
+    public void testChangeNicknameDB() throws UnknownHostException, SQLException {
+        InetAddress senderAddress = InetAddress.getByName("101.26.81.13");
+        String newNickname = "Jack";
+        String oldNickname = "John";
+        CreateTables dbTest = new CreateTables(CreateTablesTest.TestUrl);
+        dbTest.tableUsers();
+        UpdateUsers.addUser(senderAddress, oldNickname, CreateTablesTest.TestUrl);
+        // changer le pseudo
+        assertTrue("Change nickname failed.",UpdateUsers.changeNicknameDB(senderAddress,newNickname, CreateTablesTest.TestUrl));
+        // vérifier qu'il a bien été changé
+        assertTrue("Nickname was not changed", UpdateUsers.NicknameIsSame(newNickname, CreateTablesTest.TestUrl));
+        assertFalse("Old nickname is still present", UpdateUsers.NicknameIsSame(oldNickname, CreateTablesTest.TestUrl));
+        deleteUser(senderAddress);
+        dbTest.closeConnection();
+    }
+
 }

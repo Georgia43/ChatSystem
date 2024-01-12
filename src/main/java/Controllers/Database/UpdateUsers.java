@@ -8,12 +8,12 @@ public class UpdateUsers {
     public static boolean addUser(InetAddress Address, String Nickname, String url) {
 
         try {
-            CreateDatabase database = new CreateDatabase(url);
+            CreateTables database = new CreateTables(url);
 
             // Check if the user already exists
             if (userExists(Address, url)) {
                 System.out.println("User already exists");
-                return false;
+                return true;
 
             }
             String insertQuery = "INSERT INTO Users (ipAddress, name) VALUES (?, ?)";
@@ -38,7 +38,7 @@ public class UpdateUsers {
 
     public static boolean userExists(InetAddress address, String url) throws SQLException {
         String query = "SELECT COUNT(*) FROM Users WHERE ipAddress = ?";
-        CreateDatabase database = new CreateDatabase(url);
+        CreateTables database = new CreateTables(url);
         try (PreparedStatement preparedStatement = database.connection.prepareStatement(query)) {
             preparedStatement.setString(1, address.getHostAddress());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -107,7 +107,7 @@ public class UpdateUsers {
     public static boolean NicknameIsSame(String nickname, String url) {
 
         try {
-            CreateDatabase database = new CreateDatabase(url);
+            CreateTables database = new CreateTables(url);
             Statement statement = database.connection.createStatement();
             String query = "SELECT COUNT(*) AS count FROM USERS WHERE name = ?";
             PreparedStatement preparedStatement = database.connection.prepareStatement(query);
@@ -129,7 +129,7 @@ public class UpdateUsers {
     // changer le pseudo dans la database
     public static boolean changeNicknameDB(InetAddress Address, String name, String url){
         try {
-            CreateDatabase database = new CreateDatabase(url);
+            CreateTables database = new CreateTables(url);
             Statement statement = database.connection.createStatement();
             String strAddress = Address.getHostAddress();
 

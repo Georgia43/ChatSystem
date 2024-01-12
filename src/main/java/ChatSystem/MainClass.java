@@ -1,7 +1,5 @@
 package ChatSystem;
 
-import Controllers.Database.CreateDatabase;
-import Controllers.StartEverything;
 import Model.InputScanner;
 import MyView.Welcome;
 

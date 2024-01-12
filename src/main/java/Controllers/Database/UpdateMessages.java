@@ -4,7 +4,6 @@ import Model.AppData;
 
 import java.net.InetAddress;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.*;
@@ -25,7 +24,7 @@ public class UpdateMessages {
     private static boolean addMessage(InetAddress Address, String Content, String url, boolean received) throws SQLException {
 
         try {
-           CreateDatabase database = new CreateDatabase(url);
+           CreateTables database = new CreateTables(url);
            // Statement statement = database.connection.createStatement();
             String strAddress = Address.getHostAddress().replace('.', '_');
             String insertQuery = "INSERT INTO Messages_" + strAddress + "(dateHeure, sender, content) VALUES (?, ?, ?)";
