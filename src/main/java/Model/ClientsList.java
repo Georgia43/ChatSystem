@@ -26,6 +26,10 @@ public class ClientsList {
         }
     }
 
+    public static List<Server.ClientHandler> getClients() {
+        return clients;
+    }
+
     public static Server.ClientHandler getClientHandlerByIP(InetAddress ipAddress) {
         for (Server.ClientHandler handler : clients) {
             if (handler.getIpSender().equals(ipAddress)) {
