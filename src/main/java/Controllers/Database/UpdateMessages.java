@@ -4,15 +4,17 @@ import Model.AppData;
 
 import java.net.InetAddress;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
 public class UpdateMessages {
-
 
     public static boolean addReceivedMessage(InetAddress Address, String Content, String url) throws SQLException {
         return addMessage(Address, Content, url, true);
@@ -31,9 +33,6 @@ public class UpdateMessages {
             String MyAddress = Objects.requireNonNull(AppData.getNonLoopbackAddress()).getHostAddress().replace('.', '_');
 
             try (PreparedStatement preparedStatement = database.connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-                // Set values for the parameters using the Users class methods
-                // the preparedStatement.setString() method is used to set the values for the placeholders (?) in the SQL query
-                //to add the date and time of the message
                 LocalDateTime currentDateTime = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String formattedDateTime = currentDateTime.format(formatter);
@@ -49,8 +48,33 @@ public class UpdateMessages {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle the exception
             return false;
         }
+    }
+
+    public List<String> loadMessagesFromDatabase(InetAddress address, String url) {
+        List<String> messages = new ArrayList<>();
+
+        try {
+            CreateTables database = new CreateTables(url);
+            Statement statement = database.connection.createStatement();
+            String strAddress = address.getHostAddress().replace('.', '_');
+            String query = "SELECT dateHeure, sender, content FROM Messages_" + strAddress;
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                String dateHeure = resultSet.getString("dateHeure");
+                String sender = resultSet.getString("sender");
+                String content = resultSet.getString("content");
+
+                // Construire le message et l'ajouter à la liste
+                String message = dateHeure + " - " + sender + ": " + content;
+                messages.add(message);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return messages;
     }
 }

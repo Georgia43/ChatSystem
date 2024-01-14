@@ -14,8 +14,7 @@ public class AppData {
 
     }
 
-    /*POUR LISTE DE CONTACTES*/
-
+    /*POUR LISTE DE CONTACTS*/
     public static Map<InetAddress,String> getContactList(){
         return contactList;
     }
@@ -54,6 +53,15 @@ public class AppData {
         return res;
     }
 
+    public static String getNicknameByIp(InetAddress ipAddress) {
+        for (Map.Entry<InetAddress, String> entry : contactList.entrySet()) {
+            if (entry.getKey().equals(ipAddress)) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
     public static InetAddress getNonLoopbackAddress() {
         try {
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
@@ -72,7 +80,8 @@ public class AppData {
                     }
                 }
             }
-            return null;  // No non-loopback address found
+            return null;
+
         } catch (SocketException ex) {
             throw new RuntimeException(ex);
         }
