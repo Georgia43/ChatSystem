@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static Model.AppData.getContactList;
 import static Model.AppData.getNonLoopbackAddress;
 
 /*FOR CONTACT DISCOVERY*/
@@ -90,8 +91,11 @@ public class Library {
 
             }
         }
-
         return connectedUsers;
+    }
+
+    public static void clearContactList() {
+        getContactList().clear();
     }
 
     public static String getNameUser(Model.User user){

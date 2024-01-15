@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ReceiveTest extends TestCase
 {
@@ -27,15 +28,24 @@ public class ReceiveTest extends TestCase
     public static Test suite() { return new TestSuite( ReceiveTest.class );}
 
     //test de AddcontactList lorsque la personne n'est pas dans notre contact list
-  /*  public void testAddContactList() throws UnknownHostException {
+   public void testClearContactList() throws UnknownHostException {
        InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
+       AppData.addContactList(senderAddress, "Mary");
+       Library.clearContactList();
+       assert Library.GetConnectedUserList().isEmpty();
+   }
+
+    public void testAddContactList() throws UnknownHostException {
+       InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
+        Library.clearContactList();
+       System.out.println("ligne 33 " + Library.GetConnectedUserList());
         assert Library.GetConnectedUserList().isEmpty();
         AppData.addContactList(senderAddress, "Mary");
         System.out.println(Library.GetConnectedUserList());
         assert Library.GetConnectedUserList().size() == 1;
        assertEquals("User{username='Mary', id='/101.26.81.12'}", (Library.GetConnectedUserList().get(0).toString()));
        AppData.DeletefromContactList(senderAddress); //on vide la contact list à la fin de chaque test
-    }*/
+    }
 
 
     //test du handleReceived lorsqu'on reçoit un nickname

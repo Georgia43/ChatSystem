@@ -1,5 +1,7 @@
 package MyView;
 import Controllers.Broadcast;
+import Controllers.Database.CreateTables;
+import Controllers.Database.UpdateMessages;
 import Controllers.Library;
 import Controllers.StartEverything;
 import Model.User;
@@ -13,6 +15,9 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Objects;
+
+import static Model.AppData.getNonLoopbackAddress;
 
 
 public class ShowConnectedUsers {
@@ -117,6 +122,7 @@ public class ShowConnectedUsers {
                     public void actionPerformed(ActionEvent actionEvent) {
                         Conversation conv = new Conversation(name, ipAddress.getHostAddress());
                         StartEverything.conversationList.add(conv);
+                        conv.displayChatHistory(UpdateMessages.loadMessagesFromDatabase(ipAddress, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress()))));
                     }
                 });
 

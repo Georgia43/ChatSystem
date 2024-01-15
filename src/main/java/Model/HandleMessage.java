@@ -16,7 +16,7 @@ public class HandleMessage {
             String prefix = "MESSAGE_";
             String message = mess_received.substring(prefix.length());
             //Base de Données
-            UpdateMessages.addReceivedMessage(sender, mess_received, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+            UpdateMessages.addReceivedMessage(sender, message, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
             //affichage
 
             System.out.println(message);

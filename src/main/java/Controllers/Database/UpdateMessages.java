@@ -52,7 +52,7 @@ public class UpdateMessages {
         }
     }
 
-    public List<String> loadMessagesFromDatabase(InetAddress address, String url) {
+    public static List<String> loadMessagesFromDatabase(InetAddress address, String url) {
         List<String> messages = new ArrayList<>();
 
         try {
@@ -65,10 +65,11 @@ public class UpdateMessages {
             while (resultSet.next()) {
                 String dateHeure = resultSet.getString("dateHeure");
                 String sender = resultSet.getString("sender");
+                String formatedSender = sender.replace('_', '.');
                 String content = resultSet.getString("content");
 
                 // Construire le message et l'ajouter à la liste
-                String message = dateHeure + " - " + sender + ": " + content;
+                String message = dateHeure + " " + formatedSender + " " + content;
                 messages.add(message);
             }
 

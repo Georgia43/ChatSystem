@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.*;
+import java.util.List;
 
 import Controllers.UserInteraction;
 
@@ -154,8 +156,33 @@ public class Conversation {
         });
     }*/
 
+    public void displayChatHistory(List<String> chatHistory) {
+        for (String message : chatHistory) {
+            String[] parts = message.split(" ", 4);
+            if (parts.length == 4) {
+                String date = parts[0];
+                String time = parts[1];
+                String sender = parts[2];
+                String content = parts[3];
+                System.out.println(date);
+                System.out.println(time);
+                System.out.println(sender);
+                System.out.println(content);
+                System.out.println(ipaddress);
+                String displayMessage = date + " - " + time + " - " + (isReceivedMessage(sender) ? name : "You") + ": " + content;
+                messageArea.append(displayMessage + "\n");
+            } else {
+                System.err.println("Invalid message format: " + message);
+            }
+        }
+    }
+
+    private boolean isReceivedMessage(String sender) {
+        return sender.equals(ipaddress);
+    }
+
     public void displayMessage(InetAddress sender, String message){
-        messageArea.append("Other : "+message + "\n");
+        messageArea.append(name +" : "+message + "\n");
     }
 
     public InetAddress getIp() throws UnknownHostException {
