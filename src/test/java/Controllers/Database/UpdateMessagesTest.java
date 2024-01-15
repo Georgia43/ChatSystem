@@ -46,10 +46,11 @@ public class UpdateMessagesTest extends TestCase {
         }
         return messages;
     }
-  public void testSentMessages() throws UnknownHostException, SQLException {
+  public void testSentMessages() throws UnknownHostException, SQLException, InterruptedException {
        CreateTables dbTest = new CreateTables(CreateTablesTest.TestUrl);
        InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
        dbTest.tableMessages(senderAddress); //au cas ou la table n'a pas été créée au préalable
+      Thread.sleep(1000);
       // ajoute le message
        assertTrue("Adding the message failed.",UpdateMessages.addSentMessage(senderAddress, "test addSentMessage", CreateTablesTest.TestUrl));
       // vérifie que le message a été ajouté
@@ -61,7 +62,7 @@ public class UpdateMessagesTest extends TestCase {
         CreateTables dbTest = new CreateTables(CreateTablesTest.TestUrl);
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
         dbTest.tableMessages(senderAddress); //au cas ou la table n'a pas été créée au préalable
-      Thread.sleep(1000); // la clé primaire est l'heure d'envoi du message donc il faut attendre un peu avant d'ajouter le prochain message
+       Thread.sleep(1000); // la clé primaire est l'heure d'envoi du message donc il faut attendre un peu avant d'ajouter le prochain message
       // ajoute le message a base de données
       assertTrue("Adding the message failed.",UpdateMessages.addReceivedMessage(senderAddress, "test addReceivedMessage", CreateTablesTest.TestUrl));
       // vérifie que le message a été ajouté

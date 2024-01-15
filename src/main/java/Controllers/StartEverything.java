@@ -1,6 +1,8 @@
 package Controllers;
 
 
+import Controllers.Database.CreateTables;
+import Controllers.Database.UpdateMessages;
 import Model.AppData;
 import Model.ClientsList;
 import Model.User;
@@ -17,6 +19,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static Model.AppData.getNonLoopbackAddress;
 
 public class StartEverything {
 
