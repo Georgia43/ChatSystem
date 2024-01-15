@@ -13,7 +13,14 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import Model.ClientsList;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class StartEverything {
+
+    public static List <Conversation> conversationList = new ArrayList<>();
     //Broadcast
     public StartEverything() throws IOException, InterruptedException {
         Broadcast.Receive receiverThread = new Broadcast.Receive();
@@ -26,9 +33,14 @@ public class StartEverything {
             public void onNewClient(Server.ClientHandler client) {
                 client.addObserver(new Server.ClientHandler.Observer() {
                     @Override
-                    public void handleMess(String message) {
+                    public void handleMess(String message) throws UnknownHostException {
                         System.out.println("I receive " + message);
-                     //   MyView.Conversation.displayMessage(client.getIpSender(),message);
+                        for (Conversation conv : conversationList) {
+                            if (conv.getIp().equals(client.getIpSender())) {
+                                conv.displayMessage(client.getIpSender(),message);
+                            }
+                        }
+
                     }
                 });
             }

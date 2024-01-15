@@ -1,6 +1,7 @@
 package MyView;
 import Controllers.Broadcast;
 import Controllers.Library;
+import Controllers.StartEverything;
 import Model.User;
 
 import javax.swing.*;
@@ -115,6 +116,7 @@ public class ShowConnectedUsers {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
                         Conversation conv = new Conversation(name, ipAddress.getHostAddress());
+                        StartEverything.conversationList.add(conv);
                     }
                 });
 

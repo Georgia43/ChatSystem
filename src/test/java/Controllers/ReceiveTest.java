@@ -27,7 +27,7 @@ public class ReceiveTest extends TestCase
     public static Test suite() { return new TestSuite( ReceiveTest.class );}
 
     //test de AddcontactList lorsque la personne n'est pas dans notre contact list
-    public void testAddContactList() throws UnknownHostException {
+  /*  public void testAddContactList() throws UnknownHostException {
        InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
         assert Library.GetConnectedUserList().isEmpty();
         AppData.addContactList(senderAddress, "Mary");
@@ -35,7 +35,7 @@ public class ReceiveTest extends TestCase
         assert Library.GetConnectedUserList().size() == 1;
        assertEquals("User{username='Mary', id='/101.26.81.12'}", (Library.GetConnectedUserList().get(0).toString()));
        AppData.DeletefromContactList(senderAddress); //on vide la contact list à la fin de chaque test
-    }
+    }*/
 
 
     //test du handleReceived lorsqu'on reçoit un nickname

@@ -80,7 +80,7 @@ public class Server {
         InetAddress ipSender;
 
         interface  Observer {
-            void handleMess(String message);
+            void handleMess(String message) throws UnknownHostException;
 
         }
         private List<Observer> observers = new ArrayList<>();
