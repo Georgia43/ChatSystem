@@ -31,9 +31,6 @@ public class Library {
         Broadcast.sendFirstPacket();
     }
 
-    public static void sendMessageDisconnect() {
-        Broadcast.sendExitMessage();
-    }
 
     //envoyer son nickname quand choisi et unique
     public static void SendCurrentNickname(String CurrentNickname) throws InterruptedException {

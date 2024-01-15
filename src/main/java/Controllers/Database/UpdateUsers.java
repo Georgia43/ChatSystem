@@ -52,63 +52,11 @@ public class UpdateUsers {
         return false;
     }
 
-   /* public static boolean changeStatusToDisconnected(InetAddress Address, String url){
-        try {
-            CreateDatabase database = new CreateDatabase(url);
-          //  Statement statement = database.connection.createStatement();
-            String strAddress = Address.getHostAddress();
-            System.out.println("[UpdateUsers] Connected to the database to disconnect.");
-            String updateQuery = "UPDATE Users SET Status = ? WHERE ipAddress = '"+strAddress+ "'";
-
-            try (PreparedStatement preparedStatement = database.connection.prepareStatement(updateQuery)) {
-                preparedStatement.setString(1, "Diconnected");
-
-                int rowsUpdated = preparedStatement.executeUpdate();
-
-                if (rowsUpdated > 0) {
-                    System.out.println("User updated successfully");
-                } else {
-                    System.out.println("No User found with Address: " + Address);
-                }
-            }
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }*/
-
-   /* public static boolean changeStatusToConnected(InetAddress Address, String url){
-        try {
-            CreateDatabase database = new CreateDatabase(url);
-            Statement statement = database.connection.createStatement();
-            String strAddress = Address.getHostAddress();
-
-            String updateQuery = "UPDATE Users SET Status = ? WHERE ipAddress = '"+strAddress+ "'";
-
-            try (PreparedStatement preparedStatement = database.connection.prepareStatement(updateQuery)) {
-                preparedStatement.setString(1, "Connected");
-
-                int rowsUpdated = preparedStatement.executeUpdate();
-
-                if (rowsUpdated > 0) {
-                    System.out.println("User updated successfully");
-                } else {
-                    System.out.println("No User found with Address: " + Address);
-                }
-            }
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }*/
     //verifier si le pseudo entré est le meme que celui de la database quand la personne se connecte de nouveau
     public static boolean NicknameIsSame(String nickname, String url) {
 
         try {
             CreateTables database = new CreateTables(url);
-            Statement statement = database.connection.createStatement();
             String query = "SELECT COUNT(*) AS count FROM USERS WHERE name = ?";
             PreparedStatement preparedStatement = database.connection.prepareStatement(query);
             preparedStatement.setString(1, nickname);
@@ -130,7 +78,6 @@ public class UpdateUsers {
     public static boolean changeNicknameDB(InetAddress Address, String name, String url){
         try {
             CreateTables database = new CreateTables(url);
-            Statement statement = database.connection.createStatement();
             String strAddress = Address.getHostAddress();
 
             String updateQuery = "UPDATE Users SET name = ? WHERE ipAddress = '"+strAddress+ "'";

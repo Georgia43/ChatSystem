@@ -27,7 +27,6 @@ public class UpdateMessages {
 
         try {
            CreateTables database = new CreateTables(url);
-           // Statement statement = database.connection.createStatement();
             String strAddress = Address.getHostAddress().replace('.', '_');
             String insertQuery = "INSERT INTO Messages_" + strAddress + "(dateHeure, sender, content) VALUES (?, ?, ?)";
             String MyAddress = Objects.requireNonNull(AppData.getNonLoopbackAddress()).getHostAddress().replace('.', '_');

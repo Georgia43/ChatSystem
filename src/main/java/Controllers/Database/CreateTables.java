@@ -19,7 +19,6 @@ public class CreateTables {
         this.url = url;
         try{
             connection = DriverManager.getConnection(url);
-         //   System.out.println("[CreateDatabase] Connected to database.");
         } catch (SQLException e) {
           e.printStackTrace();
         }

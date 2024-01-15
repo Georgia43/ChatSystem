@@ -34,27 +34,13 @@ public class Server {
                     ClientsList.addNewClient(clientHandler);
                     clientHandler.start();
 
-                    //User.recordConnectionSocket(socketAccepted);
-                   // System.out.println("!!!!!!!!!!!!!!!!!! i will enter add connection");
-                    //User.addConnection(serverSocket);
-
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
 
-        /*user = getUser(client.source)
-                user.addConnection(clientSocket)*/
-        /*out = new PrintWriter(clientSocket.getOutputStream(), true);
-        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        InetAddress clientIP = clientSocket.getInetAddress();*/
-        /*lire message*/
-       /* while(true) {
-            String message = in.readLine();
 
-            HandleMessage.handle(clientIP,message);
-        }*/
 
 
     }
@@ -114,14 +100,6 @@ public class Server {
                 } else {
                     System.err.println("Connection not established. Cannot send message.");
                 }
-                //DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, Server.MESSAGE_PORT);
-                // respSocket.send(respPacket);
-                //respSocket.close();
-                //BDD STOCKER MESSAGE
-                //}
-                //catch (IOException e) {
-                //  logger.log(Level.SEVERE,"IOException: " + e.getMessage());
-                // }
 
             }
 

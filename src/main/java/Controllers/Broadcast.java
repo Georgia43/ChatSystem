@@ -99,7 +99,6 @@ public class Broadcast {
     public static class Receive extends Thread {
         private static DatagramSocket socket;
 
-        // Map<String, String> contactList = new HashMap<>(); ON A MAINTENANT CREE UNE CLASSE CONTACTLIST
 	public Receive() {
         //constructeur
         try {
@@ -123,7 +122,6 @@ public class Broadcast {
                     socket.receive(inPacket);
                     String received = new String(inPacket.getData(), 0, inPacket.getLength());
                     InetAddress sender = InetAddress.getByName(inPacket.getAddress().getHostAddress());
-		            //String receiver = InetAddress.getLocalHost().getHostAddress();
 		            handleReceived(sender,received);
 
                     if (received.equals("end")) {
@@ -158,7 +156,6 @@ public class Broadcast {
                     CreateTables database = new CreateTables(CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
                     database.tableMessages(sender);
                     UpdateUsers.addUser(sender, nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
-                  //  UpdateUsers.changeStatusToConnected(sender,CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
                     // si l'utilisateur existe deja dans la base de données mais a changé de pseudo lors de la connexion
                     if (!UpdateUsers.NicknameIsSame(nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())))){
                     UpdateUsers.changeNicknameDB(sender,nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));}
@@ -174,7 +171,6 @@ public class Broadcast {
             }
 
             else if (received.equals("DISCONNECTING")) {
-               // UpdateUsers.changeStatusToDisconnected(sender, CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
                 AppData.DeletefromContactList(sender);
             }
         }
@@ -214,35 +210,13 @@ public class Broadcast {
                 exitSocket.send(exitPacket);
             }
             exitSocket.close();
-           // System.out.println(AppData.getNonLoopbackAddress());
             System.out.println("[Broadcast] Just sent the message to disconnect.");
         }
         catch (IOException e) {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
         }
     }
-//CETTE FONCTION FONCTIONNE MAIS ON L'A UTILISE POUR L ETAPE DE DECOUVERTE DES CONTACTS
-    /*public static void CheckUnicityNickname(String CurrentNickname) throws InterruptedException {
-        Scanner scan = InputScanner.getScanner();
-        boolean valid_name = true;
-        do {
-            valid_name = true;
-            for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
-                String nickname = pers.getValue();
-                if (nickname.equals(CurrentNickname)) {
-                    valid_name = false;
-                    break;
-                }
-            }
-            if(!valid_name) {
-                System.out.println("nickname taken. Choose a new one : ");
-                CurrentNickname = scan.nextLine();
-            }
-        } while (!valid_name);
 
-        currentUser.setNickname(CurrentNickname);
-        //scan.close();
-    }*/
     public static boolean CheckUnicityNickname(String CurrentNickname) throws InterruptedException {
         boolean valid_name = true;
 
