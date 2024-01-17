@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import static Model.AppData.currentUser;
 import static Model.AppData.getNonLoopbackAddress;
 
-/*FOR CONTACT DISCOVERY*/
 public class Broadcast {
 
     public static final int PORT = 37842;
@@ -75,7 +74,7 @@ public class Broadcast {
         }
     }
 
-    /*ENVOI*/
+    /*ENVOI*/ 
     public static void sendFirstPacket() {
         try {
             DatagramSocket socket = new DatagramSocket();
@@ -84,7 +83,6 @@ public class Broadcast {
             byte [] FirstMessage = mess.getBytes();
             DatagramPacket message= new DatagramPacket(FirstMessage, FirstMessage.length, getBroadcastAddress(), PORT);
             socket.send(message);
-            // we add the table with the users
             CreateTables database = new CreateTables(CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
             database.tableUsers();
         }
@@ -143,6 +141,7 @@ public class Broadcast {
                 logger.info("Receive socket closed.");
             }
         }
+	//pour traiter les différents messages qui peuvent être reçus
         static void handleReceived(InetAddress sender, String received) throws SQLException, IOException {
             if (received.equals("FIRST_MESSAGE") && (!receivedFromMyself(sender))) {
                 sendNickname(AppData.getNicknameCurrentUser(), sender); //j'envoie mon nickname à la personne qui souhaite se connecter
@@ -151,31 +150,29 @@ public class Broadcast {
                     System.out.println("nickname is received");
                     String prefix = "MY_NICKNAME_";
                     String nickname = received.substring(prefix.length());
-                    AppData.addContactList(sender, nickname);
+                    AppData.addContactList(sender, nickname); //j'ajoute l'utilisateur qui vient de m'envoyer son nickname dans ma liste de contacts
                     System.out.println("nickname added to contact list");
                     CreateTables database = new CreateTables(CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
-                    database.tableMessages(sender);
-                    UpdateUsers.addUser(sender, nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+                    database.tableMessages(sender); //création de la table de messages correspondant à cet utilisateur
+                    UpdateUsers.addUser(sender, nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress()))); //ajout de l'utilisateur dans la database
                     // si l'utilisateur existe deja dans la base de données mais a changé de pseudo lors de la connexion
                     if (!UpdateUsers.NicknameIsSame(nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())))){
                     UpdateUsers.changeNicknameDB(sender,nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));}
-                    if (!ClientsList.checkPresenceIP(sender)){
-                        Client client = new Client(sender);
+                    if (!ClientsList.checkPresenceIP(sender)){ //pour vérifier si l'utilisateur est déjà dans ma liste de clients
+                        Client client = new Client(sender); //s'il n'est pas dans la liste, alors je créé une instance de client, son constructeur permet la création du socket et l'ajout dans la liste de clients
                     }
-                    // on créé la base de données pour les messages pour chaque personne
-            } else if (received.startsWith("CHANGE_NICKNAME_")){
+            } else if (received.startsWith("CHANGE_NICKNAME_")){ //lorsqu'un utilisateur veut changer son nickname 
                 String prefix = "CHANGE_NICKNAME_";
                 String nickname = received.substring(prefix.length());
-                AppData.changeContactList(sender, nickname);
-                UpdateUsers.changeNicknameDB(sender,nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+                AppData.changeContactList(sender, nickname); //changer le nickname de l'utilisateur dans la liste de contacts
+                UpdateUsers.changeNicknameDB(sender,nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress()))); //changer le nickname dans la database
             }
 
             else if (received.equals("DISCONNECTING")) {
-                AppData.DeletefromContactList(sender);
-            }
+                AppData.DeletefromContactList(sender); //si quelqu'un veut se déconnecter, on l'enlève de notre liste de contacts
         }
     }
-        /*pour envoyer le nickname*/
+        //pour envoyer le nickname
         public static void sendNickname (String nickname, InetAddress address) {
 	        try {
         		DatagramSocket respSocket = new DatagramSocket();
@@ -216,14 +213,15 @@ public class Broadcast {
             logger.log(Level.SEVERE,"IOException: " + e.getMessage());
         }
     }
-
+	    
+// vérifier l'unicité du nickname souhaité
     public static boolean CheckUnicityNickname(String CurrentNickname) throws InterruptedException {
         boolean valid_name = true;
 
             for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
                 String nickname = pers.getValue();
                 if (nickname.equals(CurrentNickname)) {
-                    valid_name = false;
+                    valid_name = false; //nickname déjà pris
                     break;
                 }
             }
