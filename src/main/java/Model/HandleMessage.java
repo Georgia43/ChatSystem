@@ -17,9 +17,6 @@ public class HandleMessage {
             String message = mess_received.substring(prefix.length());
             //Base de Données
             UpdateMessages.addReceivedMessage(sender, message, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
-            //affichage
-
-            System.out.println(message);
             return message;
         } else {
             throw new RuntimeException("invalid message received");
