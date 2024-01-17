@@ -12,6 +12,7 @@ import java.io.IOException;
 
 public class ChangeNickname {
 
+    //création de jtField pour que l'utilisateur puisse taper son nouveau nickname
     private JTextField jtField = new JTextField();
 
     public ChangeNickname(){
@@ -19,15 +20,15 @@ public class ChangeNickname {
         //fermer
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JButton button_change = new JButton("Connect");
+        JButton button_change = new JButton("Change Nickname");
 
-        //lorsqu'on appuie sur le bouton de connexion
+        //lorsqu'on appuie sur le bouton pour le changement de nickname
         button_change.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
         //choix du nickname
-        String nickname = getNickname();
+        String nickname = getNickname(); //récupérer le nickname tapé par l'utilisateur 
         try {
             //on vérifie si le nickname est unique et s'il l'est on l'envoie aux contacts
             if (Broadcast.CheckUnicityNickname(nickname)) {
@@ -68,15 +69,12 @@ public class ChangeNickname {
 
         frame.setLayout(new GridLayout(3, 1));
 
-        //we add the elements to the frame
         frame.add(changeLabel, BorderLayout.PAGE_START);
         frame.add(pText);
         frame.add(pButton);
 
         frame.setSize(500, 600);
-        // Center the frame on the screen
         frame.setLocationRelativeTo(null);
-        // Display the window.
         frame.setVisible(true);
 
     }
