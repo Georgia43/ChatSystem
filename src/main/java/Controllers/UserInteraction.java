@@ -14,53 +14,24 @@ import static Model.AppData.getNonLoopbackAddress;
 
 public class UserInteraction {
 
-    //private Client client ;
     static String messageReceived;
     static InetAddress sender;
 
     public UserInteraction() throws UnknownHostException {
         try{
-      //  this.client=new Client();
-        this.sender = InetAddress.getLocalHost(); // Initialize the sender variable here
+        this.sender = InetAddress.getLocalHost(); 
     } catch (UnknownHostException e) {
         e.printStackTrace();}
     }
 
-   /* public void changeUser(String ipAddress){
-        try{
-            InetAddress ip = InetAddress.getByName(ipAddress);
-            client.startConnection(ip);
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-    }*/
-
-  /*  public static void sendTCPconnection() throws IOException {
-
-        try {
-            System.out.println("rentre dans send tcp");
-            for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
-                System.out.println("je rentre dans le for");
-                InetAddress id = pers.getKey(); //récupérer l'adresse IP des membres de la liste de contact
-                Client.startConnection(id);
-                System.out.println("connection TCP lancée avec "+ pers);
-            }
-        }
-
-        catch (IOException e) {
-            logger.log(Level.SEVERE,"IOException: " + e.getMessage());
-        }
-    }*/
-
+  
     public void sendMess(String message,String ipAddress) throws IOException {
         try{
             InetAddress ip = InetAddress.getByName(ipAddress);
-
-            Server.ClientHandler clientHandler = ClientsList.getClientHandlerByIP(ip);
+            Server.ClientHandler clientHandler = ClientsList.getClientHandlerByIP(ip); //récupérer le client handler qui correspond à l'adresse IP ipAddress
             assert clientHandler != null;
             clientHandler.sendMessage(message);
-
-            UpdateMessages.addSentMessage(ip,message, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+            UpdateMessages.addSentMessage(ip,message, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress()))); //ajouter le message envoyé dans la database
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
