@@ -97,19 +97,19 @@ public class Broadcast {
     public static class Receive extends Thread {
         private static DatagramSocket socket;
 
-	public Receive() {
-        //constructeur
-        try {
-            this.socket = new DatagramSocket(PORT); //port qui va recevoir le message
-        } catch (SocketException e) {
-            logger.log(Level.SEVERE, "SocketException: " + e.getMessage());
+        public Receive() {
+            //constructeur
+            try {
+                this.socket = new DatagramSocket(PORT); //port qui va recevoir le message
+            } catch (SocketException e) {
+                logger.log(Level.SEVERE, "SocketException: " + e.getMessage());
+            }
         }
-    	}
 
         @Override
         public void run() {
             try {
-               
+
                 boolean running = true;
 
                 socket.setBroadcast(true);
@@ -120,16 +120,15 @@ public class Broadcast {
                     socket.receive(inPacket);
                     String received = new String(inPacket.getData(), 0, inPacket.getLength());
                     InetAddress sender = InetAddress.getByName(inPacket.getAddress().getHostAddress());
-		            handleReceived(sender,received);
+                    handleReceived(sender, received);
 
                     if (received.equals("end")) {
                         running = false;
                         continue;
                     }
                 }
-            }
-            catch (IOException | SQLException e) {
-                logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+            } catch (IOException | SQLException e) {
+                logger.log(Level.SEVERE, "IOException: " + e.getMessage());
             } finally {
                 closeSocket();
             }
@@ -141,78 +140,79 @@ public class Broadcast {
                 logger.info("Receive socket closed.");
             }
         }
-	//pour traiter les différents messages qui peuvent être reçus
+
+        //pour traiter les différents messages qui peuvent être reçus
         static void handleReceived(InetAddress sender, String received) throws SQLException, IOException {
             if (received.equals("FIRST_MESSAGE") && (!receivedFromMyself(sender))) {
                 sendNickname(AppData.getNicknameCurrentUser(), sender); //j'envoie mon nickname à la personne qui souhaite se connecter
                 System.out.println("first packet is received");
             } else if (received.startsWith("MY_NICKNAME_")) {
-                    System.out.println("nickname is received");
-                    String prefix = "MY_NICKNAME_";
-                    String nickname = received.substring(prefix.length());
-                    AppData.addContactList(sender, nickname); //j'ajoute l'utilisateur qui vient de m'envoyer son nickname dans ma liste de contacts
-                    System.out.println("nickname added to contact list");
-                    CreateTables database = new CreateTables(CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
-                    database.tableMessages(sender); //création de la table de messages correspondant à cet utilisateur
-                    UpdateUsers.addUser(sender, nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress()))); //ajout de l'utilisateur dans la database
-                    // si l'utilisateur existe deja dans la base de données mais a changé de pseudo lors de la connexion
-                    if (!UpdateUsers.NicknameIsSame(nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())))){
-                    UpdateUsers.changeNicknameDB(sender,nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));}
-                    if (!ClientsList.checkPresenceIP(sender)){ //pour vérifier si l'utilisateur est déjà dans ma liste de clients
-                        Client client = new Client(sender); //s'il n'est pas dans la liste, alors je créé une instance de client, son constructeur permet la création du socket et l'ajout dans la liste de clients
-                    }
-            } else if (received.startsWith("CHANGE_NICKNAME_")){ //lorsqu'un utilisateur veut changer son nickname 
+                System.out.println("nickname is received");
+                String prefix = "MY_NICKNAME_";
+                String nickname = received.substring(prefix.length());
+                AppData.addContactList(sender, nickname); //j'ajoute l'utilisateur qui vient de m'envoyer son nickname dans ma liste de contacts
+                System.out.println("nickname added to contact list");
+                CreateTables database = new CreateTables(CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+                database.tableMessages(sender); //création de la table de messages correspondant à cet utilisateur
+                UpdateUsers.addUser(sender, nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress()))); //ajout de l'utilisateur dans la database
+                // si l'utilisateur existe deja dans la base de données mais a changé de pseudo lors de la connexion
+                if (!UpdateUsers.NicknameIsSame(nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())))) {
+                    UpdateUsers.changeNicknameDB(sender, nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
+                }
+                if (!ClientsList.checkPresenceIP(sender)) { //pour vérifier si l'utilisateur est déjà dans ma liste de clients
+                    Client client = new Client(sender); //s'il n'est pas dans la liste, alors je créé une instance de client, son constructeur permet la création du socket et l'ajout dans la liste de clients
+                }
+            } else if (received.startsWith("CHANGE_NICKNAME_")) { //lorsqu'un utilisateur veut changer son nickname
                 String prefix = "CHANGE_NICKNAME_";
                 String nickname = received.substring(prefix.length());
                 AppData.changeContactList(sender, nickname); //changer le nickname de l'utilisateur dans la liste de contacts
-                UpdateUsers.changeNicknameDB(sender,nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress()))); //changer le nickname dans la database
-            }
-
-            else if (received.equals("DISCONNECTING")) {
+                UpdateUsers.changeNicknameDB(sender, nickname, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress()))); //changer le nickname dans la database
+            } else if (received.equals("DISCONNECTING")) {
                 AppData.DeletefromContactList(sender); //si quelqu'un veut se déconnecter, on l'enlève de notre liste de contacts
+            }
         }
     }
+
         //pour envoyer le nickname
-        public static void sendNickname (String nickname, InetAddress address) {
-	        try {
-        		DatagramSocket respSocket = new DatagramSocket();
-                String mess = "MY_NICKNAME_"+nickname;
-                byte [] respMessage= mess.getBytes();
+        public static void sendNickname(String nickname, InetAddress address) {
+            try {
+                DatagramSocket respSocket = new DatagramSocket();
+                String mess = "MY_NICKNAME_" + nickname;
+                byte[] respMessage = mess.getBytes();
                 DatagramPacket respPacket = new DatagramPacket(respMessage, respMessage.length, address, PORT);
-        		respSocket.send(respPacket);
-        		respSocket.close();
-                System.out.println("nickname sent : "+nickname);
+                respSocket.send(respPacket);
+                respSocket.close();
+                System.out.println("nickname sent : " + nickname);
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "IOException: " + e.getMessage());
             }
-        	catch (IOException e) {
-                logger.log(Level.SEVERE,"IOException: " + e.getMessage());
-            }
 
 
-	}
-
-    //envoyer un message à sa liste de contacts lorsqu'on se déconnecte
-    public static void sendExitMessage(){
-        Map<InetAddress, String> contactList = AppData.getContactList();
-
-        try {
-            DatagramSocket exitSocket = new DatagramSocket();
-            exitSocket.setBroadcast(true);
-
-            for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
-                InetAddress id = pers.getKey(); //récupérer l'adresse IP des personnes dans la liste de contacts
-
-                String exit = "DISCONNECTING";
-                byte[] exitMessage = exit.getBytes();
-                DatagramPacket exitPacket = new DatagramPacket(exitMessage, exitMessage.length, id, PORT);
-                exitSocket.send(exitPacket);
-            }
-            exitSocket.close();
-            System.out.println("[Broadcast] Just sent the message to disconnect.");
         }
-        catch (IOException e) {
-            logger.log(Level.SEVERE,"IOException: " + e.getMessage());
+
+        //envoyer un message à sa liste de contacts lorsqu'on se déconnecte
+        public static void sendExitMessage() {
+            Map<InetAddress, String> contactList = AppData.getContactList();
+
+            try {
+                DatagramSocket exitSocket = new DatagramSocket();
+                exitSocket.setBroadcast(true);
+
+                for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
+                    InetAddress id = pers.getKey(); //récupérer l'adresse IP des personnes dans la liste de contacts
+
+                    String exit = "DISCONNECTING";
+                    byte[] exitMessage = exit.getBytes();
+                    DatagramPacket exitPacket = new DatagramPacket(exitMessage, exitMessage.length, id, PORT);
+                    exitSocket.send(exitPacket);
+                }
+                exitSocket.close();
+                System.out.println("[Broadcast] Just sent the message to disconnect.");
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "IOException: " + e.getMessage());
+            }
         }
-    }
+
 	    
 // vérifier l'unicité du nickname souhaité
     public static boolean CheckUnicityNickname(String CurrentNickname) throws InterruptedException {
@@ -234,6 +234,7 @@ public class Broadcast {
     }
 
 }
+
 
 
 
