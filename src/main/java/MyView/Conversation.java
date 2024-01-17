@@ -15,7 +15,7 @@ import Controllers.UserInteraction;
 public class Conversation {
     private String name;
     private String ipaddress;
-    // Create the JTextArea for displaying messages
+    // création de messageArea pour afficher les messages sur la frame
     JTextArea messageArea = new JTextArea();
 
     public Conversation (String name, String ipaddress) {
@@ -26,40 +26,29 @@ public class Conversation {
         JFrame frame = new JFrame("Conversation with " + name);
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-      /*  frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                stopReceiving();
-            }
-        });
-
-*/
-
-        messageArea.setEditable(false);
+     
+       messageArea.setEditable(false);
 
 
-        // Create the JTextField for typing messages
+        // création du messageField pour taper des messages
         JTextField messageField = new JTextField();
 
-        // Create the JButton for sending messages
+        // création du sendMessageButton pour l'envoi des messages 
         JButton sendMessageButton = new JButton("Send");
 
-        // Set layouts
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // Add components to the panel
         panel.add(new JScrollPane(messageArea), BorderLayout.CENTER);
         panel.add(messageField, BorderLayout.SOUTH);
         panel.add(sendMessageButton, BorderLayout.EAST);
 
-        // Add the panel to the frame
         frame.getContentPane().add(panel);
 
         sendMessageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String message = messageField.getText();
+                String message = messageField.getText(); //récupérer le message tapé par l'utilisateur
                 UserInteraction inter = null;
                 try {
                     inter = new UserInteraction();
@@ -67,108 +56,31 @@ public class Conversation {
                     throw new RuntimeException(e);
                 }
                 try {
-                    System.out.println("action listener send");
-                    inter.sendMess(message,ipaddress);
+                    inter.sendMess(message,ipaddress); //envoie du message  
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                messageArea.append("You : " + message + "\n");
+                messageArea.append("You : " + message + "\n"); //ajouter le message envoyé au messageArea avec un You devant pour le distinguer des messages reçus
                 messageField.setText("");
             }
         });
 
 
-        frame.setSize(400, 300); // Set frame size
-        frame.setLocationRelativeTo(null); // Center the frame
+        frame.setSize(400, 300); 
+        frame.setLocationRelativeTo(null); 
         frame.setVisible(true);
 
-       // startReceiving(messageArea,name,ipaddress);
     }
 
-   // private Object lock = new Object(); // Créer un objet verrou
-
-    //private Set<String> processedMessages = new HashSet<>();
-  //  private volatile boolean receivingMessages = true;
-  /*  private void startReceiving(JTextArea messageArea,String name,String ip) {
-        new Thread(()->{
-            UserInteraction inter = null;
-            try {
-                inter = new UserInteraction();
-            } catch (UnknownHostException e) {
-                throw new RuntimeException(e);
-            }
-          while (receivingMessages) {
-              synchronized (lock) { // Synchroniser sur le verrou
-                  try {
-                      lock.wait(); // Attendre jusqu'à ce qu'une notification soit reçue
-                  } catch (InterruptedException e) {
-                      e.printStackTrace();
-                  }
-                  String receivedMess = inter.getMessageReceived();
-                 if (Objects.equals(inter.getSender(), ip) && receivedMess != null) {
-                      SwingUtilities.invokeLater(() -> {
-                          messageArea.append(name + ": " + receivedMess + "\n");
-                      });
-                  }
-              }
-          }
-        }).start();
-    }
-    
-        public void notifyNewMessage() {
-            synchronized (lock) { // Synchroniser sur le verrou
-                lock.notify(); // Notifier qu'un nouveau message est arrivé
-            }
-        }*/
-
-    /*private void startReceiving(JTextArea messageArea, String name, String ip) {
-            new Thread(()->{
-                UserInteraction inter = null;
-                try {
-                    inter = new UserInteraction();
-                } catch (UnknownHostException e) {
-                    throw new RuntimeException(e);
-                }
-            while (receivingMessages) {
-                String receivedMess = inter.getMessageReceived(); // Simulated received message
-                if (Objects.equals(inter.getSender(), ip) && !alreadyProcessed(receivedMess)) {
-                    try {
-                        UpdateMessages.addReceivedMessage(InetAddress.getByName(ip), receivedMess, CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    } catch (UnknownHostException e) {
-                        throw new RuntimeException(e);
-                    }
-                    processMessage(receivedMess, name, messageArea);
-                }
-            }
-        }).start();
-    }*/
-
-    /*private boolean alreadyProcessed(String message) {
-        return processedMessages.contains(message);
-    }*/
-
-    /*private void processMessage(String message, String name, JTextArea messageArea) {
-        processedMessages.add(message);
-        SwingUtilities.invokeLater(() -> {
-            messageArea.append(name + ": " + message + "\n");
-        });
-    }*/
-
+    //afficher l'historique des messages 
     public void displayChatHistory(List<String> chatHistory) {
         for (String message : chatHistory) {
-            String[] parts = message.split(" ", 4);
+            String[] parts = message.split(" ", 4); //pour distinguer les parties du message
             if (parts.length == 4) {
                 String date = parts[0];
                 String time = parts[1];
                 String sender = parts[2];
                 String content = parts[3];
-                System.out.println(date);
-                System.out.println(time);
-                System.out.println(sender);
-                System.out.println(content);
-                System.out.println(ipaddress);
                 String displayMessage = date + " - " + time + " - " + (isReceivedMessage(sender) ? name : "You") + ": " + content;
                 messageArea.append(displayMessage + "\n");
             } else {
@@ -176,11 +88,13 @@ public class Conversation {
             }
         }
     }
-
+    
+    //pour distinguer les messages reçus et envoyés lors de l'affichage de l'historique
     private boolean isReceivedMessage(String sender) {
         return sender.equals(ipaddress);
     }
 
+    //pour afficher les messages reçus
     public void displayMessage(InetAddress sender, String message){
         messageArea.append(name +" : "+message + "\n");
     }
@@ -189,13 +103,5 @@ public class Conversation {
         return InetAddress.getByName(ipaddress);
     }
 
-
-    /*public void stopReceiving() {
-        receivingMessages = false;
-    }*/
-    public static void main(String[] args) {
-        // Create an instance of the Conversation class
-        Conversation conversation = new Conversation("Mary", "1.1.1.1");
-    }
 }
 
