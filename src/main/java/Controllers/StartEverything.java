@@ -1,8 +1,4 @@
 package Controllers;
-
-
-import Controllers.Database.CreateTables;
-import Controllers.Database.UpdateMessages;
 import Model.AppData;
 import Model.ClientsList;
 import Model.User;
@@ -13,8 +9,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import Model.ClientsList;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -30,8 +24,6 @@ public class StartEverything {
     public StartEverything() throws IOException, InterruptedException {
         Broadcast.Receive receiverThread = new Broadcast.Receive();
         receiverThread.start();
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!before starting server");
         Server server = new Server();
         ClientsList.addObserver(new ClientsList.Observer() {
             @Override
@@ -51,9 +43,7 @@ public class StartEverything {
             }
         });
         server.start();
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!i just starded the server");
-
-        //envoyer le premier message
+        //envoyer le premier message indiquant la demande de connexion
         Library.sendFirstMessage();
     }
 
