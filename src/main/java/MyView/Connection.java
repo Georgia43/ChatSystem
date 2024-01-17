@@ -96,8 +96,4 @@ public class Connection {
         return this.jtField.getText();
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        // Create an instance of the Connection class
-        Connection connection = new Connection();}
-
 }
