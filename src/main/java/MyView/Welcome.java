@@ -37,7 +37,6 @@ public class Welcome {
 
         frame.setLayout(new GridLayout(3, 1));
 
-        //we add the elements to the frame
         frame.add(welcomeLabel, BorderLayout.PAGE_START);
 
         //creation du panel pour le bouton
@@ -49,9 +48,7 @@ public class Welcome {
 
 
         frame.setSize(500, 600);
-        // Center the frame on the screen
         frame.setLocationRelativeTo(null);
-        // Display the window.
         frame.setVisible(true);
 
     }
