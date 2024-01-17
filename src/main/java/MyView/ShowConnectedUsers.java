@@ -43,9 +43,9 @@ public class ShowConnectedUsers {
         panel = new JPanel();
         panel.setLayout(new GridLayout(0, 1));
 
-        // Create and add the "Update" button
+        // création du bouton updateButton qui permet de mettre à jour la liste des utilisateurs connectés
         JButton updateButton = new JButton("Update");
-        // change nickname
+        // création du bouton changeNickButton qui permet à l'utilisateur de changer son nickname
         JButton changeNickButton = new JButton("Change Nickname");
         updateButton.addActionListener(new ActionListener() {
             @Override
@@ -61,20 +61,8 @@ public class ShowConnectedUsers {
             }
         });
 
-      /*  JButton DisconnectButton = new JButton("Disconnect");
-        DisconnectButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Welcome welcome = new Welcome();
-                Broadcast.sendExitMessage();
-                frame.dispose();
-              //  Server.stop();
-                Broadcast.Receive.closeSocket();
-            }
-        });*/
-
+    
         ButtonsPanel.add(updateButton); // pour ajouter le bouton en haut
-      //  ButtonsPanel.add(DisconnectButton);
         ButtonsPanel.add(changeNickButton);
         frame.add(ButtonsPanel, BorderLayout.NORTH);
         frame.add(new JScrollPane(panel));
@@ -82,22 +70,12 @@ public class ShowConnectedUsers {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        // Initial update
+        // Mise à jour initiale de la liste des utilisateurs connectés
         updateConnectedUsers();
     }
 
     public void updateConnectedUsers() {
         panel.removeAll();
-
-           /* java.sql.Connection connection = DriverManager.getConnection(CreateDatabase.createURL(Objects.requireNonNull(getNonLoopbackAddress())));
-            Statement statement = connection.createStatement();
-             //choisir utilisateur parmi ceux qui sont connectes
-            ResultSet result_users = statement.executeQuery("SELECT * FROM USERS WHERE status = 'Connected'");
-
-            while (result_users.next()) {
-                String name = result_users.getString("name");
-                String ipAddress = result_users.getString("ipAddress");
-                InetAddress strAddress = InetAddress.getByName(ipAddress);*/
 
         ArrayList<User> connectedUsers = Library.GetConnectedUserList();
 
@@ -105,7 +83,7 @@ public class ShowConnectedUsers {
             String name = Library.getNameUser(user);
             InetAddress ipAddress = Library.getIpUser(user);
 
-            // pour ne pas être dans sa propre liste d'utilisateurs connectés ni apparaitre quand on a pas choisi le pseudo
+            // pour ne pas être dans sa propre liste d'utilisateurs connectés ni apparaitre quand on a pas choisi le nickname
             if (!Broadcast.receivedFromMyself(ipAddress) && !name.equals("null")) {
 
                 JPanel userPanel = new JPanel(new BorderLayout()); //panel pour utilisateurs
@@ -114,15 +92,15 @@ public class ShowConnectedUsers {
                 infoPanel.add(new JLabel(name));
                 userPanel.add(infoPanel, BorderLayout.CENTER);
 
-                //je choisis la personne avec laquelle je veux échanger des messages ou voir mon historique de messages
+                //pour choisir la personne avec laquelle je veux échanger des messages ou voir mon historique de messages
                 JButton button_message = new JButton("Accept");
 
                 button_message.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
                         Conversation conv = new Conversation(name, ipAddress.getHostAddress());
-                        StartEverything.conversationList.add(conv);
-                        conv.displayChatHistory(UpdateMessages.loadMessagesFromDatabase(ipAddress, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress()))));
+                        StartEverything.conversationList.add(conv); //ajout de la conversation dans la liste avec les conversations afin de savoir dans quelle frame on doit afficher un message reçu ainsi que l'historique des messages 
+                        conv.displayChatHistory(UpdateMessages.loadMessagesFromDatabase(ipAddress, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress())))); //pour l'affichage de l'historique des messages échangés avec l'utilisateur correspondant à ipAddress
                     }
                 });
 
@@ -134,10 +112,6 @@ public class ShowConnectedUsers {
 
         frame.revalidate();
         frame.repaint();
-        // }
     }
 
-    public static void main(String[] args) throws IOException {
-        // Create an instance of the Connection class
-        ShowConnectedUsers ConnectedUsers = new ShowConnectedUsers();}
 }
