@@ -9,9 +9,9 @@ import java.util.Objects;
 
 import static Model.AppData.getNonLoopbackAddress;
 
-public class HandleMessage {
+public class ProcessMessage {
 
-    public static String handle(InetAddress sender, String mess_received) throws SQLException {
+    public static String process(InetAddress sender, String mess_received) throws SQLException {
         if ( mess_received.startsWith("MESSAGE_")){
             String prefix = "MESSAGE_";
             String message = mess_received.substring(prefix.length());

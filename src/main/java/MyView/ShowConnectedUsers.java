@@ -19,7 +19,6 @@ import java.util.Objects;
 
 import static Model.AppData.getNonLoopbackAddress;
 
-
 public class ShowConnectedUsers {
     //parcourir table avec utilisateurs et afficher que ceux qui sont connectés
     private JFrame frame;
@@ -64,6 +63,7 @@ public class ShowConnectedUsers {
     
         ButtonsPanel.add(updateButton); // pour ajouter le bouton en haut
         ButtonsPanel.add(changeNickButton);
+        // ajouter les éléments à la frame
         frame.add(ButtonsPanel, BorderLayout.NORTH);
         frame.add(new JScrollPane(panel));
         frame.setSize(500, 600);
@@ -74,11 +74,13 @@ public class ShowConnectedUsers {
         updateConnectedUsers();
     }
 
+    // pour mettre à jour les utilisateurs connectés sur la frame
     public void updateConnectedUsers() {
         panel.removeAll();
 
         ArrayList<User> connectedUsers = Library.GetConnectedUserList();
 
+        // on parcourt la liste d'utilisateurs connectés
         for (User user : connectedUsers) {
             String name = Library.getNameUser(user);
             InetAddress ipAddress = Library.getIpUser(user);
@@ -95,6 +97,7 @@ public class ShowConnectedUsers {
                 //pour choisir la personne avec laquelle je veux échanger des messages ou voir mon historique de messages
                 JButton button_message = new JButton("Accept");
 
+                // on ouvre une nouvelle conversation lorsqu'on appuie sur "accept"
                 button_message.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
@@ -109,7 +112,6 @@ public class ShowConnectedUsers {
                 panel.add(userPanel);
             }
             }
-
         frame.revalidate();
         frame.repaint();
     }

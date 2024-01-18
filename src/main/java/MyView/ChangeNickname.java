@@ -17,7 +17,7 @@ public class ChangeNickname {
 
     public ChangeNickname(){
         JFrame frame = new JFrame("Change Nickname");
-        //fermer
+        // fermer la frame
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JButton button_change = new JButton("Change Nickname");
@@ -27,13 +27,14 @@ public class ChangeNickname {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
-        //choix du nickname
-        String nickname = getNickname(); //récupérer le nickname tapé par l'utilisateur 
+        //choix du pseudo
+        String nickname = getNickname(); //récupérer le nickname tapé par l'utilisateur
         try {
-            //on vérifie si le nickname est unique et s'il l'est on l'envoie aux contacts
+            //on vérifie si le pseudo est unique et s'il l'est on l'envoie aux contacts
             if (Broadcast.CheckUnicityNickname(nickname)) {
                 Broadcast.setCurrentNickname(nickname);
                 Library.SendNewNickname(nickname);
+                // on ouvre la frame avec la liste de contacts
                 ShowConnectedUsers connectedUsers = new ShowConnectedUsers();
                 frame.dispose();
             } else {
@@ -69,6 +70,7 @@ public class ChangeNickname {
 
         frame.setLayout(new GridLayout(3, 1));
 
+        // ajouter les élements a la frame
         frame.add(changeLabel, BorderLayout.PAGE_START);
         frame.add(pText);
         frame.add(pButton);
@@ -79,6 +81,7 @@ public class ChangeNickname {
 
     }
 
+    // récupérer le nickname tapé dans le champ de texte
     public String getNickname() {
         return this.jtField.getText();
     }

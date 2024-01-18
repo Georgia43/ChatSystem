@@ -1,6 +1,5 @@
 package MyView;
 import Controllers.*;
-import Controllers.Library;
 
 import java.awt.*;
 import javax.swing.*;
@@ -12,16 +11,15 @@ import java.io.IOException;
 
 public class Connection {
 
-    //for nickname
     private JTextField jtField = new JTextField();
 
     public Connection() throws IOException, InterruptedException {
 
         JFrame frame = new JFrame("ChatSystem");
-        //fermer
+        //fermer la frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // pour lancer le broadcast
         StartEverything start = new StartEverything();
-
 
         //creation des boutons
         JButton button_connect = new JButton("Connect");
@@ -38,10 +36,11 @@ public class Connection {
                         if (Broadcast.CheckUnicityNickname(nickname)) {
                             Broadcast.setCurrentNickname(nickname);
                             Library.SendCurrentNickname(nickname);
+                            // on ouvre la frame avec les contacts
                             ShowConnectedUsers connectedUsers = new ShowConnectedUsers();
                             frame.dispose();
                         } else {
-                            //on demande de choisir de nouveau un nickname
+                            //on demande de choisir de nouveau un nickname si il a dejà été choisi
                           JOptionPane.showMessageDialog(
                                     null,
                                     "Nickname taken. Please choose a new one.",
@@ -56,8 +55,6 @@ public class Connection {
                     }
             }
         });
-
-
 
         //creation du label "connection"
         JLabel connectLabel = new JLabel("Connection", JLabel.CENTER);
@@ -78,22 +75,22 @@ public class Connection {
 
         frame.setLayout(new GridLayout(3, 1));
 
-        //we add the elements to the frame
+        // on ajoute les éléments à la frame
         frame.add(connectLabel, BorderLayout.PAGE_START);
         frame.add(pText);
         frame.add(pButton);
 
         frame.setSize(500, 600);
-        // Center the frame on the screen
+        // centrer la frame
         frame.setLocationRelativeTo(null);
-        // Display the window.
+        // rendre la fenêtre visible
         frame.setVisible(true);
 
 
     }
 
+    // récupérer le nickname tapé dans le champ de texte
     public String getNickname() {
         return this.jtField.getText();
     }
-
 }

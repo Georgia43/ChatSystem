@@ -1,6 +1,5 @@
 package Controllers;
 
-import Controllers.Database.UpdateUsers;
 import Model.AppData;
 import Model.User;
 
@@ -13,9 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static Model.AppData.getContactList;
-import static Model.AppData.getNonLoopbackAddress;
 
-/*FOR CONTACT DISCOVERY*/
 public class Library {
 
     private static final Logger logger = Logger.getLogger("chatsystem");
@@ -26,11 +23,11 @@ public class Library {
 
 
     /*méthodes*/
+
     //envoyer premier message
     public static void sendFirstMessage(){
         Broadcast.sendFirstPacket();
     }
-
 
     //envoyer son nickname quand choisi et unique
     public static void SendCurrentNickname(String CurrentNickname) throws InterruptedException {
@@ -46,12 +43,13 @@ public class Library {
             }
             NameSocket.close();
         }
-
         catch (IOException e) {
                 logger.log(Level.SEVERE,"IOException: " + e.getMessage());
         }
     }
 
+    // si l'utilisateur décide de changer de pseudo pendant l'utilisation de l'application
+    // il envoie le nouveau pseudo à tous ses contacts
     public static void SendNewNickname(String NewNickname) throws InterruptedException {
         try{
             DatagramSocket NameSocket = new DatagramSocket();
@@ -70,8 +68,6 @@ public class Library {
         }
     }
 
-
-
     //récupérer liste avec les utilisateurs connectés
     public static ArrayList<Model.User> GetConnectedUserList() {
         ArrayList<Model.User> connectedUsers = new ArrayList<User>();
@@ -81,6 +77,7 @@ public class Library {
             for (Map.Entry<InetAddress, String> pers : AppData.getContactList().entrySet()) {
                 InetAddress id = pers.getKey();
                 String nickname = pers.getValue();
+                // on créé un user par contact
                 User user = new User();
                 user.setNickname(nickname);
                 user.setId(id);
@@ -91,14 +88,17 @@ public class Library {
         return connectedUsers;
     }
 
+    // pour vider la liste de contacts
     public static void clearContactList() {
         getContactList().clear();
     }
 
+    // pour récupérer le pseudo de l'utilisateur
     public static String getNameUser(Model.User user){
       return user.getNickname();
     }
 
+    // pour récupérer l'adresse IP de l'utilisateur
     public static InetAddress getIpUser (Model.User user) {
         return user.getId();
     }

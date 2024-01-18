@@ -19,32 +19,27 @@ public class UserInteraction {
 
     public UserInteraction() throws UnknownHostException {
         try{
-        this.sender = InetAddress.getLocalHost(); 
-    } catch (UnknownHostException e) {
+            // initialisation de l'expéditeur avec l'adresse IP locale de l'utilisateur
+            this.sender = InetAddress.getLocalHost();
+        }
+        catch (UnknownHostException e) {
         e.printStackTrace();}
     }
 
-  
+    // pour envoyer le message au bon client
     public void sendMess(String message,String ipAddress) throws IOException {
         try{
             InetAddress ip = InetAddress.getByName(ipAddress);
-            Server.ClientHandler clientHandler = ClientsList.getClientHandlerByIP(ip); //récupérer le client handler qui correspond à l'adresse IP ipAddress
+            // récupérer le client handler qui correspond à l'adresse IP ipAddress
+            Server.ClientHandler clientHandler = ClientsList.getClientHandlerByIP(ip);
             assert clientHandler != null;
             clientHandler.sendMessage(message);
+            // ajouter le message envoyé dans la base de données
             UpdateMessages.addSentMessage(ip,message, CreateTables.createURL(Objects.requireNonNull(getNonLoopbackAddress()))); //ajouter le message envoyé dans la database
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public String getMessageReceived(){
-        return messageReceived;
-    }
-
-    public String getSender() {
-       if(sender != null) {return sender.getHostAddress();}
-       else {return "this shouldn't happen";}
     }
 }

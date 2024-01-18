@@ -7,14 +7,14 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.*;
 import java.util.List;
 
 import Controllers.UserInteraction;
 
 public class Conversation {
-    private String name;
-    private String ipaddress;
+    private final String name;
+    private final String ipaddress;
+
     // création de messageArea pour afficher les messages sur la frame
     JTextArea messageArea = new JTextArea();
 
@@ -39,6 +39,7 @@ public class Conversation {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
+        // ajout des éléments dans le panel
         panel.add(new JScrollPane(messageArea), BorderLayout.CENTER);
         panel.add(messageField, BorderLayout.SOUTH);
         panel.add(sendMessageButton, BorderLayout.EAST);
@@ -56,7 +57,7 @@ public class Conversation {
                     throw new RuntimeException(e);
                 }
                 try {
-                    inter.sendMess(message,ipaddress); //envoie du message  
+                    inter.sendMess(message,ipaddress); //envoi du message
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -65,11 +66,9 @@ public class Conversation {
             }
         });
 
-
         frame.setSize(400, 300); 
         frame.setLocationRelativeTo(null); 
         frame.setVisible(true);
-
     }
 
     //afficher l'historique des messages 
@@ -81,6 +80,7 @@ public class Conversation {
                 String time = parts[1];
                 String sender = parts[2];
                 String content = parts[3];
+                // on affiche les messages : si il a été envoyé on met "You", sinon on met le nom de la personne avec laquelle on parle
                 String displayMessage = date + " - " + time + " - " + (isReceivedMessage(sender) ? name : "You") + ": " + content;
                 messageArea.append(displayMessage + "\n");
             } else {
@@ -102,6 +102,5 @@ public class Conversation {
     public InetAddress getIp() throws UnknownHostException {
         return InetAddress.getByName(ipaddress);
     }
-
 }
 

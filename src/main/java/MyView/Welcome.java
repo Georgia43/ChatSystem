@@ -46,7 +46,6 @@ public class Welcome {
         pButton.setBorder(new EmptyBorder(50,50,50,50));
         frame.add(pButton);
 
-
         frame.setSize(500, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
