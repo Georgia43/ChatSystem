@@ -84,7 +84,7 @@ public class ShowConnectedUsers {
             InetAddress ipAddress = Library.getIpUser(user);
 
             // pour ne pas être dans sa propre liste d'utilisateurs connectés ni apparaitre quand on a pas choisi le nickname
-            if (!Broadcast.receivedFromMyself(ipAddress) && !name.equals("null")) {
+            if (Broadcast.receivedFromMyself(ipAddress) && !name.equals("null")) {
 
                 JPanel userPanel = new JPanel(new BorderLayout()); //panel pour utilisateurs
                 JPanel infoPanel = new JPanel(new GridLayout(1, 1));

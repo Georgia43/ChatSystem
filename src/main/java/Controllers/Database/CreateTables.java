@@ -9,13 +9,12 @@ import java.util.logging.Level;
 
 import static Controllers.Broadcast.logger;
 
-
 public class CreateTables {
     public Connection connection = null;
 
     public String url;
 
-    public CreateTables(String url) {
+    public CreateTables(String url) { // pour se connecter à la base de données
         this.url = url;
         try{
             connection = DriverManager.getConnection(url);
@@ -23,12 +22,15 @@ public class CreateTables {
           e.printStackTrace();
         }
     }
+
+    // on créé une URL par adress IP, pour créer une base de données différente pour chaque machine
     public static String createURL(InetAddress ipaddress) {
         String strAddress = ipaddress.getHostAddress().replace('.', '_');
         System.out.println("[CreateDatabase] database -- "+ strAddress);
         return "jdbc:sqlite:BDDchatsystem" + strAddress + ".db";
     }
 
+    // création de la table Users
     public void tableUsers() throws SQLException {
         try {
             Statement statement = connection.createStatement();
@@ -43,7 +45,9 @@ public class CreateTables {
         }
     }
 
-    public void tableMessages(InetAddress address) throws SQLException {
+    // création d'une table messages par contact (avec l'adresse IP pour l'individualiser)
+    // la clé primaire correspond à l'heure et la date d'envoi du message
+    public void tableMessages(InetAddress address) {
 
         try{
             Statement statement = connection.createStatement();
@@ -60,6 +64,7 @@ public class CreateTables {
             }
     }
 
+    // se déconnecter de la base de données
     public void closeConnection() {
         if (connection != null) {
             try {
