@@ -4,10 +4,10 @@
 
 sur un terminal : 
 - mvn compile
-- mvn package
+- mvn package  
   
-  On utilise la commande mvn compile afin de compiler toutes les classes du projet.
-  On utilise la commande mvn package afin de compiler toutes les classes et produire un unique fichier JAR (Java Archive) dans le répertoire cible (target).
+  On utilise la commande mvn compile afin de compiler toutes les classes du projet.  
+  On utilise la commande mvn package afin de compiler toutes les classes et produire un unique fichier JAR (Java Archive) dans le répertoire cible (target).  
 
 ## EXECUTION SUR TERMINAL
 
