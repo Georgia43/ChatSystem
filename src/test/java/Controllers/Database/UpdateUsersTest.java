@@ -64,7 +64,7 @@ public class UpdateUsersTest extends TestCase {
         deleteUser(senderAddress);
         dbTest.closeConnection();
     }
-    // test if the nickname is the same in the database
+    // test si le nickname est le même dans la database
     public void testNicknameIsSame() throws UnknownHostException, SQLException {
         InetAddress senderAddress = InetAddress.getByName("101.26.81.13");
         String Nickname = "John";
@@ -78,7 +78,7 @@ public class UpdateUsersTest extends TestCase {
         deleteUser(senderAddress);
         dbTest.closeConnection();
     }
-    // test of the change of nickname in the database
+    // test du changement de nickname dans la database
     public void testChangeNicknameDB() throws UnknownHostException, SQLException {
         InetAddress senderAddress = InetAddress.getByName("101.26.81.13");
         String newNickname = "Jack";

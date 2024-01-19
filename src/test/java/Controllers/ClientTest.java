@@ -22,6 +22,7 @@ public class ClientTest extends TestCase {
         return new TestSuite(ClientTest.class);
     }
 
+    // test de la fonction pour récupérer l'adresse ip grace au pseudo
     public void testGetIpByNickname () throws UnknownHostException {
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
         AppData.addContactList(senderAddress, "Mary");

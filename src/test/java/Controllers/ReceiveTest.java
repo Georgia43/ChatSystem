@@ -27,14 +27,14 @@ public class ReceiveTest extends TestCase
     }
     public static Test suite() { return new TestSuite( ReceiveTest.class );}
 
-    //test de AddcontactList lorsque la personne n'est pas dans notre contact list
+    // test lorsqu'on vide la contact list
    public void testClearContactList() throws UnknownHostException {
        InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
        AppData.addContactList(senderAddress, "Mary");
        Library.clearContactList();
        assert Library.GetConnectedUserList().isEmpty();
    }
-
+    //test de AddcontactList lorsque la personne n'est pas dans notre contact list
     public void testAddContactList() throws UnknownHostException {
        InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
         Library.clearContactList();
@@ -47,18 +47,6 @@ public class ReceiveTest extends TestCase
        AppData.DeletefromContactList(senderAddress); //on vide la contact list à la fin de chaque test
     }
 
-
-    //test du handleReceived lorsqu'on reçoit un nickname
-    // TEST MARCHAIT AVANT DE PASSER A LA PHASE 2 ET DONC DE RAJOUTER DATABASE
-    /*public void testReceiveNickname() throws IOException, SQLException {
-       InetAddress senderAddress = InetAddress.getByName("100.26.81.12");
-        CreateTables dbTest = new CreateTables(CreateTablesTest.TestUrl);
-        Broadcast.Receive.handleReceived(senderAddress,"MY_NICKNAME_John");
-        System.out.println(Library.GetConnectedUserList());
-        assertEquals("User{username='John', id='/100.26.81.12'}", (Library.GetConnectedUserList().get(0).toString()));
-        AppData.DeletefromContactList(senderAddress);
-    }*/
-
     //test de AddcontactList lorsque on a déjà une personne avec ce nom dans notre contact liste
     public void testAddContactList_b() throws UnknownHostException {
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
@@ -70,7 +58,7 @@ public class ReceiveTest extends TestCase
         AppData.DeletefromContactList(senderAddress);
     }
 
-    //test pour enlever quelqu'un de notre contact list lorsqu'il n'est plus connecté
+    //test pour enlever quelqu'un de nos contact list lorsqu'il n'est plus connecté
     public void testDeletefromContactList() throws UnknownHostException {
         //on ajoute une personne dans la contact list
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
@@ -97,15 +85,11 @@ public class ReceiveTest extends TestCase
     }
 
     //test du checkUnicityNickname
-
     public void testCheckUnicityNickname() throws InterruptedException, UnknownHostException {
-        // Add a test entry to the contact list
         InetAddress testInetAddress = InetAddress.getByName("127.0.0.1");
-        String testNickname = "TestUser";
+        String testNickname = "Mary";
         AppData.addContactList(testInetAddress, testNickname);
-        // Test the method
         boolean result = Broadcast.CheckUnicityNickname(testNickname);
-        // Verify that the result is as expected using an assertion
-        assertFalse(result); // The nickname "TestUser" should not be considered unique
+        assertFalse(result); // "Mary" ne devrait pas être unique
     }
 }
