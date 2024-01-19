@@ -25,7 +25,7 @@ public class UpdateUsersTest extends TestCase {
         return new TestSuite(UpdateUsersTest.class);
     }
 
-    // pour ne pas avoir de rpoblème si l'on effectue les tests plusieurs fois
+    // pour ne pas avoir de problème si l'on effectue les tests plusieurs fois
     private void deleteUser(InetAddress address) throws SQLException {
         String deleteQuery = "DELETE FROM Users WHERE ipAddress = ?";
         try {
@@ -37,8 +37,8 @@ public class UpdateUsersTest extends TestCase {
             e.printStackTrace();
         }}
 
+    // test de verification que l'utilisateur existe dans la table
     public void testUserExists() throws UnknownHostException, SQLException {
-        // peut etre changer ????????????????????????
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
         InetAddress senderAddress2 = InetAddress.getByName("101.26.81.13");
         String Nickname = "John";
@@ -52,6 +52,7 @@ public class UpdateUsersTest extends TestCase {
         deleteUser(senderAddress);
         dbTest.closeConnection();
     }
+    // test de l'ajout d'un utilisateur dans la table Users
    public void testAddUsers () throws UnknownHostException, SQLException {
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
         String Nickname = "Mary";
@@ -63,10 +64,8 @@ public class UpdateUsersTest extends TestCase {
         deleteUser(senderAddress);
         dbTest.closeConnection();
     }
-
-
+    // test if the nickname is the same in the database
     public void testNicknameIsSame() throws UnknownHostException, SQLException {
-        // peut etre changer le test??????????????
         InetAddress senderAddress = InetAddress.getByName("101.26.81.13");
         String Nickname = "John";
         CreateTables dbTest = new CreateTables(CreateTablesTest.TestUrl);
@@ -79,6 +78,7 @@ public class UpdateUsersTest extends TestCase {
         deleteUser(senderAddress);
         dbTest.closeConnection();
     }
+    // test of the change of nickname in the database
     public void testChangeNicknameDB() throws UnknownHostException, SQLException {
         InetAddress senderAddress = InetAddress.getByName("101.26.81.13");
         String newNickname = "Jack";

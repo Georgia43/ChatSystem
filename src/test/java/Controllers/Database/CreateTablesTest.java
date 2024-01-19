@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.Connection;
+
 
     public class CreateTablesTest extends TestCase {
         /**
@@ -31,13 +31,13 @@ import java.sql.Connection;
             ResultSet tables = metaData.getTables(null, null, Table, null);
             return tables.next();
         }
+        // url pour faire la database avec les tests
         public static String TestUrl = "jdbc:sqlite:BDDTest.db";
+        // test de la connexion a l'url
         public void testConnect () throws UnknownHostException { //find a way to make an assert
             CreateTables dbTest = new CreateTables(TestUrl);
             // on vérifie que la connection n'est pas nulle
             assertNotNull("Connection should not be null", dbTest.connection);
-
-            // Check if the connection is open
             try {
                 assertFalse("Connection should be open", dbTest.connection.isClosed());
             } catch (SQLException e) {
@@ -45,13 +45,14 @@ import java.sql.Connection;
             }
 
         }
+        // test de la création de la table users
         public void testTableUsers () throws UnknownHostException, SQLException{
             CreateTables dbTest = new CreateTables(TestUrl);
             dbTest.tableUsers();
             assertTrue(tableExists(dbTest,"Users"));
             dbTest.closeConnection();
         }
-
+        // test de la création d'une table message
         public void testTableMessage () throws UnknownHostException, SQLException{
             InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
             CreateTables dbTest = new CreateTables(TestUrl);

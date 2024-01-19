@@ -46,6 +46,7 @@ public class UpdateMessagesTest extends TestCase {
         }
         return messages;
     }
+    // test du stockage d'un message envoyé dans la table messages
   public void testSentMessages() throws UnknownHostException, SQLException, InterruptedException {
        CreateTables dbTest = new CreateTables(CreateTablesTest.TestUrl);
        InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
@@ -58,6 +59,7 @@ public class UpdateMessagesTest extends TestCase {
        assertTrue("The received message is not in the database.", messages.contains("test addSentMessage"));
        dbTest.closeConnection();
     }
+    // test du stockage d'un message reçu dans la table message
   public void testReceivedMessages() throws UnknownHostException, SQLException, InterruptedException {
         CreateTables dbTest = new CreateTables(CreateTablesTest.TestUrl);
         InetAddress senderAddress = InetAddress.getByName("101.26.81.12");
